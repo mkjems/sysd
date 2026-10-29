@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>On leaving space empty — sysd</title>
+  <meta name="description" content="An example article page for sysd: long-form text with an open left column and notes in the margin.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="sysd.css">
+  <link rel="stylesheet" href="prototype.css">
+  <script src="prototype.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="wordmark" href="index.html" id="top">sysd.</a>
+  <span class="sysd-label site-header__caption">Notes on type, grids &amp; the web</span>
+  <nav class="site-nav" aria-label="Site">
+    <a href="index.html">Journal</a>
+    <a href="index.html#grids">Grids</a>
+    <a href="index.html#type">Type</a>
+    <a href="index.html#forms">Contact</a>
+  </nav>
+  <div class="sysd-actions site-tools">
+    <button class="sysd-button sysd-button--outline sysd-button--small" type="button" data-grid-toggle aria-pressed="false">Grid <kbd>G</kbd></button>
+  </div>
+</header>
+
+<main>
+  <article class="sysd-section article" aria-labelledby="article-title">
+    <div class="sysd-meta"><span>Journal / Essay</span><span>Twelve columns · An open left column</span></div>
+
+    <!-- Title -->
+    <div class="sysd-grid sysd-grid--12 article__head">
+      <p class="sysd-index" style="--span-lg: 3">Essay · 21 October 2026</p>
+      <h1 class="sysd-step-6" id="article-title" style="--at-lg: 4; --span-lg: 8">On leaving <em>space empty.</em></h1>
+      <p class="sysd-lead" style="--span-md: 6; --at-lg: 4; --span-lg: 6">Empty space is the cheapest material on a page and the hardest to defend. A few notes on why it matters, and how a design system can protect it.</p>
+    </div>
+
+    <!-- Body: the left column holds only the details; the text starts at column four -->
+    <div class="sysd-grid sysd-grid--12 article__body">
+      <aside class="article__details" style="--span-md: 8; --at-lg: 1; --span-lg: 3" aria-label="About this essay">
+        <dl class="details">
+          <div><dt class="sysd-index">Written by</dt><dd>The author</dd></div>
+          <div><dt class="sysd-index">Published</dt><dd><time datetime="2026-10-21">21 October 2026</time></dd></div>
+          <div><dt class="sysd-index">Reading time</dt><dd>Seven minutes</dd></div>
+        </dl>
+        <div class="sysd-tags">
+          <a class="sysd-tag sysd-tag--accent" href="index.html#grids">Grids</a>
+          <a class="sysd-tag" href="index.html#type">Typography</a>
+        </div>
+        <nav class="toc" aria-label="On this page">
+          <p class="sysd-index">On this page</p>
+          <ol role="list">
+            <li><a href="#pressure">The pressure to fill</a></li>
+            <li><a href="#what-it-does">What empty space does</a></li>
+            <li><a href="#structure">Space as structure</a></li>
+            <li><a href="#protecting">Protecting it in a system</a></li>
+            <li><a href="#breaking">When to break the rule</a></li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="sysd-prose article__text" style="--at-lg: 1">
+        <p class="sysd-dropcap">Every page arrives with a quiet pressure to be full. There is always one more link that could go in the margin, one more teaser that could sit beside the article, one more banner that someone, somewhere, would like to see near the top. Each addition is small, and each one is easy to justify. Taken together, they turn a page into a noticeboard.</p>
+        <p>This essay is about the opposite instinct: leaving space empty on purpose, and building a system that makes that the easy choice rather than the brave one.</p>
+
+        <h2 id="pressure">The pressure to fill</h2>
+        <div class="sysd-annotated">
+          <p>Empty space looks like waste to anyone who did not design it. A column with nothing in it reads as an unfinished job, or worse, as unused inventory. On commercial sites that view usually wins, because the cost of an extra element is invisible and its benefit — a click, an impression — is easy to count.<span class="sysd-ref"></span></p>
+          <p class="sysd-sidenote">The cost is real but diffuse: slightly slower reading, slightly lower trust, slightly less reason to come back. None of it shows up in a dashboard.</p>
+        </div>
+        <p>Personal sites are not immune. Templates arrive with sidebars already in place, and it feels rude to leave them blank. So we fill them with archives, tag clouds and follow buttons, and the essay we actually care about ends up as one item among many on its own page.</p>
+        <p>The problem is not any single element. It is that nothing on the page is allowed to be quiet, so nothing on it can be loud.</p>
+
+        <p class="sysd-pull sysd-wide">Space is not the absence of design. It is the part of the design that lets everything else be seen.</p>
+
+        <h2 id="what-it-does">What empty space does</h2>
+        <p>Empty space does three jobs at once, and it does them without asking for attention.</p>
+        <ol>
+          <li><strong>It groups.</strong> Things that sit close together are read as belonging together. A wider gap is a stronger boundary than any rule or box.</li>
+          <li><strong>It ranks.</strong> A heading with room around it is more important than the same heading squeezed between paragraphs, even at the same size.</li>
+          <li><strong>It paces.</strong> A generous margin slows the eye at the start of a text and gives it somewhere to rest at the end of a line.</li>
+        </ol>
+        <div class="sysd-annotated">
+          <p>None of this is new. Book designers have known it for centuries, and the margins of a well-made book are not decoration but working parts: room for the thumbs, room for notes, room for the text block to sit in a deliberate proportion to the page.<span class="sysd-ref"></span></p>
+          <p class="sysd-sidenote">Classical page proportions often put the text block well inside the page, with the outer and lower margins the largest. The exact ratio matters less than the fact that the empty part was designed.</p>
+        </div>
+        <p>On a screen the thumbs are gone, but the other reasons remain. A column of text that runs from edge to edge is harder to read, not easier, because the eye loses its place on the long way back to the start of each line. A text that is given a measure — and space on either side of it — is read faster and remembered better.</p>
+        <p>There is also something less measurable. A page with room in it signals that someone made choices. It feels considered in the way a well-hung exhibition feels considered: not because there is less to see, but because each thing has been given the space to be seen properly.</p>
+
+        <figure class="sysd-wide article__figure">
+          <svg viewBox="0 0 1200 420" role="img" aria-label="Diagram of this page: twelve columns, three empty on the left, six holding the text and three holding notes">
+            <g class="fig-cols">
+              <rect x="0" y="0" width="84" height="420"/><rect x="100" y="0" width="84" height="420"/><rect x="200" y="0" width="84" height="420"/>
+              <rect x="300" y="0" width="84" height="420"/><rect x="400" y="0" width="84" height="420"/><rect x="500" y="0" width="84" height="420"/>
+              <rect x="600" y="0" width="84" height="420"/><rect x="700" y="0" width="84" height="420"/><rect x="800" y="0" width="84" height="420"/>
+              <rect x="900" y="0" width="84" height="420"/><rect x="1000" y="0" width="84" height="420"/><rect x="1100" y="0" width="84" height="420"/>
+            </g>
+            <rect class="fig-accent" x="0" y="40" width="40" height="40"/>
+            <rect class="fig-ink" x="300" y="40" width="460" height="34"/>
+            <g class="fig-text">
+              <rect x="300" y="110" width="584" height="9"/><rect x="300" y="134" width="584" height="9"/><rect x="300" y="158" width="560" height="9"/>
+              <rect x="300" y="182" width="584" height="9"/><rect x="300" y="206" width="420" height="9"/>
+              <rect x="300" y="254" width="584" height="9"/><rect x="300" y="278" width="584" height="9"/><rect x="300" y="302" width="540" height="9"/>
+              <rect x="300" y="326" width="584" height="9"/><rect x="300" y="350" width="300" height="9"/>
+            </g>
+            <g class="fig-note">
+              <rect x="900" y="112" width="284" height="6"/><rect x="900" y="128" width="284" height="6"/><rect x="900" y="144" width="200" height="6"/>
+              <rect x="900" y="256" width="284" height="6"/><rect x="900" y="272" width="240" height="6"/>
+            </g>
+          </svg>
+          <figcaption>Fig. 1 — This page on a wide screen. Three columns open on the left, six for the text, three for the notes. On a narrower screen the open columns go first; on a phone the notes fold in beneath their paragraphs.</figcaption>
+        </figure>
+
+        <h2 id="structure">Space as structure</h2>
+        <p>In this system, the empty column on the left of the page is not a gap waiting to be filled. It is where the eye enters, and it gives the text a starting edge that holds whatever the size of the screen.</p>
+        <div class="sysd-annotated">
+          <p>On a wide screen the text takes six of the twelve columns. Three stay open on the left; three on the right hold notes like the one beside this paragraph. When the screen narrows, the open columns are the first thing to go, and then the notes fold in under the paragraphs they belong to.<span class="sysd-ref"></span></p>
+          <p class="sysd-sidenote">This note is an example. On a phone it appears directly beneath the paragraph, set smaller and marked with a thin rule.</p>
+        </div>
+        <p>That order matters. A layout that keeps its decorations and drops its margins on a small screen has its priorities backwards. The reader on a phone deserves the same calm as the reader at a desk; they simply get it in a narrower form.</p>
+        <blockquote>
+          <p>White space is to be regarded as an active element, not a passive background.</p>
+          <footer>— Jan Tschichold</footer>
+        </blockquote>
+        <p>The idea in that sentence is the whole argument in miniature. Space is not what is left after the content has been placed. It is placed, just like the content, and it can be placed well or badly.</p>
+
+        <h2 id="protecting">Protecting it in a system</h2>
+        <p>Good intentions don’t survive deadlines. If empty space is going to last, it has to be built into the tools rather than defended in every review. In sysd that comes down to a handful of rules:</p>
+        <ul>
+          <li>Layouts start from the open column. The default place for text is not the left edge of the page.</li>
+          <li>Spacing comes from a short scale measured in lines. There is no option for “just a few pixels more”.</li>
+          <li>Components don’t bring their own outer margins. A card or a form sits in whatever space the layout gives it.</li>
+          <li>Every section declares its grid. Nothing is placed by eye.</li>
+        </ul>
+        <div class="sysd-annotated">
+          <p>The point of these rules is not to make every page look the same. It is to make the quiet choice the default, so that filling a space becomes a decision someone has to make on purpose — and can explain.<span class="sysd-ref"></span></p>
+          <p class="sysd-sidenote">In the stylesheet, the open column is simply where the text begins: <code>--prose-text: 4 / span 6</code>. Nobody has to remember to leave it empty.</p>
+        </div>
+        <p>A system like this also changes the conversations around a page. The question stops being “is there room for one more thing?” and becomes “is this thing worth the space it would take?” That is a much better question, and it tends to get much better answers.</p>
+
+        <hr>
+
+        <h2 id="breaking">When to break the rule</h2>
+        <p>Some pages should be dense: an index, an archive, a reference table. Forcing them into a generous essay layout wastes the reader’s time in a different way. For those, the system offers grids with more columns and less air, and that is a legitimate choice rather than a failure of nerve.</p>
+        <p>And there are moments within an essay where breaking the margin is the point: a photograph that runs into the empty columns, a quotation that steps out of the text, a section that turns the background dark. Each of these works only because the rest of the page is calm. A rule that is broken everywhere is not a rule, and its breaks are no longer gestures.</p>
+        <p class="sysd-end">So leave the column empty. Then, once in a while, fill it with something that deserves it.</p>
+      </div>
+    </div>
+  </article>
+
+  <!-- Continue reading -->
+  <section class="sysd-section" aria-labelledby="more-title">
+    <div class="sysd-meta"><span id="more-title">Continue reading</span><span>Thirds</span></div>
+    <div class="sysd-grid sysd-grid--thirds">
+      <article class="sysd-card">
+        <p class="sysd-index">09 Oct · Previous</p>
+        <h3><a href="index.html#grids">A grid for every page</a></h3>
+        <p class="sysd-muted">Why each section of a site deserves to choose its own columns.</p>
+      </article>
+      <article class="sysd-card" style="--drop: 2">
+        <p class="sysd-index">27 Sep</p>
+        <h3><a href="index.html#type">The italic as a <em>second voice</em></a></h3>
+        <p class="sysd-muted">On using a serif italic sparingly, inside a sans-serif system.</p>
+      </article>
+      <form class="sysd-card sysd-field" style="--drop: 1" onsubmit="return false">
+        <p class="sysd-index">Letters</p>
+        <label class="sysd-field__label" for="article-email">One letter a month, nothing else.</label>
+        <div class="sysd-inline">
+          <input class="sysd-input" id="article-email" type="email" placeholder="you@example.com" autocomplete="email">
+          <button class="sysd-button sysd-button--accent" type="submit">Subscribe</button>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="sysd-section site-footer">
+  <div class="sysd-meta"><span>sysd / Example article</span><span><a href="index.html">Back to the foundations</a></span></div>
+</footer>
+
+</body>
+</html>

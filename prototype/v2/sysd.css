@@ -1,0 +1,701 @@
+/* =====================================================================
+   sysd — foundations
+   Built on the grid principles of Josef Müller-Brockmann, adapted for
+   a page that scrolls and a screen of any size.
+
+   Everything is measured in lines. One line (--sysd-u) is the body text
+   size multiplied by its leading. Margins, gutters, spacing, control
+   heights and the leading of every heading derive from it.
+
+   Only the values under "Inputs" are chosen by hand.
+   ===================================================================== */
+
+@layer reset, tokens, base, layout, components, motion;
+
+/* --------------------------------------------------------------- reset */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+  img, svg, video { display: block; max-inline-size: 100%; }
+  input, button, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  fieldset { border: 0; padding: 0; min-inline-size: 0; }
+  legend { padding: 0; }
+}
+
+/* -------------------------------------------------------------- tokens */
+@layer tokens {
+  :root {
+    /* Inputs — the only values chosen by hand */
+    --sysd-size: clamp(0.9375rem, 0.875rem + 0.2vw, 1.0625rem); /* body text size */
+    --sysd-leading: 1.5;                                         /* body leading */
+    --sysd-ratio-max: 1.2;                                       /* type scale ratio on wide screens */
+    --sysd-accent-hue: 29;                                  /* OKLCH hue of the accent */
+    --sysd-radius: 0px;
+    --sysd-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --sysd-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+    /* The line — the module everything is measured in. A whole number of
+       pixels, so it never accumulates rounding errors down a long page. */
+    --sysd-u: round(calc(var(--sysd-size) * var(--sysd-leading)), 1px);
+    --sysd-grain: calc(var(--sysd-u) / 4); /* finest step heading leading snaps to */
+
+    /* Space — whole lines, plus a half and a quarter for tight spots */
+    --sysd-space-q: var(--sysd-grain);
+    --sysd-space-h: calc(var(--sysd-u) / 2);
+    --sysd-space-1: var(--sysd-u);
+    --sysd-space-2: calc(var(--sysd-u) * 2);
+    --sysd-space-3: calc(var(--sysd-u) * 3);
+    --sysd-space-4: calc(var(--sysd-u) * 4);
+    --sysd-space-6: calc(var(--sysd-u) * 6);
+    --sysd-space-8: calc(var(--sysd-u) * 8);
+
+    /* Grid — columns and margins grow with the viewport; the gutter is always one line */
+    --sysd-columns: 4;
+    --sysd-gutter: var(--sysd-u);
+    --sysd-margin: var(--sysd-u);
+    --sysd-max-width: 100rem;
+
+    /* Type scale — small screens use a gentler share of the ratio */
+    --sysd-ratio-k: 0.75;
+    --sysd-ratio: calc(1 + (var(--sysd-ratio-max) - 1) * var(--sysd-ratio-k));
+    --sysd-fs--1: calc(var(--sysd-size) / var(--sysd-ratio));
+    --sysd-fs-0: var(--sysd-size);
+    --sysd-fs-1: calc(var(--sysd-size) * var(--sysd-ratio));
+    --sysd-fs-2: calc(var(--sysd-size) * pow(var(--sysd-ratio), 2));
+    --sysd-fs-3: calc(var(--sysd-size) * pow(var(--sysd-ratio), 3));
+    --sysd-fs-4: calc(var(--sysd-size) * pow(var(--sysd-ratio), 4));
+    --sysd-fs-5: calc(var(--sysd-size) * pow(var(--sysd-ratio), 5));
+    --sysd-fs-6: calc(var(--sysd-size) * pow(var(--sysd-ratio), 6));
+    --sysd-fs-7: calc(var(--sysd-size) * pow(var(--sysd-ratio), 7));
+
+    /* Leading — text sits on whole lines; headings tighten as they grow,
+       rounded up to the grain so they never fall off the rhythm */
+    --sysd-lh--1: var(--sysd-u);
+    --sysd-lh-0: var(--sysd-u);
+    --sysd-lh-1: round(up, calc(var(--sysd-fs-1) * 1.25), var(--sysd-grain));
+    --sysd-lh-2: round(up, calc(var(--sysd-fs-2) * 1.2), var(--sysd-grain));
+    --sysd-lh-3: round(up, calc(var(--sysd-fs-3) * 1.15), var(--sysd-grain));
+    --sysd-lh-4: round(up, calc(var(--sysd-fs-4) * 1.1), var(--sysd-grain));
+    --sysd-lh-5: round(up, calc(var(--sysd-fs-5) * 1.05), var(--sysd-grain));
+    --sysd-lh-6: round(up, calc(var(--sysd-fs-6) * 1), var(--sysd-grain));
+    --sysd-lh-7: round(up, calc(var(--sysd-fs-7) * 0.95), var(--sysd-grain));
+
+    /* Controls — two lines on touch screens, one and a half with a mouse */
+    --sysd-control: calc(var(--sysd-u) * 2);
+    --sysd-target: calc(var(--sysd-u) * 2);
+    --sysd-control-snap: calc(round(up, var(--sysd-control), var(--sysd-u)) - var(--sysd-control));
+    /* Rows of controls repeat at this whole-line pitch, with at least a quarter line between them */
+    --sysd-control-pitch: round(up, calc(var(--sysd-control) + var(--sysd-space-q)), var(--sysd-u));
+
+    /* Strokes and motion */
+    --sysd-stroke: 1px;
+    --sysd-stroke-strong: 2px;
+    --sysd-duration: 160ms;
+    --sysd-ease: cubic-bezier(0.2, 0, 0, 1);
+    --sysd-beat: 120ms; /* entrance motion is counted in beats, like space is counted in lines */
+
+    /* Colour — paper and ink, one accent. light-dark() follows color-scheme. */
+    color-scheme: light dark;
+    --sysd-paper: light-dark(oklch(0.985 0.004 90), oklch(0.17 0.005 270));
+    --sysd-surface: light-dark(oklch(0.955 0.005 90), oklch(0.215 0.006 270));
+    --sysd-ink: light-dark(oklch(0.18 0.01 270), oklch(0.95 0.005 90));
+    --sysd-ink-muted: light-dark(oklch(0.46 0.01 270), oklch(0.72 0.01 270));
+    --sysd-hairline: light-dark(oklch(0.18 0.01 270 / 0.14), oklch(0.95 0.005 90 / 0.16));
+    --sysd-hairline-strong: light-dark(oklch(0.18 0.01 270 / 0.42), oklch(0.95 0.005 90 / 0.42));
+    --sysd-accent: light-dark(oklch(0.56 0.21 var(--sysd-accent-hue)), oklch(0.68 0.19 var(--sysd-accent-hue)));
+    --sysd-on-accent: light-dark(oklch(0.99 0 0), oklch(0.15 0.01 270));
+    /* Process inks for overprinted forms. The accent is the first; the other
+       two are fixed so overlaps always mix into new colours. */
+    --sysd-print-yellow: light-dark(oklch(0.9 0.16 95), oklch(0.52 0.12 95));
+    --sysd-print-blue: light-dark(oklch(0.62 0.15 250), oklch(0.42 0.15 250));
+    --sysd-danger: light-dark(oklch(0.5 0.19 25), oklch(0.7 0.17 25));
+    --sysd-focus: var(--sysd-accent);
+    --sysd-field: light-dark(oklch(1 0 0), oklch(0.2 0.006 270));
+  }
+
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+
+  @media (pointer: fine) {
+    :root {
+      --sysd-control: calc(var(--sysd-u) * 1.5);
+      --sysd-target: var(--sysd-u);
+    }
+  }
+
+  @media (min-width: 40rem) {
+    :root {
+      --sysd-columns: 8;
+      --sysd-margin: calc(var(--sysd-u) * 2);
+      --sysd-ratio-k: 0.875;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    :root {
+      --sysd-columns: 12;
+      --sysd-margin: calc(var(--sysd-u) * 3);
+      --sysd-ratio-k: 1;
+    }
+  }
+
+  /* Browsers without pow() / round(): a fixed scale, no snapping */
+  @supports not ((width: round(up, 1.5px, 1px)) and (width: calc(1px * pow(2, 2)))) {
+    :root {
+      --sysd-u: calc(var(--sysd-size) * var(--sysd-leading));
+      --sysd-fs--1: 0.833rem;
+      --sysd-fs-1: 1.2rem;
+      --sysd-fs-2: 1.44rem;
+      --sysd-fs-3: 1.728rem;
+      --sysd-fs-4: 2.074rem;
+      --sysd-fs-5: 2.488rem;
+      --sysd-fs-6: 2.986rem;
+      --sysd-fs-7: 3.583rem;
+      --sysd-lh-1: calc(var(--sysd-fs-1) * 1.25);
+      --sysd-lh-2: calc(var(--sysd-fs-2) * 1.2);
+      --sysd-lh-3: calc(var(--sysd-fs-3) * 1.15);
+      --sysd-lh-4: calc(var(--sysd-fs-4) * 1.1);
+      --sysd-lh-5: calc(var(--sysd-fs-5) * 1.05);
+      --sysd-lh-6: var(--sysd-fs-6);
+      --sysd-lh-7: calc(var(--sysd-fs-7) * 0.95);
+      --sysd-control-snap: 0px;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------- base */
+@layer base {
+  html {
+    background: var(--sysd-paper);
+    color: var(--sysd-ink);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--sysd-font);
+    font-size: var(--sysd-fs-0);
+    line-height: var(--sysd-lh-0);
+    font-optical-sizing: auto;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    hanging-punctuation: first allow-end last;
+  }
+
+  /* Type steps. Headings map onto the scale; classes let any element use it. */
+  h4, h5, h6, .sysd-step-0 { --_fs: var(--sysd-fs-0); --_lh: var(--sysd-lh-0); }
+  .sysd-step--1 { --_fs: var(--sysd-fs--1); --_lh: var(--sysd-lh--1); }
+  h3, .sysd-step-1 { --_fs: var(--sysd-fs-1); --_lh: var(--sysd-lh-1); --_track: -0.005em; }
+  .sysd-step-2 { --_fs: var(--sysd-fs-2); --_lh: var(--sysd-lh-2); --_track: -0.01em; }
+  h2, .sysd-step-3 { --_fs: var(--sysd-fs-3); --_lh: var(--sysd-lh-3); --_track: -0.015em; }
+  .sysd-step-4 { --_fs: var(--sysd-fs-4); --_lh: var(--sysd-lh-4); --_track: -0.02em; }
+  h1, .sysd-step-5 { --_fs: var(--sysd-fs-5); --_lh: var(--sysd-lh-5); --_track: -0.025em; }
+  .sysd-step-6 { --_fs: var(--sysd-fs-6); --_lh: var(--sysd-lh-6); --_track: -0.03em; }
+  .sysd-step-7 { --_fs: var(--sysd-fs-7); --_lh: var(--sysd-lh-7); --_track: -0.035em; }
+
+  :is(h1, h2, h3, h4, h5, h6, [class*="sysd-step-"]) {
+    font-size: var(--_fs);
+    line-height: var(--_lh);
+    letter-spacing: var(--_track, 0);
+  }
+
+  h1, h2, h3, h4, h5, h6 { font-weight: 600; text-wrap: balance; }
+  .sysd-step-6, .sysd-step-7 { font-weight: 700; }
+
+  /* Snap: headings and display type are rounded up to whole lines, so the
+     text after them lands back on the grid. This is the rule; .sysd-free
+     is how you break it on purpose. calc-size() snaps any number of lines;
+     without it, the fallback is only exact for one-line headings. */
+  :is(h1, h2, h3, h4, h5, h6, [class*="sysd-step-"]):not(.sysd-free) {
+    margin-block-end: calc(round(up, var(--_lh), var(--sysd-u)) - var(--_lh));
+  }
+  @supports (block-size: calc-size(auto, size)) {
+    :is(h1, h2, h3, h4, h5, h6, [class*="sysd-step-"]):not(.sysd-free),
+    .sysd-snap {
+      margin-block-end: 0;
+      block-size: calc-size(auto, round(up, size, var(--sysd-u)));
+    }
+  }
+
+  p, li, figcaption, blockquote { text-wrap: pretty; hyphens: auto; }
+  /* Display sizes are never hyphenated */
+  :is(.sysd-step-1, .sysd-step-2, .sysd-step-3, .sysd-step-4, .sysd-step-5, .sysd-step-6, .sysd-step-7),
+  :is(.sysd-step-1, .sysd-step-2, .sysd-step-3, .sysd-step-4, .sysd-step-5, .sysd-step-6, .sysd-step-7) * { hyphens: manual; }
+  strong, b { font-weight: 600; }
+
+  a {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: max(1px, 0.06em);
+    text-underline-offset: 0.2em;
+    text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+    transition: text-decoration-color var(--sysd-duration) var(--sysd-ease);
+  }
+  a:hover { text-decoration-color: var(--sysd-accent); }
+
+  :focus-visible { outline: var(--sysd-stroke-strong) solid var(--sysd-focus); outline-offset: 2px; }
+  ::selection { background: var(--sysd-accent); color: var(--sysd-on-accent); }
+
+  /* line-height: 1 stops a second typeface from pushing the line box open */
+  code, kbd, samp { font-family: var(--sysd-font-mono); font-size: 0.875em; line-height: 1; }
+  kbd {
+    padding-inline: 0.35em;
+    border-radius: var(--sysd-radius);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong);
+  }
+
+  /* A rule takes one line and draws itself through the middle of it */
+  hr {
+    border: 0;
+    block-size: var(--sysd-u);
+    background: linear-gradient(var(--sysd-hairline), var(--sysd-hairline)) center / 100% 1px no-repeat;
+  }
+
+  /* Text helpers */
+  .sysd-label {
+    font-size: var(--sysd-fs--1);
+    line-height: var(--sysd-lh--1);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--sysd-ink-muted);
+  }
+  .sysd-muted { color: var(--sysd-ink-muted); }
+  .sysd-accent { color: var(--sysd-accent); }
+  .sysd-num { font-variant-numeric: tabular-nums; }
+  .sysd-flow > * + * { margin-block-start: var(--sysd-space-1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+  }
+}
+
+/* -------------------------------------------------------------- layout */
+@layer layout {
+  /* The page grid */
+  .sysd-page {
+    display: grid;
+    grid-template-columns: repeat(var(--sysd-columns), minmax(0, 1fr));
+    column-gap: var(--sysd-gutter);
+    align-content: start;
+    inline-size: 100%;
+    max-inline-size: var(--sysd-max-width);
+    margin-inline: auto;
+    padding-inline: var(--sysd-margin);
+  }
+  .sysd-page > * { grid-column: 1 / -1; }
+
+  /* A region spans its parent and passes the columns down */
+  .sysd-region,
+  .sysd-cols,
+  .sysd-asym {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-content: start;
+  }
+  .sysd-region > * { grid-column: 1 / -1; }
+
+  /* Free placement: --span / --start, with -md and -lg overrides.
+     Spans larger than the available columns are clamped inside a subgrid. */
+  .sysd-span { grid-column: var(--start, auto) / span var(--span, 4); }
+
+  /* Equal columns: children span --sm / --md / --lg columns */
+  .sysd-cols { row-gap: var(--sysd-space-2); }
+  .sysd-cols > * { grid-column: span var(--sm, 4); }
+
+  /* The asymmetric layout: a narrow column for labels, a wide one for content.
+     Below desktop width the two stack into a single reading column. */
+  .sysd-asym > * { grid-column: 1 / -1; }
+  .sysd-asym > .sysd-aside { margin-block-end: var(--sysd-space-2); }
+  .sysd-asym > .sysd-main {
+    display: grid;
+    grid-template-columns: subgrid;
+    align-content: start;
+  }
+  .sysd-main > * { grid-column: 1 / -1; }
+
+  /* A comfortable measure for running text, still ending on a column line.
+     (Media queries, not container queries: size containment would stop
+     the main column from being a subgrid.) */
+  @media (min-width: 64rem) { .sysd-main > .sysd-measure { grid-column: 1 / span 7; } }
+  @media (min-width: 80rem) { .sysd-main > .sysd-measure { grid-column: 1 / span 6; } }
+
+  @media (min-width: 40rem) {
+    .sysd-span {
+      grid-column: var(--start-md, var(--start, auto)) / span var(--span-md, var(--span, 8));
+    }
+    .sysd-cols > * { grid-column: span var(--md, 4); }
+  }
+
+  @media (min-width: 64rem) {
+    .sysd-span {
+      grid-column:
+        var(--start-lg, var(--start-md, var(--start, auto))) /
+        span var(--span-lg, var(--span-md, var(--span, 12)));
+    }
+    .sysd-cols > * { grid-column: span var(--lg, 4); }
+    .sysd-asym > .sysd-aside { grid-column: 1 / span 3; margin-block-end: 0; }
+    .sysd-asym > .sysd-main { grid-column: 4 / -1; }
+  }
+
+  /* Two text columns that sit exactly on the grid when they span an even number of columns */
+  @media (min-width: 40rem) {
+    .sysd-text-columns { columns: 2; column-gap: var(--sysd-gutter); }
+  }
+
+  /* However many rows it wraps to, a row of actions is a whole number of lines */
+  .sysd-actions {
+    --_air: calc(var(--sysd-control-pitch) - var(--sysd-control));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    gap: var(--_air) var(--sysd-space-h);
+    padding-block: calc(var(--_air) / 2);
+  }
+  @supports (block-size: calc-size(auto, size)) {
+    .sysd-actions { block-size: calc-size(auto, round(up, size, var(--sysd-u))); }
+  }
+}
+
+/* ---------------------------------------------------------- components */
+@layer components {
+  /* Button */
+  .sysd-button {
+    --_bg: var(--sysd-ink);
+    --_fg: var(--sysd-paper);
+    --_ring: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sysd-space-h);
+    block-size: var(--sysd-control);
+    padding-inline: var(--sysd-space-1);
+    border: 0;
+    border-radius: var(--sysd-radius);
+    background: var(--_bg);
+    color: var(--_fg);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--_ring);
+    font-size: var(--sysd-fs-0);
+    line-height: var(--sysd-u);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    touch-action: manipulation;
+    user-select: none;
+    transition:
+      background-color var(--sysd-duration) var(--sysd-ease),
+      color var(--sysd-duration) var(--sysd-ease),
+      box-shadow var(--sysd-duration) var(--sysd-ease);
+  }
+  .sysd-button:hover { --_bg: color-mix(in oklch, var(--sysd-ink) 82%, var(--sysd-paper)); }
+  .sysd-button:active { translate: 0 1px; }
+
+  .sysd-button--accent { --_bg: var(--sysd-accent); --_fg: var(--sysd-on-accent); }
+  .sysd-button--accent:hover { --_bg: color-mix(in oklch, var(--sysd-accent) 86%, var(--sysd-ink)); }
+
+  .sysd-button--outline { --_bg: transparent; --_fg: var(--sysd-ink); --_ring: var(--sysd-ink); }
+  .sysd-button--outline:hover { --_bg: var(--sysd-surface); }
+
+  .sysd-button--quiet { --_bg: transparent; --_fg: var(--sysd-ink); padding-inline: var(--sysd-space-h); }
+  .sysd-button--quiet:hover { --_bg: var(--sysd-surface); }
+
+  .sysd-button--compact {
+    block-size: max(var(--sysd-u), var(--sysd-target));
+    padding-inline: var(--sysd-space-h);
+    font-size: var(--sysd-fs--1);
+  }
+
+  .sysd-button:disabled,
+  .sysd-button[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; translate: none; }
+
+  /* Field: label, control, hint — the control's fraction of a line is
+     given back as margin so the field as a whole is a whole number of lines */
+  .sysd-field { display: grid; align-content: start; }
+  .sysd-field__label { font-size: var(--sysd-fs--1); line-height: var(--sysd-u); font-weight: 600; }
+  .sysd-field__hint { font-size: var(--sysd-fs--1); line-height: var(--sysd-u); color: var(--sysd-ink-muted); }
+  .sysd-field__hint--error { color: var(--sysd-danger); }
+  .sysd-field > :is(.sysd-input, .sysd-select) { margin-block-end: var(--sysd-control-snap); }
+
+  .sysd-input,
+  .sysd-select,
+  .sysd-textarea {
+    inline-size: 100%;
+    block-size: var(--sysd-control);
+    padding-inline: var(--sysd-space-h);
+    border: 0;
+    border-radius: var(--sysd-radius);
+    background-color: var(--sysd-field);
+    color: var(--sysd-ink);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong);
+    line-height: var(--sysd-u);
+    transition: box-shadow var(--sysd-duration) var(--sysd-ease);
+  }
+  .sysd-input:hover,
+  .sysd-select:hover,
+  .sysd-textarea:hover { box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-ink); }
+  .sysd-input::placeholder,
+  .sysd-textarea::placeholder { color: var(--sysd-ink-muted); opacity: 1; }
+  :is(.sysd-input, .sysd-select, .sysd-textarea)[aria-invalid="true"] {
+    box-shadow: inset 0 0 0 var(--sysd-stroke-strong) var(--sysd-danger);
+  }
+
+  .sysd-textarea {
+    block-size: auto;
+    min-block-size: calc(var(--sysd-u) * 4);
+    padding-block: var(--sysd-space-h);
+    resize: vertical;
+    field-sizing: content;
+  }
+
+  /* Select: a native select with a drawn chevron … */
+  .sysd-select {
+    appearance: none;
+    padding-inline-end: var(--sysd-space-2);
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - var(--sysd-space-1) + 1px) 52%,
+      calc(100% - var(--sysd-space-1) + 6px) 52%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  /* … and, where the browser supports it, a fully styled one */
+  @supports (appearance: base-select) {
+    .sysd-select,
+    .sysd-select::picker(select) { appearance: base-select; }
+    .sysd-select {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline-end: var(--sysd-space-h);
+      background-image: none;
+    }
+    .sysd-select::picker-icon {
+      color: var(--sysd-ink-muted);
+      transition: rotate var(--sysd-duration) var(--sysd-ease);
+    }
+    .sysd-select:open::picker-icon { rotate: 180deg; }
+    .sysd-select::picker(select) {
+      margin-block: var(--sysd-space-q);
+      padding-block: var(--sysd-space-q);
+      border: 0;
+      border-radius: var(--sysd-radius);
+      background: var(--sysd-paper);
+      color: var(--sysd-ink);
+      box-shadow:
+        inset 0 0 0 var(--sysd-stroke) var(--sysd-ink),
+        0 var(--sysd-space-q) var(--sysd-space-1) oklch(0 0 0 / 0.12);
+    }
+    .sysd-select option {
+      min-block-size: var(--sysd-control);
+      padding-inline: var(--sysd-space-h);
+      gap: var(--sysd-space-h);
+      line-height: var(--sysd-u);
+    }
+    .sysd-select option:is(:hover, :focus-visible) { background: var(--sysd-surface); outline: 0; }
+    .sysd-select option:checked { font-weight: 600; }
+    .sysd-select option::checkmark { color: var(--sysd-accent); }
+  }
+
+  /* Checkbox and radio: native controls, tinted and sized to the line */
+  .sysd-check {
+    display: flex;
+    align-items: center;
+    gap: var(--sysd-space-h);
+    min-block-size: var(--sysd-target);
+    line-height: var(--sysd-u);
+    cursor: pointer;
+  }
+  .sysd-check input {
+    flex: none;
+    inline-size: calc(var(--sysd-u) * 0.62);
+    block-size: calc(var(--sysd-u) * 0.62);
+    margin: 0;
+    accent-color: var(--sysd-accent);
+    cursor: pointer;
+  }
+  .sysd-fieldset > legend { font-size: var(--sysd-fs--1); line-height: var(--sysd-u); font-weight: 600; }
+
+  /* Card: Swiss-style — a strong rule above, no box */
+  .sysd-card {
+    display: grid;
+    align-content: start;
+    box-shadow: inset 0 var(--sysd-stroke-strong) 0 var(--sysd-ink);
+  }
+  /* Text runs on without gaps so every line stays on the grid; an action at the end gets a line of air */
+  .sysd-card > :last-child:is(a, .sysd-actions) { margin-block-start: var(--sysd-space-1); }
+  .sysd-card--filled {
+    padding: var(--sysd-space-1);
+    border-radius: var(--sysd-radius);
+    background: var(--sysd-surface);
+    box-shadow: none;
+  }
+}
+
+/* ---------------------------------------------------------------- rule */
+/* A strong rule across the top. Drawn as a background, so it can be drawn in. */
+@layer components {
+  .sysd-rule {
+    background: linear-gradient(var(--sysd-ink), var(--sysd-ink)) 0 0 / 100% var(--sysd-stroke-strong) no-repeat;
+  }
+}
+
+/* ----------------------------------------------------------- overprint */
+/* Large forms printed over a section like transparent inks. Each form is
+   placed on the section's own column lines (--start / --span, with -md and
+   -lg) and a whole number of lines from its top (--top, -md, -lg).
+   Multiply on paper; on a dark ground the same idea is screen — light adds. */
+@layer components {
+  .sysd-overprint {
+    position: relative;
+    isolation: isolate;
+    overflow-y: clip;
+  }
+  .sysd-shape {
+    --_ink: var(--shape-ink, var(--sysd-accent));
+    --_shape: inset(0);
+    position: absolute;
+    z-index: 1;
+    grid-column: var(--start, 1) / span var(--span, 2);
+    inset-inline: 0;
+    inset-block-start: calc(var(--top, 0) * var(--sysd-u));
+    aspect-ratio: var(--ratio, 1);
+    background: var(--_ink);
+    clip-path: var(--_shape);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  @media (min-width: 40rem) {
+    .sysd-shape {
+      grid-column: var(--start-md, var(--start, 1)) / span var(--span-md, var(--span, 2));
+      inset-block-start: calc(var(--top-md, var(--top, 0)) * var(--sysd-u));
+      aspect-ratio: var(--ratio-md, var(--ratio, 1));
+    }
+  }
+  @media (min-width: 64rem) {
+    .sysd-shape {
+      grid-column:
+        var(--start-lg, var(--start-md, var(--start, 1))) /
+        span var(--span-lg, var(--span-md, var(--span, 2)));
+      inset-block-start: calc(var(--top-lg, var(--top-md, var(--top, 0))) * var(--sysd-u));
+      aspect-ratio: var(--ratio-lg, var(--ratio, 1));
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .sysd-shape { mix-blend-mode: screen; }
+  }
+  :root[data-theme="dark"] .sysd-shape { mix-blend-mode: screen; }
+
+  .sysd-shape--circle { --_shape: circle(50%); }
+  /* The apex sits a pixel above the box: at exactly 0, Chrome leaves a hairline along the top edge */
+  .sysd-shape--triangle { --_shape: polygon(50% -1px, 100% 100%, 0 100%); }
+  .sysd-shape.sysd-shape--bar { aspect-ratio: auto; block-size: calc(var(--sysd-u) / 2); }
+  /* Runs past the margin to the edge of the page */
+  .sysd-shape--bleed { inset-inline-start: calc(-1 * var(--sysd-margin)); }
+
+  .sysd-shape--yellow { --shape-ink: var(--sysd-print-yellow); }
+  .sysd-shape--blue { --shape-ink: var(--sysd-print-blue); }
+  .sysd-shape--ink { --shape-ink: var(--sysd-ink); }
+}
+
+/* -------------------------------------------------------------- motion */
+/* The page is set, not animated. Elements appear the way a page is built
+   on a grid: the rule is drawn first, headings are set from the left like
+   a line of type, and everything else drops exactly one line into place,
+   in reading order, three quarters of a beat apart. No bounce, no
+   spin. Every animation fills backwards only, so once a part is set it
+   is an ordinary element again (no clip left on focus rings).
+
+   The hidden start state only exists under .sysd-motion, which
+   sysd-motion.js adds — without the script the page is simply static. */
+@layer motion {
+  @keyframes sysd-set { from { clip-path: inset(-0.25em 100% -0.25em 0); } to { clip-path: inset(-0.25em -0.25em -0.25em 0); } }
+  @keyframes sysd-drop { from { opacity: 0; translate: 0 var(--sysd-u); } }
+  @keyframes sysd-rule { from { background-size: 0% var(--sysd-stroke-strong); } }
+  @keyframes sysd-form { from { clip-path: var(--_from); } to { clip-path: var(--_shape); } }
+  @keyframes sysd-drift {
+    from { translate: calc(-1 * var(--drift-x, 0%)) calc(-1 * var(--drift-y, 0%)); }
+    to { translate: var(--drift-x, 0%) var(--drift-y, 0%); }
+  }
+  @keyframes sysd-construct { from { scale: 1 0; } }
+  @keyframes sysd-strike { to { opacity: 0; visibility: hidden; } }
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    .sysd-motion [data-enter] * {
+      --_delay: calc(var(--sysd-delay, 0ms) + min(var(--i, 0), 12) * var(--sysd-beat) * 0.75);
+    }
+
+    /* Waiting to be set */
+    .sysd-motion [data-enter]:not([data-entered]) :is(.sysd-set, .sysd-drop, .sysd-shape, .sysd-enter-children > :not(.sysd-enter-children)) {
+      visibility: hidden;
+    }
+
+    .sysd-motion [data-entered].sysd-rule,
+    .sysd-motion [data-entered] .sysd-rule {
+      animation: sysd-rule calc(6 * var(--sysd-beat)) var(--sysd-ease) var(--sysd-delay, 0ms) backwards;
+    }
+    .sysd-motion [data-entered] .sysd-set {
+      animation: sysd-set calc(5 * var(--sysd-beat)) var(--sysd-ease) var(--_delay) backwards;
+    }
+    .sysd-motion [data-entered] :is(.sysd-drop, .sysd-enter-children > :not(.sysd-enter-children)) {
+      animation: sysd-drop calc(5 * var(--sysd-beat)) var(--sysd-ease) var(--_delay) backwards;
+    }
+
+    /* Forms are printed: a circle grows from its centre, a rectangle is
+       pulled down from its top edge, a triangle rises to its apex. */
+    .sysd-shape { --_from: inset(0 0 100% 0); }
+    .sysd-shape--circle { --_from: circle(0%); }
+    .sysd-shape--triangle { --_from: polygon(50% 100%, 100% 100%, 0 100%); }
+    .sysd-shape--bar { --_from: inset(0 100% 0 0); }
+    .sysd-motion [data-entered] .sysd-shape {
+      animation: sysd-form calc(8 * var(--sysd-beat)) var(--sysd-ease) var(--_delay) backwards;
+    }
+
+    /* While the section passes through the viewport, forms drift along
+       the grid's axes, so their overlaps — and the mixed colours — change. */
+    @supports (animation-timeline: view()) {
+      .sysd-motion [data-entered] .sysd-shape {
+        animation:
+          sysd-form calc(8 * var(--sysd-beat)) var(--sysd-ease) var(--_delay) backwards,
+          sysd-drift auto linear both;
+        animation-timeline: auto, view();
+      }
+    }
+
+    /* Construction lines: the columns are drawn down the screen, left to
+       right, before anything is placed on them — then they are taken away. */
+    .sysd-construction {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      display: none;
+    }
+    .sysd-motion .sysd-construction {
+      display: block;
+      animation: sysd-strike calc(5 * var(--sysd-beat)) var(--sysd-ease) calc(14 * var(--sysd-beat)) both;
+    }
+    .sysd-construction > .sysd-page { block-size: 100%; grid-template-rows: 100%; }
+    .sysd-construction span {
+      grid-column: auto;
+      transform-origin: top;
+      box-shadow:
+        inset var(--sysd-stroke) 0 0 color-mix(in oklch, var(--sysd-accent) 60%, transparent),
+        inset calc(-1 * var(--sysd-stroke)) 0 0 color-mix(in oklch, var(--sysd-accent) 60%, transparent);
+      animation: sysd-construct calc(6 * var(--sysd-beat)) var(--sysd-ease) calc(var(--i) * var(--sysd-beat) / 3) backwards;
+    }
+    .sysd-construction span:nth-child(n + 5) { display: none; }
+    @media (min-width: 40rem) {
+      .sysd-construction span:nth-child(n + 5) { display: block; }
+      .sysd-construction span:nth-child(n + 9) { display: none; }
+    }
+    @media (min-width: 64rem) {
+      .sysd-construction span:nth-child(n + 9) { display: block; }
+    }
+  }
+}

@@ -1,0 +1,781 @@
+/* =====================================================================
+   sysd — foundations
+   An editorial design system for personal sites and long reads.
+   A few rules (the line, the scale, the grid) and deliberate ways to
+   break them (free columns, drops, sections with their own grid and
+   their own atmosphere).
+
+   Only the values under "Inputs" are chosen by hand.
+   ===================================================================== */
+
+@layer reset, tokens, base, layout, components;
+
+/* --------------------------------------------------------------- reset */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+  img, svg, video { display: block; max-inline-size: 100%; }
+  input, button, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  fieldset { border: 0; padding: 0; min-inline-size: 0; }
+  legend { padding: 0; }
+  ul[role="list"], ol[role="list"] { padding: 0; list-style: none; }
+}
+
+/* -------------------------------------------------------------- tokens */
+@layer tokens {
+  :root {
+    /* Inputs — the only values chosen by hand */
+    --sysd-size: clamp(0.875rem, 0.84rem + 0.12vw, 0.9375rem);     /* 14 → 15px: text, UI, small columns */
+    --sysd-reading-size: clamp(1rem, 0.96rem + 0.12vw, 1.0625rem); /* 16 → 17px: long-form reading */
+    --sysd-leading: 1.55;
+    --sysd-ratio-max: 1.2;                                          /* type scale ratio on wide screens */
+    --sysd-accent-hue: 29;                                          /* OKLCH hue of the accent */
+    --sysd-radius: 4px;
+    --sysd-font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --sysd-font-serif: "Newsreader", ui-serif, Georgia, serif;
+    --sysd-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+    /* The line — the unit space is measured in */
+    --sysd-u: calc(var(--sysd-size) * var(--sysd-leading));
+
+    --sysd-space-q: calc(var(--sysd-u) / 4);
+    --sysd-space-h: calc(var(--sysd-u) / 2);
+    --sysd-space-1: var(--sysd-u);
+    --sysd-space-2: calc(var(--sysd-u) * 2);
+    --sysd-space-3: calc(var(--sysd-u) * 3);
+    --sysd-space-4: calc(var(--sysd-u) * 4);
+    --sysd-space-6: calc(var(--sysd-u) * 6);
+    --sysd-space-8: calc(var(--sysd-u) * 8);
+
+    /* Layout — every section shares the margins and gutter; each chooses its own columns */
+    --sysd-gutter: calc(var(--sysd-u) * 1.5);
+    --sysd-margin: var(--sysd-u);
+    --sysd-max-width: 90rem;
+
+    /* Type scale — small screens use a gentler share of the ratio */
+    --sysd-ratio-k: 0.75;
+    --sysd-ratio: calc(1 + (var(--sysd-ratio-max) - 1) * var(--sysd-ratio-k));
+    --sysd-fs--1: calc(var(--sysd-size) / var(--sysd-ratio));
+    --sysd-fs-0: var(--sysd-size);
+    --sysd-fs-1: calc(var(--sysd-size) * var(--sysd-ratio));
+    --sysd-fs-2: calc(var(--sysd-size) * pow(var(--sysd-ratio), 2));
+    --sysd-fs-3: calc(var(--sysd-size) * pow(var(--sysd-ratio), 3));
+    --sysd-fs-4: calc(var(--sysd-size) * pow(var(--sysd-ratio), 4));
+    --sysd-fs-5: calc(var(--sysd-size) * pow(var(--sysd-ratio), 5));
+    --sysd-fs-6: calc(var(--sysd-size) * pow(var(--sysd-ratio), 6));
+    --sysd-fs-7: calc(var(--sysd-size) * pow(var(--sysd-ratio), 7));
+    --sysd-fs-mono: calc(var(--sysd-size) * 0.8);
+
+    /* Leading tightens as type grows */
+    --sysd-lh--1: 1.5;
+    --sysd-lh-0: var(--sysd-leading);
+    --sysd-lh-1: 1.35;
+    --sysd-lh-2: 1.25;
+    --sysd-lh-3: 1.18;
+    --sysd-lh-4: 1.12;
+    --sysd-lh-5: 1.06;
+    --sysd-lh-6: 1.02;
+    --sysd-lh-7: 0.98;
+
+    /* Controls — touch-sized by default, more compact with a mouse */
+    --sysd-control: 2.75rem;
+    --sysd-control-small: 2.75rem;
+
+    --sysd-stroke: 1px;
+    --sysd-duration: 160ms;
+    --sysd-ease: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Colour — light greys, near-black ink, one bold accent.
+       light-dark() follows color-scheme, which is also how a section
+       switches atmosphere (see .sysd-negative). */
+    color-scheme: light dark;
+    --sysd-paper: light-dark(oklch(0.97 0.003 95), oklch(0.185 0.006 260));
+    --sysd-surface: light-dark(oklch(0.94 0.004 95), oklch(0.225 0.007 260));
+    --sysd-ink: light-dark(oklch(0.23 0.012 260), oklch(0.94 0.005 95));
+    --sysd-ink-muted: light-dark(oklch(0.5 0.012 260), oklch(0.72 0.01 260));
+    --sysd-hairline: light-dark(oklch(0.23 0.012 260 / 0.15), oklch(0.94 0.005 95 / 0.16));
+    --sysd-hairline-strong: light-dark(oklch(0.23 0.012 260 / 0.36), oklch(0.94 0.005 95 / 0.38));
+    --sysd-accent: light-dark(oklch(0.56 0.2 var(--sysd-accent-hue)), oklch(0.7 0.17 var(--sysd-accent-hue)));
+    --sysd-accent-soft: light-dark(oklch(0.92 0.045 var(--sysd-accent-hue)), oklch(0.32 0.07 var(--sysd-accent-hue)));
+    --sysd-on-accent: light-dark(oklch(0.99 0 0), oklch(0.17 0.01 260));
+    --sysd-danger: light-dark(oklch(0.5 0.19 25), oklch(0.72 0.16 25));
+    --sysd-focus: var(--sysd-accent);
+    --sysd-field: light-dark(oklch(0.995 0.001 95), oklch(0.21 0.007 260));
+  }
+
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+
+  @media (pointer: fine) {
+    :root {
+      --sysd-control: 2.375rem;
+      --sysd-control-small: 2rem;
+    }
+  }
+
+  @media (min-width: 40rem) {
+    :root { --sysd-margin: calc(var(--sysd-u) * 2); --sysd-ratio-k: 0.875; }
+  }
+
+  @media (min-width: 64rem) {
+    :root { --sysd-margin: calc(var(--sysd-u) * 3); --sysd-ratio-k: 1; }
+  }
+
+  /* Browsers without pow(): a fixed scale */
+  @supports not (width: calc(1px * pow(2, 2))) {
+    :root {
+      --sysd-fs--1: 0.78rem;
+      --sysd-fs-1: 1.125rem;
+      --sysd-fs-2: 1.35rem;
+      --sysd-fs-3: 1.62rem;
+      --sysd-fs-4: 1.944rem;
+      --sysd-fs-5: 2.333rem;
+      --sysd-fs-6: 2.8rem;
+      --sysd-fs-7: 3.36rem;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------- base */
+@layer base {
+  html {
+    background: var(--sysd-paper);
+    color: var(--sysd-ink);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs-0);
+    line-height: var(--sysd-lh-0);
+    font-optical-sizing: auto;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    hanging-punctuation: first allow-end last;
+  }
+
+  /* Type steps. Headings map onto the scale; classes let any element use it. */
+  h4, h5, h6, .sysd-step-0 { --_fs: var(--sysd-fs-0); --_lh: var(--sysd-lh-0); }
+  .sysd-step--1 { --_fs: var(--sysd-fs--1); --_lh: var(--sysd-lh--1); }
+  h3, .sysd-step-1 { --_fs: var(--sysd-fs-1); --_lh: var(--sysd-lh-1); --_track: -0.005em; }
+  .sysd-step-2 { --_fs: var(--sysd-fs-2); --_lh: var(--sysd-lh-2); --_track: -0.012em; }
+  h2, .sysd-step-3 { --_fs: var(--sysd-fs-3); --_lh: var(--sysd-lh-3); --_track: -0.018em; }
+  .sysd-step-4 { --_fs: var(--sysd-fs-4); --_lh: var(--sysd-lh-4); --_track: -0.024em; }
+  .sysd-step-5 { --_fs: var(--sysd-fs-5); --_lh: var(--sysd-lh-5); --_track: -0.03em; }
+  h1, .sysd-step-6 { --_fs: var(--sysd-fs-6); --_lh: var(--sysd-lh-6); --_track: -0.036em; }
+  .sysd-step-7 { --_fs: var(--sysd-fs-7); --_lh: var(--sysd-lh-7); --_track: -0.042em; }
+
+  :is(h1, h2, h3, h4, h5, h6, [class*="sysd-step-"]) {
+    font-size: var(--_fs);
+    line-height: var(--_lh);
+    letter-spacing: var(--_track, 0);
+  }
+
+  h1, h2, h3 { font-weight: 500; text-wrap: balance; }
+  h4, h5, h6 { font-weight: 600; }
+
+  /* The second voice: emphasis in a heading switches to the serif italic */
+  :is(h1, h2, h3, [class*="sysd-step-"]) em,
+  .sysd-serif { font-family: var(--sysd-font-serif); font-weight: 400; letter-spacing: calc(var(--_track, 0) * 0.6); }
+  .sysd-italic { font-style: italic; }
+
+  p, li, figcaption, blockquote { text-wrap: pretty; hyphens: auto; }
+  :is(.sysd-step-1, .sysd-step-2, .sysd-step-3, .sysd-step-4, .sysd-step-5, .sysd-step-6, .sysd-step-7, h1, h2, h3),
+  :is(.sysd-step-1, .sysd-step-2, .sysd-step-3, .sysd-step-4, .sysd-step-5, .sysd-step-6, .sysd-step-7, h1, h2, h3) * {
+    hyphens: manual;
+  }
+  strong, b { font-weight: 600; }
+
+  a {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: max(1px, 0.06em);
+    text-underline-offset: 0.22em;
+    text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+    transition: text-decoration-color var(--sysd-duration) var(--sysd-ease), color var(--sysd-duration) var(--sysd-ease);
+  }
+  a:hover { text-decoration-color: var(--sysd-accent); }
+
+  :focus-visible { outline: 2px solid var(--sysd-focus); outline-offset: 2px; }
+  ::selection { background: var(--sysd-accent); color: var(--sysd-on-accent); }
+
+  code, kbd, samp { font-family: var(--sysd-font-mono); font-size: 0.88em; }
+  kbd {
+    padding-inline: 0.35em;
+    border-radius: 3px;
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong);
+  }
+
+  hr { border: 0; border-block-start: var(--sysd-stroke) solid var(--sysd-hairline); }
+
+  /* Text roles */
+  .sysd-lead { font-size: var(--sysd-fs-1); line-height: var(--sysd-lh-1); color: var(--sysd-ink-muted); }
+  .sysd-label { font-size: var(--sysd-fs--1); line-height: var(--sysd-lh--1); color: var(--sysd-ink-muted); }
+  .sysd-muted { color: var(--sysd-ink-muted); }
+  .sysd-accent { color: var(--sysd-accent); }
+  .sysd-num { font-variant-numeric: tabular-nums; }
+
+  /* The index: a small mono label that names and numbers things */
+  .sysd-index {
+    font-family: var(--sysd-font-mono);
+    font-size: var(--sysd-fs-mono);
+    line-height: 1.5;
+    letter-spacing: 0.03em;
+    color: var(--sysd-ink-muted);
+  }
+
+  /* A note: a hairline and a few words of mono beneath it */
+  .sysd-note {
+    padding-block-start: var(--sysd-space-h);
+    border-block-start: var(--sysd-stroke) solid var(--sysd-hairline-strong);
+    font-family: var(--sysd-font-mono);
+    font-size: var(--sysd-fs-mono);
+    line-height: 1.6;
+    color: var(--sysd-ink-muted);
+  }
+
+  .sysd-quote {
+    font-family: var(--sysd-font-serif);
+    font-style: italic;
+    font-size: var(--sysd-fs-3);
+    line-height: 1.15;
+    letter-spacing: -0.012em;
+  }
+
+  /* Long-form reading: the serif, a little larger, a little looser */
+  .sysd-reading {
+    font-family: var(--sysd-font-serif);
+    font-size: var(--sysd-reading-size);
+    line-height: 1.62;
+    orphans: 3;
+    widows: 3;
+  }
+  .sysd-reading p + p { margin-block-start: 0.75em; }
+  .sysd-reading :is(h3, h4) {
+    margin-block: 1.4em 0.35em;
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs-0);
+    line-height: var(--sysd-lh-0);
+    font-weight: 600;
+    break-after: avoid;
+  }
+  .sysd-reading > :first-child { margin-block-start: 0; }
+
+  .sysd-dropcap::first-letter {
+    float: inline-start;
+    font-size: 3.4em;
+    line-height: 0.85;
+    padding-block-start: 0.06em;
+    padding-inline-end: 0.08em;
+  }
+  @supports (initial-letter: 3) {
+    .sysd-dropcap::first-letter { float: none; initial-letter: 3; font-size: inherit; padding: 0 0.12em 0 0; }
+  }
+
+  .sysd-flow > * + * { margin-block-start: var(--sysd-space-1); }
+  .sysd-flow-tight > * + * { margin-block-start: var(--sysd-space-h); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+  }
+}
+
+/* -------------------------------------------------------------- layout */
+@layer layout {
+  /* A section is a page: full width (so it can carry its own atmosphere),
+     with its content held between the shared margins. */
+  .sysd-section {
+    padding-block: var(--sysd-space-2) var(--sysd-space-6);
+    background: var(--sysd-paper);
+    color: var(--sysd-ink);
+  }
+  .sysd-section > * {
+    margin-inline: max(var(--sysd-margin), (100% - var(--sysd-max-width)) / 2);
+  }
+
+  /* The section's header line: index on the left, a description on the right */
+  .sysd-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--sysd-space-q) var(--sysd-space-1);
+    margin-block-end: var(--sysd-space-2);
+    font-family: var(--sysd-font-mono);
+    font-size: var(--sysd-fs-mono);
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sysd-ink-muted);
+  }
+  .sysd-section + .sysd-section .sysd-meta {
+    padding-block-start: var(--sysd-space-1);
+    border-block-start: var(--sysd-stroke) solid var(--sysd-hairline);
+  }
+
+  /* The grid. Each section picks its own columns per breakpoint with
+     --cols-sm / --cols-md / --cols-lg, or any track list with
+     --template-sm / --template-md / --template-lg. */
+  .sysd-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: var(--template-sm, repeat(var(--cols-sm, 4), minmax(0, 1fr)));
+    column-gap: var(--sysd-gutter);
+    row-gap: var(--sysd-row-gap, var(--sysd-space-2));
+    align-items: start;
+  }
+
+  /* Placement: --at and --span per breakpoint (mobile first: -md falls back
+     to the small value, -lg to -md). --drop lowers an item by whole lines
+     on wider screens — the free-floating column. */
+  :where(.sysd-grid > *) {
+    --at: initial; --at-md: initial; --at-lg: initial;
+    --span: initial; --span-md: initial; --span-lg: initial;
+    --drop: initial; --drop-md: initial; --drop-lg: initial;
+  }
+  .sysd-grid > * {
+    grid-column: var(--at, auto) / span var(--span, var(--_span, 1));
+    min-inline-size: 0;
+  }
+
+  @media (min-width: 40rem) {
+    .sysd-grid { grid-template-columns: var(--template-md, repeat(var(--cols-md, 8), minmax(0, 1fr))); }
+    .sysd-grid > * {
+      grid-column:
+        var(--at-md, var(--at, auto)) /
+        span var(--span-md, var(--span, var(--_span-md, 1)));
+      margin-block-start: calc(var(--drop-md, var(--drop, 0)) * var(--sysd-u));
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .sysd-grid { grid-template-columns: var(--template-lg, repeat(var(--cols-lg, 12), minmax(0, 1fr))); }
+    .sysd-grid > * {
+      grid-column:
+        var(--at-lg, var(--at-md, var(--at, auto))) /
+        span var(--span-lg, var(--span-md, var(--span, var(--_span-lg, 1))));
+      margin-block-start: calc(var(--drop-lg, var(--drop-md, var(--drop, 0))) * var(--sysd-u));
+    }
+  }
+
+  /* Named grids. By default an item fills one track, except in the
+     twelve, where it fills the row until told otherwise. */
+  .sysd-grid--12 {
+    --cols-sm: 4; --cols-md: 8; --cols-lg: 12;
+    --_span: 4; --_span-md: 8; --_span-lg: 12;
+  }
+  .sysd-grid--6 {
+    --cols-sm: 2; --cols-md: 6; --cols-lg: 6;
+    --_span: 1; --_span-md: 2; --_span-lg: 1;
+  }
+  .sysd-grid--5 {
+    --cols-sm: 1; --cols-md: 5; --cols-lg: 5;
+  }
+  .sysd-grid--thirds {
+    --cols-sm: 1; --cols-md: 2; --cols-lg: 3;
+  }
+  .sysd-grid--free {
+    --template-sm: minmax(0, 1fr);
+    --template-md: repeat(2, minmax(0, 1fr));
+    --template-lg: 1.15fr 0.85fr 0.9fr;
+  }
+
+  /* Text that flows into as many columns as fit, never narrower than --column-width */
+  .sysd-columns {
+    columns: var(--column-width, 17rem) var(--column-max, 3);
+    column-gap: var(--sysd-gutter);
+  }
+  .sysd-columns > * { break-inside: avoid-column; }
+  .sysd-columns > p { break-inside: auto; }
+
+  /* Grid guides, drawn on demand inside any .sysd-grid */
+  .sysd-grid > .sysd-guides {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    grid-column: 1 / -1;
+    grid-row: auto;
+    display: grid;
+    grid-template-columns: inherit;
+    column-gap: inherit;
+    margin: 0;
+    pointer-events: none;
+  }
+
+  .sysd-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sysd-space-h);
+  }
+}
+
+/* ---------------------------------------------------------- components */
+@layer components {
+  /* Button */
+  .sysd-button {
+    --_bg: var(--sysd-ink);
+    --_fg: var(--sysd-paper);
+    --_ring: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    min-block-size: var(--sysd-control);
+    padding-inline: 1.1em;
+    border: 0;
+    border-radius: var(--sysd-radius);
+    background: var(--_bg);
+    color: var(--_fg);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--_ring);
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs-0);
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    touch-action: manipulation;
+    user-select: none;
+    transition:
+      background-color var(--sysd-duration) var(--sysd-ease),
+      color var(--sysd-duration) var(--sysd-ease),
+      box-shadow var(--sysd-duration) var(--sysd-ease);
+  }
+  .sysd-button:hover { --_bg: color-mix(in oklch, var(--sysd-ink) 84%, var(--sysd-paper)); }
+  .sysd-button:active { translate: 0 1px; }
+
+  .sysd-button--accent { --_bg: var(--sysd-accent); --_fg: var(--sysd-on-accent); }
+  .sysd-button--accent:hover { --_bg: color-mix(in oklch, var(--sysd-accent) 86%, var(--sysd-ink)); }
+
+  .sysd-button--outline { --_bg: transparent; --_fg: var(--sysd-ink); --_ring: var(--sysd-hairline-strong); }
+  .sysd-button--outline:hover { --_bg: transparent; --_ring: var(--sysd-ink); }
+
+  .sysd-button--quiet {
+    --_bg: transparent;
+    --_fg: var(--sysd-ink);
+    padding-inline: 0.25em;
+    text-decoration: underline;
+    text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+    text-underline-offset: 0.25em;
+  }
+  .sysd-button--quiet:hover { --_bg: transparent; text-decoration-color: var(--sysd-accent); }
+
+  .sysd-button--small { min-block-size: var(--sysd-control-small); padding-inline: 0.8em; font-size: var(--sysd-fs--1); }
+
+  .sysd-button:disabled,
+  .sysd-button[aria-disabled="true"] { opacity: 0.45; cursor: not-allowed; translate: none; }
+
+  /* Field */
+  .sysd-field { display: grid; align-content: start; gap: var(--sysd-space-q); }
+  .sysd-field__label { font-size: var(--sysd-fs--1); font-weight: 500; }
+  .sysd-field__hint { font-size: var(--sysd-fs--1); color: var(--sysd-ink-muted); }
+  .sysd-field__hint--error { color: var(--sysd-danger); }
+
+  .sysd-input,
+  .sysd-select,
+  .sysd-textarea {
+    inline-size: 100%;
+    min-inline-size: 0;
+    min-block-size: var(--sysd-control);
+    padding-inline: 0.75em;
+    border: 0;
+    border-radius: var(--sysd-radius);
+    background-color: var(--sysd-field);
+    color: var(--sysd-ink);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong);
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs-0);
+    line-height: 1.4;
+    transition: box-shadow var(--sysd-duration) var(--sysd-ease);
+  }
+  /* Touch keyboards zoom into anything smaller than 16px */
+  @media (pointer: coarse) {
+    .sysd-input, .sysd-select, .sysd-textarea { font-size: max(1rem, var(--sysd-fs-0)); }
+  }
+  .sysd-input:hover,
+  .sysd-select:hover,
+  .sysd-textarea:hover { box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-ink); }
+  .sysd-input::placeholder,
+  .sysd-textarea::placeholder { color: var(--sysd-ink-muted); opacity: 1; }
+  :is(.sysd-input, .sysd-select, .sysd-textarea)[aria-invalid="true"] {
+    box-shadow: inset 0 0 0 1.5px var(--sysd-danger);
+  }
+  :is(.sysd-input, .sysd-select, .sysd-textarea):disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .sysd-textarea {
+    min-block-size: 6.5rem;
+    padding-block: 0.6em;
+    resize: vertical;
+    field-sizing: content;
+  }
+
+  /* Select: native, with a drawn chevron … */
+  .sysd-select {
+    appearance: none;
+    padding-inline-end: 2.25em;
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.15em) 52%,
+      calc(100% - 1.15em + 5px) 52%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  /* … and, where the browser supports it, fully styled */
+  @supports (appearance: base-select) {
+    .sysd-select,
+    .sysd-select::picker(select) { appearance: base-select; }
+    .sysd-select {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline-end: 0.75em;
+      background-image: none;
+    }
+    .sysd-select::picker-icon {
+      color: var(--sysd-ink-muted);
+      transition: rotate var(--sysd-duration) var(--sysd-ease);
+    }
+    .sysd-select:open::picker-icon { rotate: 180deg; }
+    .sysd-select::picker(select) {
+      margin-block: 4px;
+      padding-block: 4px;
+      border: 0;
+      border-radius: var(--sysd-radius);
+      background: var(--sysd-paper);
+      color: var(--sysd-ink);
+      box-shadow:
+        inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong),
+        0 8px 28px oklch(0 0 0 / 0.12);
+    }
+    .sysd-select option {
+      min-block-size: var(--sysd-control-small);
+      padding-inline: 0.75em;
+      gap: 0.5em;
+    }
+    .sysd-select option:is(:hover, :focus-visible) { background: var(--sysd-surface); outline: 0; }
+    .sysd-select option::checkmark { color: var(--sysd-accent); }
+  }
+
+  /* Checkbox and radio: native controls, tinted */
+  .sysd-check {
+    display: flex;
+    align-items: center;
+    gap: 0.6em;
+    min-block-size: var(--sysd-control-small);
+    cursor: pointer;
+  }
+  .sysd-check input {
+    flex: none;
+    inline-size: 1.05em;
+    block-size: 1.05em;
+    margin: 0;
+    accent-color: var(--sysd-accent);
+    cursor: pointer;
+  }
+  .sysd-fieldset > legend { margin-block-end: var(--sysd-space-q); font-size: var(--sysd-fs--1); font-weight: 500; }
+
+  /* An input and its button on one line */
+  .sysd-inline { display: flex; flex-wrap: wrap; gap: var(--sysd-space-q); }
+  .sysd-inline > .sysd-input { flex: 1 1 12rem; inline-size: auto; }
+
+  /* Tag */
+  .sysd-tags { display: flex; flex-wrap: wrap; gap: 0.4em; }
+  .sysd-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2em 0.7em;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong);
+    font-size: var(--sysd-fs--1);
+    line-height: 1.5;
+    color: var(--sysd-ink-muted);
+    text-decoration: none;
+    transition: color var(--sysd-duration) var(--sysd-ease), box-shadow var(--sysd-duration) var(--sysd-ease);
+  }
+  a.sysd-tag:hover { color: var(--sysd-ink); box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-ink); }
+  .sysd-tag--accent { background: var(--sysd-accent-soft); color: var(--sysd-ink); box-shadow: none; }
+
+  /* A list of entries: date and title, divided by hairlines */
+  .sysd-entries { padding: 0; list-style: none; }
+  .sysd-entries > li {
+    display: grid;
+    grid-template-columns: 5.5em minmax(0, 1fr);
+    gap: var(--sysd-space-h);
+    align-items: baseline;
+    padding-block: var(--sysd-space-h);
+    border-block-start: var(--sysd-stroke) solid var(--sysd-hairline);
+  }
+  .sysd-entries > li:last-child { border-block-end: var(--sysd-stroke) solid var(--sysd-hairline); }
+  .sysd-entries time { font-family: var(--sysd-font-mono); font-size: var(--sysd-fs-mono); color: var(--sysd-ink-muted); }
+  .sysd-entries a { text-decoration: none; }
+  .sysd-entries a:hover { color: var(--sysd-accent); }
+
+  /* Card: a hairline above, no box */
+  .sysd-card {
+    display: grid;
+    align-content: start;
+    gap: var(--sysd-space-q);
+    padding-block-start: var(--sysd-space-h);
+    border-block-start: var(--sysd-stroke) solid var(--sysd-hairline-strong);
+  }
+
+  /* A change of atmosphere: the section flips to the opposite scheme.
+     Every colour is light-dark(), so nothing else needs redefining. */
+  .sysd-negative { color-scheme: dark; }
+  :root[data-theme="dark"] .sysd-negative { color-scheme: light; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .sysd-negative { color-scheme: light; }
+  }
+
+  /* A bold splash: the section takes the accent as its paper */
+  .sysd-splash {
+    --sysd-paper: var(--sysd-accent);
+    --sysd-ink: var(--sysd-on-accent);
+    --sysd-ink-muted: color-mix(in oklch, var(--sysd-on-accent) 78%, var(--sysd-accent));
+    --sysd-hairline: color-mix(in oklch, var(--sysd-on-accent) 30%, transparent);
+    --sysd-hairline-strong: color-mix(in oklch, var(--sysd-on-accent) 55%, transparent);
+  }
+
+  /* Prose: a long text laid into a twelve-column grid. It spans the full
+     grid and places its children on three lines: the text column, the
+     note column beside it, and a wide column for figures and pull quotes.
+     The columns to the left of the text stay open. */
+  .sysd-prose {
+    --prose-text: 1 / -1;
+    --prose-note: 1 / -1;
+    --prose-wide: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-content: start;
+    font-family: var(--sysd-font-serif);
+    font-size: var(--sysd-reading-size);
+    line-height: 1.65;
+    counter-reset: sysd-note;
+  }
+  @media (min-width: 40rem) {
+    .sysd-prose { --prose-text: 1 / span 6; --prose-note: 7 / -1; --prose-wide: 1 / -1; }
+  }
+  @media (min-width: 64rem) {
+    .sysd-prose { --prose-text: 4 / span 6; --prose-note: 10 / -1; --prose-wide: 4 / -1; }
+  }
+
+  .sysd-prose > * { grid-column: var(--prose-text); }
+  .sysd-prose > .sysd-wide { grid-column: var(--prose-wide); }
+  .sysd-prose > * + * { margin-block-start: 0.85em; }
+
+  .sysd-prose > h2 {
+    margin-block-start: 2.4em;
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs-2);
+    line-height: var(--sysd-lh-2);
+    font-weight: 500;
+  }
+  .sysd-prose > h3 {
+    margin-block-start: 1.8em;
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs-0);
+    line-height: var(--sysd-lh-0);
+    font-weight: 600;
+  }
+  .sysd-prose > :is(h2, h3) + * { margin-block-start: 0.5em; }
+  .sysd-prose :is(h2, h3) { scroll-margin-block-start: var(--sysd-space-2); }
+
+  .sysd-prose :is(ul, ol) { padding-inline-start: 1.25em; }
+  .sysd-prose li + li { margin-block-start: 0.35em; }
+  .sysd-prose li::marker { color: var(--sysd-accent); }
+  .sysd-prose ol li::marker { font-family: var(--sysd-font-mono); font-size: 0.8em; }
+
+  .sysd-prose blockquote {
+    padding-inline-start: 1em;
+    border-inline-start: 2px solid var(--sysd-accent);
+    font-style: italic;
+  }
+  .sysd-prose blockquote footer {
+    margin-block-start: 0.4em;
+    font-family: var(--sysd-font-mono);
+    font-size: var(--sysd-fs-mono);
+    font-style: normal;
+    color: var(--sysd-ink-muted);
+  }
+
+  .sysd-prose figure { margin: 0; }
+  .sysd-prose figcaption {
+    margin-block-start: var(--sysd-space-h);
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs--1);
+    line-height: var(--sysd-lh--1);
+    color: var(--sysd-ink-muted);
+  }
+
+  /* A section break: three asterisms in the text column */
+  .sysd-prose > hr {
+    margin-block: 2em;
+    border: 0;
+    text-align: center;
+    color: var(--sysd-ink-muted);
+  }
+  .sysd-prose > hr::before { content: "⁂"; }
+
+  /* The end of the text, marked in the accent */
+  .sysd-prose .sysd-end::after {
+    content: "";
+    display: inline-block;
+    inline-size: 0.55em;
+    block-size: 0.55em;
+    margin-inline-start: 0.35em;
+    background: var(--sysd-accent);
+  }
+
+  /* A pull quote breaks out into the wide column */
+  .sysd-prose > .sysd-pull {
+    margin-block: 1.6em;
+    font-size: var(--sysd-fs-4);
+    line-height: var(--sysd-lh-4);
+    font-style: italic;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+    hyphens: manual;
+  }
+
+  /* Margin notes: wrap a paragraph and its note in .sysd-annotated and the
+     note sits beside the paragraph; on a phone it follows it. */
+  .sysd-prose > .sysd-annotated {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: start;
+  }
+  .sysd-annotated > * { grid-column: var(--prose-text); }
+  .sysd-annotated > .sysd-wide { grid-column: var(--prose-wide); }
+  .sysd-annotated > .sysd-sidenote {
+    grid-column: var(--prose-note);
+    margin-block-start: 0.75em;
+    padding-inline-start: 0.75em;
+    border-inline-start: var(--sysd-stroke) solid var(--sysd-hairline-strong);
+  }
+  @media (min-width: 40rem) {
+    .sysd-annotated > * { grid-row: 1; }
+    .sysd-annotated > .sysd-sidenote { margin-block-start: 0.3em; padding-inline-start: 0; border: 0; }
+  }
+
+  .sysd-sidenote {
+    font-family: var(--sysd-font-sans);
+    font-size: var(--sysd-fs--1);
+    line-height: var(--sysd-lh--1);
+    color: var(--sysd-ink-muted);
+  }
+  .sysd-sidenote::before,
+  .sysd-ref::after {
+    font-family: var(--sysd-font-mono);
+    font-size: 0.75em;
+    color: var(--sysd-accent);
+  }
+  .sysd-ref { counter-increment: sysd-note; }
+  .sysd-ref::after { content: counter(sysd-note); vertical-align: super; line-height: 0; margin-inline-start: 0.1em; }
+  .sysd-sidenote::before { content: counter(sysd-note) "  "; white-space: pre; }
+}

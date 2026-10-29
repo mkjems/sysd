@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sysd — foundations</title>
+  <meta name="description" content="Foundations prototype for sysd, an editorial design system for personal sites and long reads.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Instrument+Serif:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="sysd.css">
+  <link rel="stylesheet" href="prototype.css">
+  <script src="prototype.js" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="wordmark" href="#top" id="top">sysd.</a>
+  <span class="sysd-label site-header__caption">Notes on type, grids &amp; the web</span>
+  <nav class="site-nav" aria-label="Sections">
+    <a href="article.html">Article</a>
+    <a href="#grids">Grids</a>
+    <a href="#type">Type</a>
+    <a href="#reading">Reading</a>
+    <a href="#colour">Colour</a>
+    <a href="#forms">Forms</a>
+    <a href="#atmosphere">Atmosphere</a>
+  </nav>
+  <div class="sysd-actions site-tools">
+    <button class="sysd-button sysd-button--outline sysd-button--small" type="button" data-grid-toggle aria-pressed="false">Grid <kbd>G</kbd></button>
+    <button class="sysd-button sysd-button--small" type="button" popovertarget="controls">Adjust</button>
+  </div>
+</header>
+
+<main>
+
+  <!-- Hero: free-floating columns -->
+  <section class="sysd-section hero" aria-labelledby="hero-title">
+    <div class="sysd-meta"><span>sysd / A personal journal</span><span>Free columns · Asymmetric rhythm</span></div>
+
+    <div class="sysd-grid sysd-grid--free">
+      <div class="sysd-flow">
+        <p class="sysd-index">A / A personal practice</p>
+        <h1 class="sysd-step-7" id="hero-title">Set slowly,<br><em>read gladly.</em></h1>
+        <p class="sysd-lead">A design system for personal sites and long reads. A few strict rules — the line, the scale, the grid — and an open invitation to break them.</p>
+        <div class="sysd-actions">
+          <a class="sysd-button" href="article.html">Read the journal ↗</a>
+          <a class="sysd-button sysd-button--outline" href="#atmosphere">About</a>
+          <a class="sysd-button sysd-button--quiet" href="#forms">RSS</a>
+        </div>
+      </div>
+
+      <div class="sysd-flow" style="--drop: 5">
+        <p class="sysd-index">B / Latest entries</p>
+        <ul class="sysd-entries" role="list">
+          <li><time datetime="2026-10-21">21 Oct</time><a href="article.html">On leaving space empty</a></li>
+          <li><time datetime="2026-10-09">09 Oct</time><a href="#grids">A grid for every page</a></li>
+          <li><time datetime="2026-09-27">27 Sep</time><a href="#type">The italic as a second voice</a></li>
+          <li><time datetime="2026-09-12">12 Sep</time><a href="#atmosphere">Colour, used sparingly</a></li>
+        </ul>
+        <div class="sysd-tags">
+          <a class="sysd-tag sysd-tag--accent" href="#type">Typography</a>
+          <a class="sysd-tag" href="#grids">Grids</a>
+          <a class="sysd-tag" href="#reading">Essays</a>
+          <a class="sysd-tag" href="#colour">Colour</a>
+        </div>
+      </div>
+
+      <div class="sysd-flow" style="--drop: 2; --span-md: 2; --span-lg: 1">
+        <p class="sysd-index">C / Letters</p>
+        <p class="sysd-serif sysd-step-2">One letter a month, about making things that are quiet and exact.</p>
+        <form class="sysd-field" onsubmit="return false">
+          <label class="sysd-field__label" for="hero-email">Email address</label>
+          <div class="sysd-inline">
+            <input class="sysd-input" id="hero-email" type="email" placeholder="you@example.com" autocomplete="email">
+            <button class="sysd-button sysd-button--accent" type="submit">Subscribe</button>
+          </div>
+          <p class="sysd-field__hint">No tracking. Leave whenever you like.</p>
+        </form>
+        <p class="sysd-note">sysd — foundations<br>prototype 0.2</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 Grids -->
+  <section class="sysd-section" id="grids" aria-labelledby="grids-title">
+    <div class="sysd-meta"><span>01 / Each section is a page</span><span>Its own grid · Shared margins</span></div>
+
+    <div class="sysd-grid sysd-grid--12">
+      <h2 id="grids-title" style="--span-lg: 3">Every section sets <em>its own grid.</em></h2>
+      <div class="sysd-flow" style="--span-md: 4; --at-lg: 4; --span-lg: 4">
+        <p>Not everything is twelve columns. A section chooses the grid that suits its content: twelve for careful placement, six or five for collections, thirds for reading, or free columns of different widths.</p>
+        <p>What every section shares is the edge of the page and the gutter, so the site still reads as one publication.</p>
+        <p class="sysd-muted">Press <kbd>G</kbd> to see each section’s columns.</p>
+      </div>
+
+      <ul class="grid-samples" role="list" style="--at-md: 5; --span-md: 4; --at-lg: 9; --span-lg: 4; --drop-lg: 0">
+        <li><span class="sysd-index">Twelve</span><div class="grid-sample" style="--t: repeat(12, 1fr)"><i style="grid-column: 3 / span 5"></i><i style="grid-column: 9 / span 2"></i></div></li>
+        <li><span class="sysd-index">Six</span><div class="grid-sample" style="--t: repeat(6, 1fr)"><i></i><i></i><i></i><i></i><i></i><i></i></div></li>
+        <li><span class="sysd-index">Five</span><div class="grid-sample" style="--t: repeat(5, 1fr)"><i></i><i></i><i></i><i></i><i></i></div></li>
+        <li><span class="sysd-index">Thirds</span><div class="grid-sample" style="--t: repeat(3, 1fr)"><i></i><i></i><i></i></div></li>
+        <li><span class="sysd-index">Free</span><div class="grid-sample" style="--t: 1.15fr 0.85fr 0.9fr"><i></i><i style="margin-top: 12px"></i><i style="margin-top: 5px"></i></div></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 02 Type -->
+  <section class="sysd-section" id="type" aria-labelledby="type-title">
+    <div class="sysd-meta"><span>02 / Type</span><span>Twelve columns · Two voices</span></div>
+
+    <div class="sysd-grid sysd-grid--12">
+      <h2 id="type-title" style="--span-lg: 3">One scale, <em>two voices.</em></h2>
+      <div class="specimen" style="--span-md: 5; --at-lg: 4; --span-lg: 6">
+        <p class="sysd-index">The scale</p>
+        <div class="specimen__row"><p class="sysd-index sysd-num">7 · <span data-readout="fs-7"></span></p><p class="sysd-step-7">Proportion</p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">6 · <span data-readout="fs-6"></span></p><p class="sysd-step-6">A quiet <em>authority</em></p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">5 · <span data-readout="fs-5"></span></p><p class="sysd-step-5">Rhythm and tension</p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">4 · <span data-readout="fs-4"></span></p><p class="sysd-step-4">Every space has <em>a reason</em></p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">3 · <span data-readout="fs-3"></span></p><p class="sysd-step-3">Headings come from the same scale</p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">2 · <span data-readout="fs-2"></span></p><p class="sysd-step-2">A standfirst introduces what follows</p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">1 · <span data-readout="fs-1"></span></p><p class="sysd-step-1">Subheadings and leads sit one step above the text</p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">0 · <span data-readout="fs-0"></span></p><p>Body text is small and calm. It works in narrow columns, next to other columns, and it leaves the large sizes their drama.</p></div>
+        <div class="specimen__row"><p class="sysd-index sysd-num">−1 · <span data-readout="fs--1"></span></p><p class="sysd-step--1">Captions, labels and hints.</p></div>
+      </div>
+
+      <div class="sysd-flow" style="--at-md: 6; --span-md: 3; --at-lg: 10; --span-lg: 3; --drop-md: 2; --drop-lg: 8">
+        <p class="sysd-index">The second voice</p>
+        <p class="sysd-quote">“Emphasis in a heading changes voice, not just weight.”</p>
+        <p>Inside any heading, <code>&lt;em&gt;</code> switches to the serif italic. It is the system’s one poetic gesture, and it works best used once per page.</p>
+        <p class="sysd-note" data-fonts>Sans — Inter<br>Serif — Newsreader<br>Mono — IBM Plex Mono</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 Reading -->
+  <section class="sysd-section" id="reading" aria-labelledby="reading-title">
+    <div class="sysd-meta"><span>03 / Reading</span><span>Columns as wide as the text needs</span></div>
+
+    <div class="sysd-grid sysd-grid--12">
+      <p class="sysd-index" style="--span-lg: 3">On design systems / An essay</p>
+      <div class="sysd-flow-tight" style="--span-md: 6; --at-lg: 4; --span-lg: 7">
+        <h2 id="reading-title" class="sysd-step-5">A common language, <em>with a personal accent.</em></h2>
+        <p class="sysd-lead">Good foundations let different pages feel related while giving each one room to develop its own character.</p>
+      </div>
+
+      <div class="sysd-reading sysd-columns" style="--at-lg: 4; --span-lg: 9">
+        <p class="sysd-dropcap">Every page begins with decisions. A typeface, a colour, the distance between a heading and the words beneath it. Individually these choices seem small. Together they establish how a place feels, long before anyone has read a word.</p>
+        <p>When those decisions are made with care and used consistently, they become a language. Readers learn what to expect. A familiar rhythm makes a new page easier to understand, and frees attention for what the page is actually saying.</p>
+        <h3>Rules worth breaking</h3>
+        <p>A system that only enforces is a template. The interesting pages are the ones where a rule is visibly bent: a column that starts lower than its neighbours, a heading that changes voice halfway through, a section that turns the lights off.</p>
+        <p>Those gestures only read as intentional because everything around them is consistent. Break one rule at a time, and break it clearly.</p>
+        <h3>Columns that find their own width</h3>
+        <p>This text is not placed on the grid. It asks for columns no narrower than a comfortable measure and lets the browser decide how many fit: three on a wide screen, two on a tablet, one on a phone. No breakpoints were written for it.</p>
+        <p>That is the modern part of an old idea. The grid is no longer drawn once for a fixed page; it is described as a set of relationships that hold at any size.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 Colour and space -->
+  <section class="sysd-section" id="colour" aria-labelledby="colour-title">
+    <div class="sysd-meta"><span>04 / Colour &amp; space</span><span>Five columns</span></div>
+
+    <div class="sysd-grid sysd-grid--5">
+      <div class="sysd-flow" style="--span-md: 3; --span-lg: 2">
+        <h2 id="colour-title">Light greys, <em>one bold splash.</em></h2>
+        <p>Paper, ink and a single accent, defined in OKLCH so changing the accent’s hue keeps its strength. Dark mode — and any dark section — is the same palette with paper and ink swapped.</p>
+      </div>
+      <ul class="swatches" role="list" style="--span-md: 5; --at-lg: 3; --span-lg: 3; --drop-lg: 2">
+        <li><i style="--c: var(--sysd-paper)"></i><span class="sysd-index">Paper</span></li>
+        <li><i style="--c: var(--sysd-surface)"></i><span class="sysd-index">Surface</span></li>
+        <li><i style="--c: var(--sysd-ink)"></i><span class="sysd-index">Ink</span></li>
+        <li><i style="--c: var(--sysd-ink-muted)"></i><span class="sysd-index">Muted</span></li>
+        <li><i style="--c: var(--sysd-accent-soft)"></i><span class="sysd-index">Accent soft</span></li>
+        <li><i style="--c: var(--sysd-accent)"></i><span class="sysd-index">Accent</span></li>
+      </ul>
+
+      <ul class="space-scale" role="list" style="--span-md: 5; --span-lg: 5">
+        <li style="--n: 0.25"><i></i><span class="sysd-index">q</span></li>
+        <li style="--n: 0.5"><i></i><span class="sysd-index">h</span></li>
+        <li style="--n: 1"><i></i><span class="sysd-index">1</span></li>
+        <li style="--n: 2"><i></i><span class="sysd-index">2</span></li>
+        <li style="--n: 3"><i></i><span class="sysd-index">3</span></li>
+        <li style="--n: 4"><i></i><span class="sysd-index">4</span></li>
+        <li style="--n: 6"><i></i><span class="sysd-index">6</span></li>
+        <li style="--n: 8"><i></i><span class="sysd-index">8 lines</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 05 Forms -->
+  <section class="sysd-section" id="forms" aria-labelledby="forms-title">
+    <div class="sysd-meta"><span>05 / Forms &amp; actions</span><span>Free columns · Native controls</span></div>
+
+    <form class="sysd-grid sysd-grid--free" onsubmit="return false">
+      <div class="sysd-flow">
+        <p class="sysd-index">A / The essentials</p>
+        <h2 id="forms-title" class="sysd-step-4">Start a <em>conversation.</em></h2>
+        <div class="sysd-field">
+          <label class="sysd-field__label" for="f-name">Your name</label>
+          <input class="sysd-input" id="f-name" autocomplete="name" placeholder="Alex Jensen">
+        </div>
+        <div class="sysd-field">
+          <label class="sysd-field__label" for="f-email">Email address</label>
+          <input class="sysd-input" id="f-email" type="email" value="alex@" aria-invalid="true" aria-describedby="f-email-err">
+          <p class="sysd-field__hint sysd-field__hint--error" id="f-email-err">Enter a complete email address.</p>
+        </div>
+      </div>
+
+      <div class="sysd-flow" style="--drop: 4">
+        <p class="sysd-index">B / A little context</p>
+        <div class="sysd-field">
+          <label class="sysd-field__label" for="f-type">Project type</label>
+          <select class="sysd-select" id="f-type">
+            <option>A personal site</option>
+            <option>An essay or article</option>
+            <option>A visual identity</option>
+            <option>Something else</option>
+          </select>
+        </div>
+        <div class="sysd-field">
+          <label class="sysd-field__label" for="f-msg">What are you thinking?</label>
+          <textarea class="sysd-textarea" id="f-msg" placeholder="A few words about the idea…"></textarea>
+          <p class="sysd-field__hint">The field grows as you write.</p>
+        </div>
+      </div>
+
+      <div class="sysd-flow" style="--drop: 1; --span-md: 2; --span-lg: 1">
+        <p class="sysd-index">C / Preferences &amp; actions</p>
+        <fieldset class="sysd-fieldset">
+          <legend>How should I reply?</legend>
+          <label class="sysd-check"><input type="radio" name="reply" checked> By email</label>
+          <label class="sysd-check"><input type="radio" name="reply"> Arrange a call</label>
+        </fieldset>
+        <label class="sysd-check"><input type="checkbox"> Send me the monthly letter</label>
+        <div class="sysd-actions">
+          <button class="sysd-button" type="submit">Send ↗</button>
+          <button class="sysd-button sysd-button--accent" type="button">Accent</button>
+          <button class="sysd-button sysd-button--outline" type="reset">Clear</button>
+          <button class="sysd-button sysd-button--quiet" type="button">Save for later</button>
+        </div>
+        <div class="sysd-actions">
+          <button class="sysd-button sysd-button--small" type="button">Small</button>
+          <button class="sysd-button sysd-button--small sysd-button--outline" type="button">Small outline</button>
+          <button class="sysd-button sysd-button--small" type="button" disabled>Unavailable</button>
+        </div>
+      </div>
+    </form>
+  </section>
+
+  <!-- 06 The space between -->
+  <section class="sysd-section" aria-labelledby="space-title">
+    <div class="sysd-meta"><span>06 / The space between</span><span>Twelve columns · Two voices</span></div>
+
+    <div class="sysd-grid sysd-grid--12">
+      <article class="sysd-flow" style="--span-md: 5; --at-lg: 3; --span-lg: 5">
+        <p class="sysd-index">Notes on attention / 01</p>
+        <h2 id="space-title" class="sysd-step-5">Let the words <em>hold the room.</em></h2>
+        <div class="sysd-reading sysd-flow">
+          <p>Some pages need very little. A considered title, a passage worth reading, and enough space around both to let the reader settle in. The composition draws its strength from the relationship between what is present and what is left open.</p>
+          <p>Here, the main column carries the weight of the page. The narrow column beside it offers a second pace, somewhere to pause without interrupting the argument. On a phone the note simply follows the text.</p>
+        </div>
+      </article>
+      <aside class="sysd-flow-tight" style="--at-md: 6; --span-md: 3; --at-lg: 9; --span-lg: 2; --drop-md: 4; --drop-lg: 8">
+        <p class="sysd-index">In the margin</p>
+        <p class="sysd-serif sysd-step-1">Leave something open.</p>
+        <p class="sysd-muted">A short observation can sit beside a longer argument. It does not need to fill the height of the page.</p>
+        <p class="sysd-note">Main / 5 columns<br>Note / 2 columns<br>Open / 5 columns</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- 07 Atmosphere -->
+  <section class="sysd-section sysd-negative" id="atmosphere" aria-labelledby="atmosphere-title">
+    <div class="sysd-meta"><span>07 / A change of atmosphere</span><span>Negative section</span></div>
+
+    <div class="sysd-grid sysd-grid--12">
+      <div class="sysd-flow" style="--span-md: 6; --at-lg: 2; --span-lg: 7">
+        <p class="sysd-index">Same language. Different light.</p>
+        <h2 id="atmosphere-title" class="sysd-step-7">A little less. <em>A little louder.</em></h2>
+        <p class="sysd-lead">A dark field gives a quiet composition a different weight. One class flips the section to the opposite scheme; the type, the grid and the space stay the same.</p>
+        <div class="sysd-actions">
+          <a class="sysd-button sysd-button--accent" href="#forms">Start a project ↗</a>
+          <a class="sysd-button sysd-button--outline" href="#grids">Explore the approach</a>
+        </div>
+      </div>
+      <aside class="sysd-flow-tight" style="--at-md: 7; --span-md: 2; --at-lg: 10; --span-lg: 2; --drop-md: 2; --drop-lg: 6">
+        <p class="sysd-index">Room to pause</p>
+        <p class="sysd-muted">A shift in tone can mark a new chapter, frame an important idea, or give an invitation more presence.</p>
+        <p class="sysd-note">One section.<br>Its own atmosphere.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- A splash of the accent -->
+  <section class="sysd-section sysd-splash splash" aria-label="Closing">
+    <div class="sysd-grid sysd-grid--thirds">
+      <p class="sysd-step-4 sysd-serif sysd-italic">Order first. Then play.</p>
+      <p class="sysd-index" style="--drop: 1">sysd / The whole system in four words</p>
+      <div class="sysd-actions" style="--drop: 1"><a class="sysd-button" href="#top">Back to the top ↑</a></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="sysd-section site-footer">
+  <div class="sysd-meta"><span>sysd / Foundations prototype 0.2</span><span><a href="v1-strict/index.html">Earlier direction: strict grid, 0.1</a></span></div>
+</footer>
+
+<!-- Controls -->
+<div class="controls" id="controls" popover="manual" aria-labelledby="controls-title">
+  <div class="controls__head">
+    <h2 class="sysd-step-0" id="controls-title">Inputs</h2>
+    <button class="sysd-button sysd-button--quiet sysd-button--small" type="button" popovertarget="controls" popovertargetaction="hide">Close</button>
+  </div>
+  <p class="sysd-label">Everything on the page is derived from these values.</p>
+
+  <label class="control">
+    <span class="control__name">Text size <output class="sysd-num" for="in-size" id="out-size"></output></span>
+    <input type="range" id="in-size" min="12" max="18" step="0.5">
+  </label>
+  <label class="control">
+    <span class="control__name">Reading size <output class="sysd-num" for="in-reading" id="out-reading"></output></span>
+    <input type="range" id="in-reading" min="14" max="22" step="0.5">
+  </label>
+  <label class="control">
+    <span class="control__name">Leading <output class="sysd-num" for="in-leading" id="out-leading"></output></span>
+    <input type="range" id="in-leading" min="1.3" max="1.8" step="0.05">
+  </label>
+  <label class="control">
+    <span class="control__name">Scale ratio</span>
+    <select class="sysd-select" id="in-ratio">
+      <option value="1.125">1.125 — major second</option>
+      <option value="1.2">1.2 — minor third</option>
+      <option value="1.25">1.25 — major third</option>
+      <option value="1.333">1.333 — perfect fourth</option>
+      <option value="1.414">1.414 — augmented fourth</option>
+    </select>
+  </label>
+  <label class="control">
+    <span class="control__name">Sans</span>
+    <select class="sysd-select" id="in-sans">
+      <option>Inter</option>
+      <option>Instrument Sans</option>
+      <option>Hanken Grotesk</option>
+      <option>IBM Plex Sans</option>
+    </select>
+  </label>
+  <label class="control">
+    <span class="control__name">Serif</span>
+    <select class="sysd-select" id="in-serif">
+      <option>Newsreader</option>
+      <option>Instrument Serif</option>
+      <option>Source Serif 4</option>
+      <option>Fraunces</option>
+    </select>
+  </label>
+  <label class="control">
+    <span class="control__name">Accent hue <output class="sysd-num" for="in-hue" id="out-hue"></output></span>
+    <input type="range" id="in-hue" min="0" max="360" step="1">
+  </label>
+  <label class="control">
+    <span class="control__name">Corner radius <output class="sysd-num" for="in-radius" id="out-radius"></output></span>
+    <input type="range" id="in-radius" min="0" max="16" step="1">
+  </label>
+  <label class="control">
+    <span class="control__name">Theme</span>
+    <select class="sysd-select" id="in-theme">
+      <option value="">Follow system</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </label>
+
+  <div class="sysd-actions">
+    <button class="sysd-button sysd-button--outline sysd-button--small" type="button" id="reset">Reset</button>
+    <button class="sysd-button sysd-button--quiet sysd-button--small" type="button" data-grid-toggle aria-pressed="false">Grid <kbd>G</kbd></button>
+  </div>
+</div>
+
+</body>
+</html>
