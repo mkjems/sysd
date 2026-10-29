@@ -1,0 +1,67 @@
+<style>
+#sysd-directions{font-family:Arial,Helvetica,sans-serif;color-scheme:light dark}
+#sysd-directions *{box-sizing:border-box}
+#sysd-directions .sd-page{--sd-bg:light-dark(#f5f4ef,#1c211e);--sd-ink:light-dark(#20392f,#e3eae4);--sd-paper:light-dark(#fffefa,#272e29);--sd-line:light-dark(#d9ddd4,#465048);--sd-muted:light-dark(#5c6b60,#b0beb2);--sd-accent:light-dark(#ddecba,#c8dea4);--sd-action:light-dark(#294b37,#c8dea4);--sd-on-action:light-dark(#fffefa,#203021);background:var(--sd-bg);color:var(--sd-ink);padding:32px 40px;min-height:790px;border-radius:12px;font-size:14px;line-height:1.5}
+#sysd-directions .sd-top{display:flex;align-items:center;gap:28px;border-bottom:1px solid var(--sd-line);padding-bottom:22px;padding-right:75px}
+#sysd-directions .sd-logo{font-size:30px;font-weight:700;letter-spacing:-2px;line-height:1}
+#sysd-directions .sd-top span{color:var(--sd-muted);font-size:12px}
+#sysd-directions .sd-top .sd-version{margin-left:auto;white-space:nowrap}
+#sysd-directions .sd-hero{padding:44px 0 34px;display:grid;grid-template-columns:1.5fr 1fr;gap:30px;align-items:end}
+#sysd-directions .sd-kicker{font-family:monospace;text-transform:uppercase;letter-spacing:1.5px;font-size:11px;color:var(--sd-muted);margin-bottom:16px}
+#sysd-directions h1{font-size:56px;line-height:1.04;letter-spacing:-2.8px;font-weight:500;margin:0}
+#sysd-directions .sd-serif{font-family:Georgia,serif;font-style:italic}
+#sysd-directions p{margin:0;color:var(--sd-muted);max-width:310px}
+#sysd-directions .sd-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+#sysd-directions .sd-panel{padding:24px;background:var(--sd-paper);border:1px solid var(--sd-line);border-radius:10px;min-width:0}
+#sysd-directions .sd-label{display:flex;justify-content:space-between;font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--sd-muted);margin-bottom:24px;gap:12px}
+#sysd-directions .sd-palette{display:flex;height:70px;border-radius:6px;overflow:hidden;margin-bottom:12px}
+#sysd-directions .sd-palette span{flex:1}
+#sysd-directions .sd-caption{font-size:12px;color:var(--sd-muted)}
+#sysd-directions .sd-type{font-size:31px;letter-spacing:-1px;line-height:1.2;margin-bottom:9px}
+#sysd-directions .sd-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+#sysd-directions button{font:inherit;padding:10px 17px;border:1px solid var(--sd-line);border-radius:6px;color:var(--sd-ink);background:var(--sd-paper)}
+#sysd-directions button.sd-primary{background:var(--sd-action);color:var(--sd-on-action);border-color:var(--sd-action)}
+#sysd-directions button:hover{filter:brightness(.94)}
+#sysd-directions input[type=email]{display:block;width:100%;font:inherit;padding:11px 12px;color:var(--sd-ink);background:var(--sd-bg);border:1px solid var(--sd-line);border-radius:6px;margin:7px 0 14px}
+#sysd-directions label{display:block;font-size:12px}
+#sysd-directions .sd-check{display:flex;align-items:center;gap:8px;margin:14px 0;color:var(--sd-muted)}
+#sysd-directions input[type=checkbox]{accent-color:var(--sd-action);width:16px;height:16px}
+#sysd-directions .sd-footer{display:flex;justify-content:space-between;gap:15px;margin-top:25px;font:11px monospace;color:var(--sd-muted)}
+#sysd-directions .sd-status{font-size:12px;min-height:18px;margin-top:12px;color:var(--sd-muted)}
+#sysd-directions .sd-tech{--sd-bg:light-dark(#f0f2f6,#171c27);--sd-ink:light-dark(#192b4d,#e4eafa);--sd-paper:light-dark(#ffffff,#222b3b);--sd-line:light-dark(#d4dbe7,#414e65);--sd-muted:light-dark(#586780,#aebbd2);--sd-accent:light-dark(#c9d9ff,#a7c1fc);--sd-action:light-dark(#315adb,#a7c1fc);--sd-on-action:light-dark(#ffffff,#15244b);border-radius:0}
+#sysd-directions .sd-tech .sd-panel,#sysd-directions .sd-tech button,#sysd-directions .sd-tech input{border-radius:2px}
+#sysd-directions .sd-tech h1{font-weight:700;font-size:53px;letter-spacing:-2px}
+#sysd-directions .sd-tech .sd-hero{grid-template-columns:1fr;padding-bottom:28px;gap:18px}
+#sysd-directions .sd-tech .sd-hero p{max-width:530px}
+#sysd-directions .sd-tech .sd-grid{grid-template-columns:.85fr 1.15fr}
+#sysd-directions .sd-tech .sd-palette{height:40px;border-radius:0}
+#sysd-directions .sd-tech .sd-type{font-family:monospace;font-size:27px}
+@media(max-width:620px){#sysd-directions .sd-page{padding:24px 20px;min-height:1120px}#sysd-directions .sd-top{gap:16px;padding-right:65px}#sysd-directions .sd-version{display:none}#sysd-directions .sd-hero,#sysd-directions .sd-tech .sd-hero{grid-template-columns:1fr;gap:22px;padding-top:30px}#sysd-directions h1,#sysd-directions .sd-tech h1{font-size:43px}#sysd-directions .sd-grid,#sysd-directions .sd-tech .sd-grid{grid-template-columns:1fr}#sysd-directions .sd-panel{padding:20px}#sysd-directions .sd-label{margin-bottom:16px}#sysd-directions .sd-footer{flex-wrap:wrap}}
+</style>
+<div id="sysd-directions" class="viz-carousel" aria-label="sysd visual directions">
+ <section data-variant="Quiet confidence" aria-label="Quiet confidence design direction">
+  <div class="sd-page" aria-label="Quiet confidence design system">
+   <header class="sd-top"><strong class="sd-logo">sysd<span style="color:var(--sd-ink)">.</span></strong><span>A personal design system</span><span class="sd-version">WEB / EXPLORATION</span></header>
+   <div class="sd-hero"><div><div class="sd-kicker">Quiet confidence</div><h1>A consistent voice.<br><span class="sd-serif">Room to be you.</span></h1></div><p>Thoughtful foundations for the things you build. Clear, composed, and recognisably yours.</p></div>
+   <div class="sd-grid">
+    <section class="sd-panel"><div class="sd-label"><span>01 / Colour</span><span>Natural & grounded</span></div><div class="sd-palette" aria-label="Forest, sage, lime and warm paper"><span style="background:var(--sd-action)"></span><span style="background:var(--sd-muted)"></span><span style="background:var(--sd-accent)"></span><span style="background:var(--sd-bg)"></span></div><div class="sd-caption">Forest · Sage · Soft lime · Paper</div></section>
+    <section class="sd-panel"><div class="sd-label"><span>02 / Typography</span><span>Clarity with character</span></div><div class="sd-type">Built with intention.<br><span class="sd-serif">Made to feel human.</span></div><div class="sd-caption">Practical sans. An editorial accent.</div></section>
+    <section class="sd-panel"><div class="sd-label"><span>03 / Actions</span><span>Calm & direct</span></div><div class="sd-row"><button type="button" class="sd-primary cursor-interaction" data-action="primary">Create project ↗</button><button type="button" class="cursor-interaction" data-action="secondary">View details</button></div><div class="sd-status" aria-live="polite">Consistent spacing. Soft corners. Clear hierarchy.</div></section>
+    <section class="sd-panel"><div class="sd-label"><span>04 / Forms</span><span>Useful by default</span></div><label>Email address<input type="email" placeholder="you@example.com" aria-label="Email address"></label><label class="sd-check"><input type="checkbox" checked>Send me project updates</label></section>
+   </div><footer class="sd-footer"><span>Personal character. Shared foundations.</span><span>sysd / Concept study</span></footer>
+  </div>
+ </section>
+ <section data-variant="Precise by design" aria-label="Precise by design direction" hidden>
+  <div class="sd-page sd-tech" aria-label="Precise by design design system">
+   <header class="sd-top"><strong class="sd-logo">sysd/</strong><span>Foundations for your next project</span><span class="sd-version">WEB / EXPLORATION</span></header>
+   <div class="sd-hero"><div><div class="sd-kicker">Precise by design</div><h1>Your signature.<br>A system behind it.</h1></div><p>A crisp, structured foundation for consistent interfaces, from the first idea to the next product.</p></div>
+   <div class="sd-grid">
+    <section class="sd-panel"><div class="sd-label"><span>01 / Foundations</span></div><div class="sd-type">Aa / 0123</div><div class="sd-caption">Direct language. Rational geometry.<br>Structure you can build on.</div><div class="sd-palette" style="margin-top:24px" aria-label="Cobalt, ink, mist and white"><span style="background:var(--sd-action)"></span><span style="background:var(--sd-ink)"></span><span style="background:var(--sd-accent)"></span><span style="background:var(--sd-bg)"></span></div><div class="sd-caption">Cobalt · Ink · Mist · White</div></section>
+    <section class="sd-panel"><div class="sd-label"><span>02 / Project setup</span><span>Component preview</span></div><div class="sd-type" style="font-family:Arial,sans-serif">Start something yours.</div><label style="margin-top:20px">Email address<input type="email" placeholder="you@example.com" aria-label="Project email address"></label><label class="sd-check"><input type="checkbox" checked>Send me project updates</label><div class="sd-row"><button type="button" class="sd-primary cursor-interaction" data-action="primary">Create project ↗</button><button type="button" class="cursor-interaction" data-action="secondary">View details</button></div><div class="sd-status" aria-live="polite"></div></section>
+   </div><footer class="sd-footer"><span>Clear principles → consistent products</span><span>sysd / Concept study</span></footer>
+  </div>
+ </section>
+</div>
+<script>
+(()=>{const root=document.getElementById('sysd-directions');root.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>{const status=button.closest('.sd-panel').querySelector('.sd-status');status.textContent=button.dataset.action==='primary'?'Project created — a preview of the confirmation state.':'Button: medium size · clear label · visible keyboard focus.';}));if(globalThis.Tweak){root.querySelectorAll('.sd-page').forEach(page=>{const state={radius:page.classList.contains('sd-tech')?2:10};const tweak=new Tweak({container:page,onChange:()=>{page.querySelectorAll('.sd-panel').forEach(panel=>panel.style.borderRadius=state.radius+'px');}});tweak.addSlider(state,'radius',{label:'Panel corners',min:0,max:24,unit:'px'});});}})();
+</script>

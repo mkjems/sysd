@@ -1,0 +1,170 @@
+<style>
+#sysd-type{color-scheme:light dark;--st-paper:light-dark(#f6f5ef,#20251f);--st-ink:light-dark(#263e30,#e4ecdf);--st-muted:light-dark(#586752,#b6c2ac);--st-line:light-dark(#ccd3c5,#4c5844);--st-accent:light-dark(#dce8bf,#3c4b2d);font-family:Arial,Helvetica,sans-serif;color:var(--st-ink);background:var(--st-paper);padding:30px 36px;font-size:15px;line-height:1.55}
+#sysd-type *{box-sizing:border-box}
+#sysd-type[data-tone=precise]{--st-paper:light-dark(#f2f4f8,#1c2330);--st-ink:light-dark(#1d3053,#e5ebfa);--st-muted:light-dark(#566780,#b4c1d9);--st-line:light-dark(#cdd5e3,#45536c);--st-accent:light-dark(#d8e2ff,#2e416d)}
+#sysd-type header{display:flex;align-items:center;gap:22px;flex-wrap:wrap;padding:0 85px 24px 0;border-bottom:1px solid var(--st-line)}
+#sysd-type .st-logo{font-size:30px;letter-spacing:-2px;font-weight:700}
+#sysd-type .st-caption{color:var(--st-muted);font-size:12px}
+#sysd-type .st-tones{display:flex;gap:8px;flex-wrap:wrap;margin-left:auto}
+#sysd-type button{color:var(--st-ink);background:transparent;border:1px solid var(--st-line);border-radius:4px;padding:8px 10px;font:inherit;font-size:12px;min-height:36px}
+#sysd-type button[aria-pressed=true]{background:var(--st-ink);color:var(--st-paper);border-color:var(--st-ink)}
+#sysd-type .st-section{padding:28px 0 35px}
+#sysd-type .st-section+.st-section{border-top:1px solid var(--st-line)}
+#sysd-type .st-meta{display:flex;justify-content:space-between;gap:20px;color:var(--st-muted);font:11px/1.5 monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:30px}
+#sysd-type .st-free{display:grid;grid-template-columns:1.12fr .8fr .9fr;gap:36px;align-items:start;min-height:420px}
+#sysd-type h1,#sysd-type h2,#sysd-type h3,#sysd-type p{margin:0}
+#sysd-type h1{font:500 56px/1.02 Arial,Helvetica,sans-serif;letter-spacing:-2.8px;margin-bottom:26px}
+#sysd-type .st-serif{font-family:Georgia,'Times New Roman',serif}
+#sysd-type .st-italic{font-style:italic}
+#sysd-type .st-free p{font-size:15px;line-height:1.55;margin-bottom:22px}
+#sysd-type .st-free .st-mid{padding-top:95px}
+#sysd-type .st-free .st-last{padding-top:35px}
+#sysd-type .st-index{font:11px monospace;letter-spacing:1px;color:var(--st-muted);margin-bottom:15px}
+#sysd-type .st-free h2{font-size:25px;line-height:1.12;font-weight:500;letter-spacing:-.6px;margin-bottom:18px}
+#sysd-type blockquote{margin:65px 0 16px;font:italic 30px/1.15 Georgia,serif;letter-spacing:-.6px}
+#sysd-type .st-note{border-top:1px solid var(--st-line);padding-top:12px;color:var(--st-muted);font:12px/1.5 monospace}
+#sysd-type .st-feature{font-size:21px!important;line-height:1.35!important}
+#sysd-type .st-traditional-title{max-width:650px;margin-bottom:30px}
+#sysd-type .st-traditional-title h2{font:400 43px/1.08 Georgia,serif;letter-spacing:-1.3px;margin-bottom:15px}
+#sysd-type .st-traditional-title p{font:18px/1.5 Arial,sans-serif;color:var(--st-muted);max-width:600px}
+#sysd-type .st-reading{column-count:3;column-gap:32px;font:16px/1.65 Georgia,serif;orphans:3;widows:3}
+#sysd-type .st-reading p{margin-bottom:17px}
+#sysd-type .st-reading h3{font:500 16px/1.4 Arial,sans-serif;margin-bottom:10px;break-after:avoid}
+#sysd-type .st-reading .st-drop:first-letter{float:left;font-size:54px;line-height:.9;padding:7px 7px 0 0}
+#sysd-type .st-foot{display:flex;justify-content:space-between;gap:16px;border-top:1px solid var(--st-line);padding-top:17px;font:11px/1.5 monospace;color:var(--st-muted)}
+#sysd-type[data-tone=precise] .st-serif,#sysd-type[data-tone=precise] .st-traditional-title h2{font-family:Arial,Helvetica,sans-serif;font-style:normal}
+#sysd-type[data-tone=precise] .st-reading{font-family:Arial,Helvetica,sans-serif;font-size:15px}
+#sysd-type[data-tone=precise] h1{font-weight:700}
+@media(max-width:680px){#sysd-type{padding:24px}#sysd-type header{padding-right:70px;gap:12px}#sysd-type .st-tones{margin-left:0}#sysd-type .st-free{grid-template-columns:1fr 1fr;gap:25px}#sysd-type .st-free .st-last{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:25px;padding-top:0}#sysd-type blockquote{margin:0 0 15px}#sysd-type .st-reading{column-count:2}#sysd-type h1{font-size:46px}#sysd-type .st-meta{flex-wrap:wrap;gap:6px}}
+@media(max-width:440px){#sysd-type .st-free{grid-template-columns:1fr}#sysd-type .st-free .st-mid{padding-top:0}#sysd-type .st-free .st-last{display:block}#sysd-type .st-reading{column-count:1}#sysd-type .st-traditional-title h2{font-size:35px}#sysd-type .st-foot{flex-wrap:wrap}}
+#sysd-type .st-components{padding:28px 0 38px;border-top:1px solid var(--st-line)}
+#sysd-type .st-controls-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px;align-items:start}
+#sysd-type .st-controls-grid>*{min-width:0}
+#sysd-type .st-loose-controls>div:nth-child(2){padding-top:40px}
+#sysd-type .st-loose-controls>div:nth-child(3){padding-top:18px}
+#sysd-type .st-component-heading{font:400 25px/1.15 Georgia,serif;letter-spacing:-.5px;margin:0 0 14px}
+#sysd-type[data-tone=precise] .st-component-heading{font-family:Arial,sans-serif}
+#sysd-type .st-field{display:block;font:12px/1.5 Arial,sans-serif;margin-bottom:16px}
+#sysd-type .st-input{display:block;width:100%;min-width:0;margin-top:7px;padding:11px 12px;border:1px solid var(--st-line);border-radius:6px;background:var(--st-paper);color:var(--st-ink);font:16px/1.4 Arial,sans-serif}
+#sysd-type textarea.st-input{min-height:100px;resize:vertical}
+#sysd-type .st-help{display:block;color:var(--st-muted);font:12px/1.5 Arial,sans-serif;margin-top:6px}
+#sysd-type .st-choices{border:0;padding:0;margin:0 0 16px;min-width:0}
+#sysd-type .st-choices legend{font-size:12px;margin-bottom:9px}
+#sysd-type .st-choice{display:flex;align-items:center;gap:8px;font:14px/1.4 Arial,sans-serif;min-height:36px}
+#sysd-type .st-choice input{width:17px;height:17px;accent-color:var(--st-ink);flex-shrink:0;margin:0}
+#sysd-type .st-actions{display:flex;flex-wrap:wrap;gap:9px;margin:15px 0}
+#sysd-type .st-actions button{font-size:14px;padding:10px 15px;min-height:42px;border-radius:6px}
+#sysd-type .st-actions .st-primary{background:var(--st-ink);color:var(--st-paper);border-color:var(--st-ink)}
+#sysd-type .st-actions .st-ghost{border-color:transparent;text-decoration:underline;text-underline-offset:4px;padding-left:0}
+#sysd-type button:disabled,#sysd-type input:disabled{opacity:.5;cursor:not-allowed}
+#sysd-type .st-result{min-height:20px;font:12px/1.5 Arial,sans-serif;color:var(--st-muted)}
+#sysd-type[data-tone=precise] .st-input,#sysd-type[data-tone=precise] .st-actions button{border-radius:2px}
+@media(max-width:680px){#sysd-type .st-controls-grid{grid-template-columns:1fr 1fr;gap:24px}#sysd-type .st-controls-grid>div:last-child{grid-column:1/-1}#sysd-type .st-loose-controls>div:nth-child(2){padding-top:0}}
+@media(max-width:440px){#sysd-type .st-controls-grid{grid-template-columns:1fr}#sysd-type .st-loose-controls>div:nth-child(3){padding-top:0}}
+@media(pointer:coarse){#sysd-type .st-choice,#sysd-type button{min-height:44px}}
+#sysd-type .st-grid-study{border-top:1px solid var(--st-line);padding:30px 0 65px}
+#sysd-type .st-grid-toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:24px;flex-wrap:wrap}
+#sysd-type .st-grid-toolbar .st-meta{margin:0}
+#sysd-type .st-grid-toggle{display:flex;align-items:center;gap:8px;min-height:44px;font-size:12px}
+#sysd-type .st-grid-toggle input{accent-color:var(--st-ink);width:17px;height:17px;margin:0}
+#sysd-type .st-layout-grid{--grid-columns:12;--grid-gap:20px;position:relative;display:grid;grid-template-columns:repeat(var(--grid-columns),minmax(0,1fr));column-gap:var(--grid-gap);row-gap:28px;padding:38px 0}
+#sysd-type .st-grid-item{grid-column:var(--column,1)/span var(--span,12);grid-row:var(--row,auto);align-self:var(--align,start);min-width:0;position:relative;z-index:1}
+#sysd-type .st-grid-guides{position:absolute;inset:0;display:none;grid-template-columns:repeat(var(--grid-columns),minmax(0,1fr));gap:var(--grid-gap);pointer-events:none;z-index:2}
+#sysd-type .st-grid-guides span{border-inline:1px solid color-mix(in srgb,var(--st-ink) 25%,transparent);background:color-mix(in srgb,var(--st-ink) 3%,transparent);color:var(--st-muted);font:10px/1.5 monospace;text-align:center;padding-top:6px}
+#sysd-type .st-layout-grid[data-visible=true]>.st-grid-guides{display:grid}
+#sysd-type .st-layout-grid[data-visible=true]>.st-grid-item{outline:1px dashed color-mix(in srgb,var(--st-ink) 40%,transparent);outline-offset:5px}
+#sysd-type .st-space-title{font:400 46px/1.1 Georgia,serif;letter-spacing:-1.5px;max-width:540px;margin:0 0 25px}
+#sysd-type .st-dense{font:16px/1.65 Georgia,serif}
+#sysd-type .st-dense p+p{margin-top:18px}
+#sysd-type .st-dense h3{font:500 15px/1.4 Arial,sans-serif;margin:24px 0 12px}
+#sysd-type .st-margin-note{padding-top:150px;font:12px/1.6 Arial,sans-serif;color:var(--st-muted)}
+#sysd-type .st-margin-note h3{font:400 21px/1.2 Georgia,serif;color:var(--st-ink);margin:0 0 15px}
+#sysd-type .st-margin-note p+p{margin-top:16px}
+#sysd-type .st-layout-caption{font:11px/1.6 monospace;color:var(--st-muted);margin-top:22px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+#sysd-type .st-negative{--st-paper:light-dark(#263e30,#dde6d1);--st-ink:light-dark(#f6f5ef,#263e30);--st-muted:light-dark(#c2cfb9,#485943);--st-line:light-dark(#5e7259,#a8b99f);--st-accent:light-dark(#dce8bf,#c6d6ad);background:var(--st-paper);color:var(--st-ink);margin:0 -36px 36px;padding:30px 36px 55px}
+#sysd-type[data-tone=precise] .st-negative{--st-paper:light-dark(#1d3053,#dfe7f8);--st-ink:light-dark(#f2f4f8,#1d3053);--st-muted:light-dark(#bdcbe5,#465c7e);--st-line:light-dark(#5c6e90,#a1b2d1)}
+#sysd-type .st-negative-title{font:400 65px/1.02 Georgia,serif;letter-spacing:-2px;margin:0 0 26px}
+#sysd-type .st-negative .st-subtitle{font:17px/1.6 Arial,sans-serif;max-width:380px;color:var(--st-muted)}
+#sysd-type .st-negative-aside{padding-top:110px;font-size:13px;color:var(--st-muted)}
+#sysd-type .st-negative-aside p{margin-bottom:20px}
+#sysd-type .st-negative .st-actions{margin-top:30px}
+#sysd-type .st-negative-result{min-height:20px;font:12px/1.5 Arial,sans-serif;color:var(--st-muted)}
+#sysd-type[data-tone=precise] .st-space-title,#sysd-type[data-tone=precise] .st-negative-title,#sysd-type[data-tone=precise] .st-margin-note h3,#sysd-type[data-tone=precise] .st-dense{font-family:Arial,Helvetica,sans-serif}
+@media(max-width:680px){#sysd-type .st-layout-grid{--grid-columns:6;--grid-gap:16px}#sysd-type .st-grid-item{grid-column:1/span 4;grid-row:auto}#sysd-type .st-grid-item.st-margin-note{grid-column:5/span 2;padding-top:0}#sysd-type .st-grid-guides span:nth-child(n+7){display:none}#sysd-type .st-negative{margin-inline:-24px;padding-inline:24px}#sysd-type .st-negative-title{font-size:48px}#sysd-type .st-negative-aside{grid-column:3/span 4;padding-top:20px}#sysd-type .st-space-title{font-size:37px}}
+@media(max-width:440px){#sysd-type .st-layout-grid{--grid-columns:4}#sysd-type .st-grid-item,#sysd-type .st-grid-item.st-margin-note,#sysd-type .st-negative-aside{grid-column:1/-1}#sysd-type .st-grid-guides span:nth-child(n+5){display:none}#sysd-type .st-margin-note{padding-top:20px!important;max-width:210px;margin-left:auto}#sysd-type .st-space-title{font-size:34px}#sysd-type .st-negative-title{font-size:42px}}
+</style>
+<div id="sysd-type" data-tone="quiet" aria-label="sysd typography and column studies">
+ <header><strong class="st-logo">sysd.</strong><span class="st-caption">Type & composition</span><div class="st-tones" role="group" aria-label="Visual direction"><button class="cursor-interaction" type="button" data-tone-choice="quiet" aria-pressed="true">Quiet confidence</button><button class="cursor-interaction" type="button" data-tone-choice="precise" aria-pressed="false">Precise by design</button></div></header>
+ <section class="st-section" aria-label="Free-floating column typography">
+  <div class="st-meta"><span>01 / Free-floating</span><span>Independent columns · Asymmetric rhythm</span></div>
+  <div class="st-free">
+   <div><div class="st-index">A / A personal practice</div><h1>Space<br>to think.<br><span class="st-serif st-italic">Type<br>to speak.</span></h1><p>A design system begins with a point of view. How much space do we leave? What deserves attention? Where should the eye go next?</p><div class="st-note">sysd — Notes on building<br>a consistent visual language.</div></div>
+   <div class="st-mid"><div class="st-index">B / Structure</div><h2>Consistency can<br>leave room.</h2><p>The columns share an underlying grid, but each finds its own starting point. A heading sits high. A passage begins lower. The space between them becomes part of the composition.</p><p>Used across a portfolio, a project introduction, or a collection of ideas, this approach gives each piece a distinct presence.</p><div class="st-note">A shared grid.<br>An individual rhythm.</div></div>
+   <div class="st-last"><div><div class="st-index">C / Character</div><p class="st-feature st-serif">Professional can be thoughtful, curious, and unmistakably personal.</p></div><div><blockquote>“A system should make room for its author.”</blockquote><div class="st-note">A working principle for sysd.</div></div></div>
+  </div>
+ </section>
+ <section class="st-components" aria-label="Forms and buttons beneath free-floating typography">
+  <div class="st-meta"><span>01 / Forms & actions</span><span>Open composition · Soft details</span></div>
+  <form class="st-controls-grid st-loose-controls" data-demo-form>
+   <div><div class="st-index">A / The essentials</div><h3 class="st-component-heading">Start a conversation.</h3><label class="st-field">Your name<input class="st-input" name="name" autocomplete="name" placeholder="Alex Jensen" required></label><label class="st-field">Email address<input class="st-input" type="email" name="email" autocomplete="email" placeholder="alex@example.com" required><span class="st-help">A place for us to reply.</span></label></div>
+   <div><div class="st-index">B / A little context</div><label class="st-field">Project type<select class="st-input" name="project"><option>Website</option><option>Application</option><option>Visual identity</option></select></label><label class="st-field">What are you thinking?<textarea class="st-input" name="message" placeholder="A few words about your idea…"></textarea></label></div>
+   <div><div class="st-index">C / Your preferences</div><fieldset class="st-choices"><legend>How should we follow up?</legend><label class="st-choice"><input type="radio" name="free-contact" value="email" checked>Email me</label><label class="st-choice"><input type="radio" name="free-contact" value="call">Arrange a call</label></fieldset><label class="st-choice"><input type="checkbox" name="updates">Keep me in the loop</label><div class="st-actions"><button type="submit" class="st-primary cursor-interaction">Send enquiry ↗</button><button type="reset" class="cursor-interaction">Clear</button></div><div class="st-actions"><button type="button" class="st-ghost cursor-interaction" data-demo-action="Saved as a draft in this preview.">Save for later</button><button type="button" disabled>Unavailable</button></div><p class="st-result" aria-live="polite"></p></div>
+  </form>
+ </section>
+ <section class="st-section" aria-label="Traditional editorial column typography">
+  <div class="st-meta"><span>02 / Traditional</span><span>Aligned columns · Continuous reading</span></div>
+  <div class="st-traditional-title"><div class="st-index">On design systems / An introduction</div><h2>A common language,<br>with a personal accent.</h2><p>Good foundations let different projects feel related while giving each one space to develop its own identity.</p></div>
+  <div class="st-reading">
+   <p class="st-drop">Every project begins with decisions. A typeface, a colour, the distance between a heading and the words beneath it. Individually, these choices seem small. Together, they establish how a product feels.</p>
+   <p>When those decisions are made with care and used consistently, they become a language. People learn what to expect. A familiar rhythm makes a new page easier to understand.</p>
+   <h3>Start with the essentials</h3>
+   <p>For sysd, the first setting is the web. Typography must work at different widths, paragraphs need room to breathe, and the hierarchy should remain clear on a small screen.</p>
+   <p>A modest set of well-chosen styles can support many situations: a quiet settings page, an expressive project story, or a useful tool. Each draws from the same foundations.</p>
+   <h3>Build a recognisable voice</h3>
+   <p>The aim is a professional tone that feels personal. Repeated details create recognition: the proportion of a title, the pace of a text column, the restraint of a colour palette.</p>
+   <p>As the system grows, real projects will help refine it. Keep the choices that prove useful, improve the ones that cause friction, and let the system develop through use.</p>
+  </div>
+ </section>
+ <section class="st-components" aria-label="Forms and buttons beneath traditional typography">
+  <div class="st-meta"><span>02 / Forms & actions</span><span>Aligned fields · Clear hierarchy</span></div>
+  <form class="st-controls-grid" data-demo-form>
+   <div><div class="st-index">Account details</div><label class="st-field">Display name<input class="st-input" name="display-name" value="Alex Jensen" autocomplete="nickname" required></label><label class="st-field">Email address<input class="st-input" type="email" name="email" value="alex@example.com" autocomplete="email" required></label><label class="st-field">Workspace ID<input class="st-input" value="sysd-studio" disabled><span class="st-help">Assigned when the workspace is created.</span></label></div>
+   <div><div class="st-index">Workspace preferences</div><label class="st-field">Language<select class="st-input" name="language"><option>English</option><option>Dansk</option></select></label><label class="st-field">About your workspace<textarea class="st-input" name="description">A place for thoughtful projects.</textarea></label></div>
+   <div><div class="st-index">Notifications & actions</div><fieldset class="st-choices"><legend>Email frequency</legend><label class="st-choice"><input type="radio" name="traditional-frequency" value="weekly" checked>Weekly summary</label><label class="st-choice"><input type="radio" name="traditional-frequency" value="important">Important updates only</label></fieldset><label class="st-choice"><input type="checkbox" name="mentions" checked>Notify me when mentioned</label><div class="st-actions"><button type="submit" class="st-primary cursor-interaction">Save changes</button><button type="reset" class="cursor-interaction">Reset</button></div><div class="st-actions"><button type="button" class="st-ghost cursor-interaction" data-demo-action="Account settings opened in this preview.">Manage account</button><button type="button" disabled>Saving…</button></div><p class="st-result" aria-live="polite"></p></div>
+  </form>
+ </section>
+ <section class="st-grid-study" aria-label="Generous whitespace and a dominant text column">
+  <div class="st-grid-toolbar"><div class="st-meta"><span>03 / The space between</span><span>12-column composition</span></div><label class="st-grid-toggle"><input type="checkbox" data-show-grid>Show grid lines</label></div>
+  <div class="st-layout-grid" data-visible="false" aria-label="Dense main column and a narrow margin column">
+   <div class="st-grid-guides" aria-hidden="true"></div>
+   <article class="st-grid-item st-dense" style="--column:3;--span:5;--row:1">
+    <div class="st-index">Notes on attention / 01</div><h2 class="st-space-title">Let the words<br>hold the room.</h2>
+    <p>Some pages need very little. A considered title, a passage worth reading, and enough space around both to let the reader settle in. The composition draws its strength from the relationship between what is present and what is left open.</p>
+    <p>Here, the main column carries the weight of the page. Its paragraphs create a continuous texture: substantial enough to feel like an essay, narrow enough to follow comfortably. The smaller column offers a second pace, somewhere to pause without interrupting the argument.</p>
+    <h3>Make space a decision</h3>
+    <p>The empty columns are part of the design. They frame the text, separate the voices, and give the composition a recognisable shape. A grid makes those choices repeatable across a journal, a case study, or a personal website.</p>
+    <p>When the screen becomes smaller, the margins contract and the side note follows the main text. The reading order stays intact. The structure adapts while the relationship between the two voices remains clear.</p>
+   </article>
+   <aside class="st-grid-item st-margin-note" style="--column:9;--span:2;--row:1"><div class="st-index">In the margin</div><h3>Leave something open.</h3><p>A short observation can sit beside a longer argument. It does not need to fill the height of the page.</p><p>The space beneath it is intentional.</p><div class="st-note" style="margin-top:32px">Main / 5 columns<br>Aside / 2 columns<br>Gap / 1 column</div></aside>
+  </div>
+  <div class="st-layout-caption"><span>2 empty · 5 main · 1 empty · 2 aside · 2 empty</span><span>Guides change visibility, never layout.</span></div>
+ </section>
+ <section class="st-negative" aria-label="Negative section with inverted colours">
+  <div class="st-grid-toolbar"><div class="st-meta"><span>04 / A change of atmosphere</span><span>Negative section</span></div><label class="st-grid-toggle"><input type="checkbox" data-show-grid>Show grid lines</label></div>
+  <div class="st-layout-grid" data-visible="false">
+   <div class="st-grid-guides" aria-hidden="true"></div>
+   <div class="st-grid-item" style="--column:2;--span:7;--row:1"><div class="st-index">Same language. Different light.</div><h2 class="st-negative-title">A little less.<br><span class="st-italic">A little louder.</span></h2><p class="st-subtitle">A darker field gives a quiet composition a different weight. The type, the grid, and the space still belong to the same system.</p><div class="st-actions"><button type="button" class="st-primary cursor-interaction" data-negative-action="A new project starts here — a local preview.">Start a project ↗</button><button type="button" class="cursor-interaction" data-negative-action="The same grid and typography, with an inverted section palette.">Explore the approach</button></div><p class="st-negative-result" aria-live="polite"></p></div>
+   <aside class="st-grid-item st-negative-aside" style="--column:10;--span:2;--row:1"><div class="st-index">Room to pause</div><p>A shift in tone can mark a new chapter, frame an important idea, or give an invitation more presence.</p><div class="st-note">One section.<br>Its own atmosphere.</div></aside>
+  </div>
+ </section>
+ <footer class="st-foot"><span>sysd / Typography, components & layout</span><span data-current-tone aria-live="polite">Quiet confidence · Sans + editorial serif</span></footer>
+</div>
+<script>
+(()=>{const root=document.getElementById('sysd-type');const saved=window.openai?.widgetState;function render(tone){const selected=tone==='precise'?'precise':'quiet';root.dataset.tone=selected;root.querySelectorAll('[data-tone-choice]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.toneChoice===selected)));root.querySelector('[data-current-tone]').textContent=selected==='quiet'?'Quiet confidence · Sans + editorial serif':'Precise by design · Sans throughout';}render(saved?.modelContent?.tone);root.querySelectorAll('[data-tone-choice]').forEach(button=>button.addEventListener('click',()=>{render(button.dataset.toneChoice);window.openai?.setWidgetState?.({modelContent:{tone:root.dataset.tone},privateContent:null}).catch(()=>{});}));window.addEventListener('openai:set_globals',event=>{const state=event.detail?.globals?.widgetState;if(state)render(state.modelContent?.tone);});if(globalThis.Tweak){const state={gap:36};const tweak=new Tweak({container:root,onChange:()=>{root.querySelector('.st-free').style.columnGap=state.gap+'px';root.querySelector('.st-reading').style.columnGap=state.gap+'px';}});tweak.addSlider(state,'gap',{label:'Column spacing',min:20,max:55,unit:'px'});}})();
+</script>
+<script>
+(()=>{const root=document.getElementById('sysd-type');root.querySelectorAll('.st-layout-grid').forEach(grid=>{const guides=grid.querySelector('.st-grid-guides');for(let i=1;i<=12;i++){const track=document.createElement('span');track.textContent=i;guides.appendChild(track);}});root.querySelectorAll('[data-show-grid]').forEach(input=>input.addEventListener('change',()=>{input.closest('section').querySelector('.st-layout-grid').dataset.visible=String(input.checked);}));root.querySelectorAll('[data-negative-action]').forEach(button=>button.addEventListener('click',()=>{button.closest('section').querySelector('.st-negative-result').textContent=button.dataset.negativeAction;}));})();
+</script>
+<script>
+(()=>{const root=document.getElementById('sysd-type');root.querySelectorAll('[data-demo-form]').forEach(form=>{const result=form.querySelector('.st-result');form.addEventListener('submit',event=>{event.preventDefault();result.textContent=form.classList.contains('st-loose-controls')?'Enquiry ready — this is a local preview.':'Changes saved in this preview.';});form.addEventListener('reset',()=>{result.textContent='Form reset.';});form.querySelectorAll('[data-demo-action]').forEach(button=>button.addEventListener('click',()=>{result.textContent=button.dataset.demoAction;}));});})();
+</script>
