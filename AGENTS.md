@@ -44,8 +44,9 @@ Im a grafic designer. I like flat colored limited pallete well composed simple d
 
 ### Technology
 
-Pure CSS / Modern CSS Modules with CSS Variables
-So much has happend in the CSS space lately. I want to use the modern CSS way of doing things.
+- Pure CSS / Modern CSS Modules with CSS Variables
+- So much has happend in the CSS space lately. I want to use the modern CSS way of doing things.
+- Web components, native web development. No more tech silos, no more 50MB package.json
 
 ### What is a design system
 
