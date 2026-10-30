@@ -41,6 +41,7 @@ but academic, craftsmanship, Swiss design, Josef Müller-Brockmann.
 - Touch screens, and keyboard, mouse or trackpad. Be accessible (see Accessibility).
 - Small and large screens. Every layout collapses to a single readable column on a phone.
 - Across all web frontend frameworks (plain HTML, React, Vue, Svelte, Astro and others) without framework-specific wrappers.
+- On the same page as another design system, or as a second, differently configured sysd (see Coexistence).
 
 It should have themes: at least a light and a dark mode. Both are first-class, and either can be chosen by the reader or follow the operating system.
 
@@ -56,10 +57,46 @@ I'm a graphic designer. I like flat-coloured, limited-palette, well-composed, si
 
 ### Technology
 
-- Pure CSS with custom properties, organised in cascade layers (`reset, tokens, base, layout, components`). Global, prefixed class names (`sysd-…`) — not bundler-scoped CSS Modules — because that is what works in every framework and in plain HTML.
+- Pure CSS with custom properties, organised in cascade layers nested under one `sysd` layer (`sysd.reset, sysd.tokens, sysd.base, sysd.layout, sysd.components`). Global, prefixed class names (`sysd-…`) — not bundler-scoped CSS Modules — because that is what works in every framework and in plain HTML.
 - So much has happened in the CSS space lately. I want to use the modern CSS way of doing things: subgrid, `light-dark()`, `color-mix()` and OKLCH, `pow()` / `round()`, `:has()`, container queries, popover, customisable select.
 - Web components and native web development where behaviour is needed. No more tech silos. Web components use the light DOM, so the global layers and tokens style them like any other element.
 - Zero runtime dependencies. Development tooling is kept to a short list of tools that each justify their place (see How it is maintained). No 50 MB `node_modules`.
+
+### Coexistence
+
+It is a requirement that sysd can share a page with other design systems, and with other configurations of itself, without either breaking the other. Use cases:
+
+- **Migration:** a project uses its old CSS framework and sysd at the same time while it moves over.
+- **Embedding:** a third-party widget, or a section in another brand, lives inside a sysd page, or sysd lives inside someone else's page.
+- **Several sysd configurations:** a section with its own accent, papers or body size, or the generator showing two systems side by side.
+
+How sysd achieves this:
+
+1. **Namespaced names.**
+   - Every class is `sysd-…`, every custom property is `--sysd-…`, every web component is `<sysd-…>`, and every data attribute is `data-sysd-…`.
+   - Component-internal properties are `--_…`, and are only ever set on the component's own elements.
+   - Nothing unprefixed is ever defined.
+2. **One layer for all of sysd.** All sysd CSS sits in a single layer, `sysd`, with its sub-layers inside it (`@layer sysd.reset, sysd.tokens, sysd.base, sysd.layout, sysd.components`). The page can then put the whole of sysd before or after another system in one statement, for example `@layer other, sysd;`. sysd never declares an unnamed or top-level layer of its own, so it can't merge with another system's `base` or `components`.
+3. **Element styles are scoped.** The reset and base styles are the only parts of sysd that style elements (`body`, headings, links, form controls) rather than classes. They come in two forms:
+   - `dist/sysd.css` applies them to the whole document, for pages that are sysd only.
+   - `dist/sysd-scoped.css` applies them only inside `.sysd` with `@scope (.sysd) to (.sysd-exclude)`. sysd styles nothing outside a `.sysd` container, and nothing inside a `.sysd-exclude` hole, where another system or a widget can live.
+
+   Component classes work the same in both forms.
+
+   `@scope` reached all major browsers only recently (Firefox last, in late 2025), so it is below the "widely available" floor. Until it reaches the floor, the scoped build also carries a fallback for browsers without `@scope`. The fallback uses descendant selectors under `:where(.sysd)`, which add no specificity. In those browsers the element styles still stay inside `.sysd`, but a `.sysd-exclude` hole is not guaranteed.
+4. **Any element can be a new root.**
+   - The derived tokens (the line, spacing, type scale, colour roles) are declared on `:root, .sysd-scope`, not on `:root` alone.
+   - Setting an input on a `.sysd-scope` element gives that subtree its own fully recalculated system: change `--sysd-accent-hue`, `--sysd-size` or `--sysd-paper-light` there and everything inside follows.
+   - Theme and `color-scheme` can also be set per scope (`data-sysd-theme`), not only on `<html>`.
+5. **No global side effects.** sysd doesn't set styles on `html`/`:root` beyond tokens and `color-scheme` in the document-wide form. It doesn't use `!important` except in the reduced-motion safeguard, and it doesn't use `*` selectors outside the reset.
+6. **Strong isolation when needed.** For a fully foreign context (a preview of another system, an untrusted embed), sysd can be loaded inside a shadow root (`adoptedStyleSheets`) or an iframe. It is the one case where shadow DOM is the right tool.
+
+A coexistence demo (`demo/coexistence.html`) proves all of this:
+- a page with sysd and a second, unrelated stylesheet with clashing element styles and layer names;
+- a `.sysd-exclude` hole;
+- two `.sysd-scope` sections with different inputs, side by side.
+
+The visual regression tests include it.
 
 ### Browser support
 
@@ -247,7 +284,7 @@ Every demo is checked at 390, 820 and 1440 px wide, in light and dark, with the 
 
 **Checks**, which make "constrained enough that it can verify when they do" real:
 
-- **CSS:** a Stylelint config (`stylelint.config.js`) that allows only sysd tokens for colour, space, font size and radius in consuming projects, and only the five layers.
+- **CSS:** a Stylelint config (`stylelint.config.js`) that allows only sysd tokens for colour, space, font size and radius in consuming projects, and only the `sysd` layer and its sub-layers.
 - **HTML:** `scripts/check-html.js` reads the manifests and reports:
   - unknown `sysd-` classes;
   - invalid modifier combinations;
@@ -282,11 +319,12 @@ The site also contains:
 
 ## Distribution
 
-- `dist/sysd.css`: one file containing all layers. Use it with a single `<link>`.
+- `dist/sysd.css`: one file containing all layers, styling the whole document. Use it with a single `<link>`.
+- `dist/sysd-scoped.css`: the same, with element styles scoped to `.sysd` containers, for pages shared with other systems.
 - `dist/css/*.css`: one file per layer, for projects that want only parts.
 - `dist/components/*.js`: web components as ES modules, usable without a build step.
 - Published as an npm package (the name is to be decided) and therefore also available from a CDN such as jsDelivr.
-- Consumers override sysd by putting their own CSS in a later layer, never by fighting specificity.
+- Consumers override sysd by putting their own CSS in a later layer than `sysd`, never by fighting specificity.
 
 ## How it is maintained
 
@@ -324,8 +362,8 @@ prototype/    explorations, not part of the package
 - Motion and animation are deferred until the static system is done.
 - Next: turn v3 into the structure above, in this order:
   1. the token files and `build-tokens.js`;
-  2. `src/css` split into layers;
+  2. `src/css` split into layers, all nested under `sysd`, with the scoped build;
   3. the component manifests and their schema;
   4. `check-html.js`;
-  5. the demo pages, rebuilt on `dist/sysd.css`;
+  5. the demo pages, rebuilt on `dist/sysd.css`, including the coexistence demo;
   6. the docs.

@@ -75,11 +75,12 @@ sysd/
 │   └── components/    The few web components (light DOM, ES modules)
 ├── scripts/           Zero-dependency Node scripts: build tokens, build docs, check HTML
 ├── demo/              Pages built only with sysd: foundations, components,
-│                      patterns, article, home
+│                      patterns, article, home, coexistence
 ├── docs/              Documentation site, generated from the manifests
 │   └── decisions/     Short records of design decisions and why they were made
 ├── dist/              Built output — never edited by hand
 │   ├── sysd.css         Everything in one file
+│   ├── sysd-scoped.css  The same, scoped to .sysd containers
 │   ├── css/             One file per layer
 │   ├── components/      Web components
 │   ├── tokens.json      Resolved token values
@@ -94,7 +95,21 @@ sysd/
 <link rel="stylesheet" href="dist/sysd.css">
 ```
 
-sysd uses global `sysd-` classes in cascade layers. It works in plain HTML and in any framework. To override it, put your own CSS in a later layer.
+sysd uses prefixed `sysd-` classes inside a single `sysd` cascade layer, so it works in plain HTML and in any framework. To override it, put your own CSS in a later layer.
+
+**On a page shared with another design system**, use the scoped build instead. sysd then styles only what is inside a `.sysd` container:
+
+```html
+<link rel="stylesheet" href="other-system.css">
+<link rel="stylesheet" href="dist/sysd-scoped.css">
+
+<div class="sysd">
+  …sysd here…
+  <div class="sysd-exclude">…another system or a widget here…</div>
+</div>
+```
+
+Any element with `sysd-scope` can also carry its own inputs (for example `style="--sysd-accent-hue: 250"`) and gets a fully recalculated system inside it. See "Coexistence" in [AGENTS.md](AGENTS.md).
 
 ## Licence
 
