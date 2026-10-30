@@ -25,7 +25,7 @@ It's called "sysd".
 Elegant, precise, cool, calm, poetic, typographic design excellence,
 typographic hierarchy, simplicity, columns of small text, modern-school Bauhaus, grid layouts, free-flowing columns.
 Modern design mannerisms, light greys contrasted with bold splashes of colour, love of type, boring but not boring, playful
-but academic, craftsmanship, Swiss design, Josef Müller-Brockmann.
+but academic, craftsmanship, Swiss design, Josef Müller-Brockmann. Large type shapes as decoration.
 
 ### Principles
 
@@ -482,14 +482,14 @@ prototype/       explorations, not part of the package
 
 ## Status and next steps
 
-- `prototype/v3` (`index.html` for the foundations, `patterns.html` for the section layouts) is the visual reference: the strict Müller-Brockmann direction the system is built on.
+- `prototype/v4` (`index.html` for the foundations, `patterns.html` for the section layouts) is the visual reference: the strict Müller-Brockmann direction the system is built on.
   - It is written with classes, not elements; the move to elements happens as part of the build-out.
   - `v1-strict` and `v2` are kept for reference. v2 holds the motion experiment.
 - Motion and animation are deferred until the static system is done.
 - Next, in this order:
   1. the token files and `build-tokens`;
   2. `src/css` split into layers, all nested under `sysd`, with the scoped build;
-  3. the CSS-only elements, ported from v3, and the generated placement CSS;
+  3. the CSS-only elements, ported from v4, and the generated placement CSS;
   4. a spike to prove the stack: Lit, a Zag machine and shadow DOM in one component (`<sysd-tabs>` or `<sysd-select>`), tested with VoiceOver and NVDA;
   5. the remaining interactive components;
   6. the manifests and their schema, `check-html` and `sysd-dev.js`;

@@ -161,6 +161,155 @@
   .composition__quote p::after { content: "”"; }
   .composition__body p + p { text-indent: 1em; }
 
+  /* -------------------------------------------- 08–11 poster sections */
+  .pattern-demo { margin-block-start: var(--sysd-space-4); }
+
+  /* Inks overprint: multiply on paper, screen on a dark ground (as .sysd-shape) */
+  .angle__band, .scale__glyphs > span { mix-blend-mode: multiply; }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) :is(.angle__band, .scale__glyphs > span) { mix-blend-mode: screen; }
+  }
+  :root[data-theme="dark"] :is(.angle__band, .scale__glyphs > span) { mix-blend-mode: screen; }
+
+  /* 08 Angle — one plate turned on one angle, a band crossing it */
+  .angle {
+    position: relative;
+    isolation: isolate;
+    overflow: clip;
+    align-content: end;
+    min-block-size: calc(var(--sysd-u) * 24);
+  }
+  .angle__plate {
+    position: absolute;
+    inset-inline-start: 50%;
+    inset-block-start: 44%;
+    inline-size: 170%;
+    translate: -50% -50%;
+    rotate: -30deg;
+    display: grid;
+    justify-items: center;
+    gap: var(--sysd-space-h);
+  }
+  .angle__alphabet { font-size: var(--sysd-fs-2); line-height: var(--sysd-lh-2); font-weight: 700; letter-spacing: 0.04em; }
+  .angle__title {
+    justify-self: stretch;
+    padding-block: var(--sysd-space-h);
+    background: var(--sysd-ink);
+    color: var(--sysd-paper);
+    text-align: center;
+    font-size: min(12vw, calc(var(--sysd-u) * 6));
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+  }
+  .angle__title span { margin-inline-start: 0.4em; font-size: 0.25em; font-weight: 500; letter-spacing: 0; vertical-align: top; }
+  .angle__line { font-size: var(--sysd-fs-2); line-height: var(--sysd-lh-2); }
+  .angle__numbers { letter-spacing: 0.6em; font-variant-numeric: tabular-nums; }
+  .angle__band {
+    position: absolute;
+    z-index: 1;
+    inset-inline-start: 58%;
+    inset-block-start: 50%;
+    inline-size: 250%;
+    block-size: calc(var(--sysd-u) * 4);
+    translate: -50% -50%;
+    rotate: 60deg;
+    background: var(--sysd-accent);
+    pointer-events: none;
+  }
+  .angle__caption { position: relative; z-index: 2; padding-block-start: var(--sysd-space-h); background: var(--sysd-paper); }
+
+  /* 09 Turn — a word up the side of the page, reading from the bottom */
+  .turn { align-items: end; }
+  .turn__word {
+    writing-mode: vertical-rl;
+    rotate: 180deg;
+    justify-self: start;
+    font-size: calc(var(--sysd-u) * 3.5);
+    line-height: 0.8;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .turn__bar {
+    align-self: stretch;
+    padding: var(--sysd-space-q);
+    background: var(--sysd-accent);
+    color: var(--sysd-on-accent);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+  .turn__text { display: grid; gap: var(--sysd-space-h); }
+  .turn__text .sysd-step-3 { font-weight: 700; }
+  .turn__place { margin-block-start: var(--sysd-space-1); padding-block-start: var(--sysd-space-h); box-shadow: inset 0 var(--sysd-stroke-strong) 0 var(--sysd-ink); }
+  @media (max-width: 39.99rem) { .turn__text { margin-block-start: var(--sysd-space-2); } }
+  @media (min-width: 40rem) { .turn__word { font-size: calc(var(--sysd-u) * 4.5); } }
+  @media (min-width: 64rem) { .turn__word { font-size: calc(var(--sysd-u) * 5.5); } }
+
+  /* 10 Scale — letters as large as forms, in the three inks */
+  /* Sized to the page, not to a container: container-type would switch off the subgrid */
+  .scale { row-gap: var(--sysd-space-2); align-items: start; }
+  .scale__glyphs {
+    display: flex;
+    font-size: min(38vw, 38rem);
+    line-height: 0.8;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .scale__glyphs > span:nth-child(1) { color: var(--sysd-accent); }
+  .scale__glyphs > span:nth-child(2) { margin-inline-start: -0.16em; color: var(--sysd-print-blue); }
+  .scale__glyphs > span:nth-child(3) { margin-inline-start: -0.14em; color: var(--sysd-print-yellow); translate: 0 0.12em; }
+  .scale__info { display: grid; gap: var(--sysd-space-1); padding-block-start: var(--sysd-space-h); box-shadow: inset 0 var(--sysd-stroke-strong) 0 var(--sysd-ink); }
+
+  /* 11 Mask — a layer of paper with black letters, blended with lighten:
+     the paper stays, the letters let the picture through. On a dark ground
+     the letters are white and the blend is darken. */
+  .mask { row-gap: var(--sysd-space-1); }
+  .mask__stage { grid-column: 1 / -1; position: relative; isolation: isolate; overflow: clip; container-type: inline-size; }
+  .mask__picture { position: absolute; inset: 0; aspect-ratio: auto; isolation: isolate; }
+  .mask__word {
+    position: relative;
+    background: var(--sysd-paper);
+    color: black;
+    mix-blend-mode: lighten;
+    font-size: 36cqi;
+    line-height: 0.82;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    text-transform: lowercase;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .mask__word { color: white; mix-blend-mode: darken; }
+  }
+  :root[data-theme="dark"] .mask__word { color: white; mix-blend-mode: darken; }
+
+  /* 12 Crop — letters larger than the section, cut off by its edges.
+     The page clips sideways overflow, so they can run to the viewport edge. */
+  .section.crop { padding-block-end: 0; overflow-y: clip; }
+  .crop__band {
+    grid-column: 1 / -1;
+    padding-block-start: var(--sysd-space-4);
+    background: var(--sysd-accent);
+    border-image: conic-gradient(var(--sysd-accent) 0 0) fill 0 / / 0 100vw;
+  }
+  .crop__top, .crop__bottom {
+    margin-inline-start: -0.06em;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+  /* In the section's own paper, standing on the baseline: with a line-height
+     of 1, Inter's baseline sits 0.137em above the box, so the letters run
+     into the paper below and become part of it */
+  .crop__top { margin-block-end: -0.14em; font-size: min(40vw, 40rem); color: var(--sysd-paper); }
+  .crop__rows { margin: 0; padding: 0; list-style: none; color: var(--sysd-accent); }
+  .crop__rows > li { padding-block: var(--sysd-space-h) var(--sysd-space-1); min-block-size: calc(var(--sysd-u) * 3); }
+  .crop__rows > li + li { box-shadow: inset 0 var(--sysd-stroke) 0 var(--sysd-hairline-strong); }
+  /* Sinks out of the section: only the top seven tenths of the x-height stay */
+  .crop__bottom { margin-block: var(--sysd-space-1) -0.3em; font-size: min(60vw, 60rem); color: var(--sysd-accent); }
+
   .poster-bg { fill: var(--sysd-surface); }
   .poster-accent { fill: var(--sysd-accent); }
   .poster-ink { fill: var(--sysd-ink); }

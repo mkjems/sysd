@@ -24,6 +24,11 @@
     <a href="#components">Components</a>
     <a href="#form">Form</a>
     <a href="#composition">Composition</a>
+    <a href="#angle">Angle</a>
+    <a href="#turn">Turn</a>
+    <a href="#scale">Scale</a>
+    <a href="#mask">Mask</a>
+    <a href="#crop">Crop</a>
     <a href="patterns.html">Patterns →</a>
   </nav>
   <div class="site-tools sysd-actions">
@@ -327,6 +332,113 @@
         <p>That is why this system has so few inputs. Choose a typeface and a reading size, and the rest follows: the line, the columns, the space, the scale. Change the inputs and everything moves together, as a single composition.</p>
       </div>
     </article>
+  </section>
+
+  <!-- 08 Angle -->
+  <section class="section sysd-asym sysd-rule" id="angle" aria-labelledby="angle-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">08</p>
+      <h2 id="angle-title">Angle</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">A whole plate turned on one angle, the way the Swiss posters did it. Nothing on the plate is rotated on its own: the plate turns, and everything on it keeps its order. A second band crosses it at the perpendicular and overprints.</p>
+    </div>
+
+    <div class="pattern-demo angle sysd-region">
+      <div class="angle__band" aria-hidden="true"></div>
+      <div class="angle__plate">
+        <p class="angle__alphabet" aria-hidden="true">ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+        <p class="angle__title">Rotation<span>−30°</span></p>
+        <p class="angle__line">One angle, chosen once, for the whole page.</p>
+        <p class="angle__numbers" aria-hidden="true">0123456789</p>
+      </div>
+      <p class="sysd-label sysd-span angle__caption" style="--span-md: 4; --span-lg: 3">The plate turns −30°; the band crosses it at +60°. The caption stays on the page’s own grid, so the composition still has a level to lean against.</p>
+    </div>
+  </section>
+
+  <!-- 09 Turn -->
+  <section class="section sysd-asym sysd-rule" id="turn" aria-labelledby="turn-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">09</p>
+      <h2 id="turn-title">Turn</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">A quarter turn. One word set up the side of the page, as tall as the section, reading from the bottom. It becomes a column of its own, and everything else lines up against it.</p>
+    </div>
+
+    <div class="pattern-demo turn sysd-region">
+      <p class="turn__word sysd-span" style="--span: 2; --span-md: 3; --span-lg: 3">Konkret</p>
+      <div class="turn__bar sysd-span" style="--start: 3; --span: 1; --start-md: 4; --span-md: 1; --start-lg: 5; --span-lg: 1" aria-hidden="true"><span>1957</span></div>
+      <div class="turn__text sysd-span" style="--start: 1; --span: 4; --start-md: 5; --span-md: 4; --start-lg: 7; --span-lg: 4">
+        <p class="sysd-step-3">Order without ornament</p>
+        <p class="sysd-label">Monday 5 October · 12:30–21:00 · Free entry</p>
+        <p>An exhibition of posters set on a grid of twelve columns: type, colour and space, and nothing else.</p>
+        <p class="sysd-label turn__place">Kunstgewerbemuseum, Zürich</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 Scale -->
+  <section class="section sysd-asym sysd-rule" id="scale" aria-labelledby="scale-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">10</p>
+      <h2 id="scale-title">Scale</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">Type so large it stops being read and starts being seen. The letters are printed in the three inks and overlap like the forms in 06: where they cross, the colours multiply into new ones.</p>
+    </div>
+
+    <div class="pattern-demo scale sysd-region">
+      <p class="scale__glyphs sysd-span" style="--span-lg: 10" aria-label="abc"><span>a</span><span>b</span><span>c</span></p>
+      <div class="scale__info sysd-span" style="--span-md: 4; --start-md: 5; --start-lg: 10; --span-lg: 3">
+        <p><b>Letters</b><br>A series of talks about type</p>
+        <p><b>Friday 15 July</b><br>From 18:00 to 23:00</p>
+        <p><b>Main lecture theatre</b><br>School of Design</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 Mask -->
+  <section class="section sysd-asym sysd-rule" id="mask" aria-labelledby="mask-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">11</p>
+      <h2 id="mask-title">Mask</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">Large type as a window. The letters are cut out of the paper and the picture shows through them. It is still live text: it can be selected, read aloud and translated.</p>
+    </div>
+
+    <div class="pattern-demo mask sysd-region">
+      <div class="mask__stage">
+        <div class="sysd-media sysd-media--duotone mask__picture" aria-hidden="true"><img src="img/mountains.jpg" width="2400" height="1200" alt="" style="--focus: 50% 75%"></div>
+        <p class="mask__word">Atlas</p>
+      </div>
+      <p class="sysd-label sysd-span mask__caption" style="--span-md: 4; --span-lg: 3">The word is a layer of paper with black letters, blended with <code>lighten</code>: the paper stays, the letters let the picture through. Anything can sit behind it — a photograph, a video, the forms from 06.</p>
+    </div>
+  </section>
+
+  <!-- 12 Crop -->
+  <section class="section sysd-asym sysd-negative sysd-bleed-paper crop" id="crop" aria-labelledby="crop-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">12</p>
+      <h2 id="crop-title">Crop</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">Letters larger than the space they are given. The section cuts them off, and the cut makes new shapes: a word standing on its own ground, a word sinking out of the page. What is left is still enough to read.</p>
+    </div>
+
+    <div class="pattern-demo crop__poster sysd-region">
+      <div class="crop__band">
+        <p class="crop__top">the</p>
+      </div>
+      <ul class="crop__rows sysd-region">
+        <li class="sysd-region"><p class="sysd-span" style="--span-md: 4; --span-lg: 4">an evening with the grid<br>twelve columns tour</p></li>
+        <li class="sysd-region"><p class="sysd-span" style="--start-md: 5; --span-md: 4; --start-lg: 10; --span-lg: 3">at the kunsthalle<br>basel, switzerland</p></li>
+        <li class="sysd-region"><p class="sysd-span" style="--start-md: 3; --span-md: 4; --start-lg: 5; --span-lg: 4">tuesday 8 pm / 22 october<br>free entry, all welcome</p></li>
+        <li class="sysd-region"><p class="sysd-span" style="--span-md: 4; --span-lg: 4">first appearance in years<br>no tickets needed</p></li>
+      </ul>
+      <p class="crop__bottom">grid</p>
+    </div>
   </section>
 
 </main>
