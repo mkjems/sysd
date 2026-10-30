@@ -68,48 +68,101 @@ sysd/
 ├── tokens/            Source of truth: design tokens in the W3C DTCG format
 │   ├── primitive.tokens.json   Inputs and the scales calculated from them
 │   └── semantic.tokens.json    Roles: paper, ink, accent, gutter, margin…
-├── manifests/         One JSON file per component: classes, modifiers, allowed
-│                      values, accessibility rules (+ component.schema.json)
+├── manifests/         One JSON file per component: attributes, allowed values,
+│                      children, accessibility rules (+ component.schema.json)
 ├── src/
-│   ├── css/           reset, base, layout and one file per component
-│   └── components/    The few web components (light DOM, ES modules)
-├── scripts/           Zero-dependency Node scripts: build tokens, build docs, check HTML
+│   ├── css/           reset, base, layout, and elements/ for the CSS-only elements
+│   ├── components/    Interactive components, one folder each (Lit source, styles, tests)
+│   └── controllers/   Shared Lit controllers, including the one that drives Zag
+├── scripts/           Build tokens, placement CSS and docs; check HTML
 ├── demo/              Pages built only with sysd: foundations, components,
 │                      patterns, article, home, coexistence
 ├── docs/              Documentation site, generated from the manifests
 │   └── decisions/     Short records of design decisions and why they were made
 ├── dist/              Built output — never edited by hand
-│   ├── sysd.css         Everything in one file
-│   ├── sysd-scoped.css  The same, scoped to .sysd containers
-│   ├── css/             One file per layer
-│   ├── components/      Web components
-│   ├── tokens.json      Resolved token values
-│   ├── custom-elements.json
-│   └── sysd.md          Compact guide for AI authors
+│   ├── sysd.css           Tokens, base and every CSS-only element
+│   ├── sysd-scoped.css    The same, scoped to <sysd-scope>
+│   ├── sysd.js            Registers every interactive component
+│   ├── components/        One ES module per interactive component
+│   ├── sysd-dev.js        Dev-mode accessibility and usage audit
+│   ├── custom-elements.json, html-custom-data.json, tokens.json
+│   └── sysd.md            Compact guide for AI authors
 └── prototype/         Kept as the sketchbook
 ```
 
 ## Using sysd (once built)
 
+Everything in sysd is an element: `<sysd-section>`, `<sysd-grid>`, `<sysd-media>`, `<sysd-button>`, `<sysd-input>`… You configure it with attributes. There is one vocabulary to learn.
+
 ```html
+<!-- Required: tokens, the grid, and every layout and content element -->
 <link rel="stylesheet" href="dist/sysd.css">
+
+<!-- Interactive components: all of them, or only the ones a page uses -->
+<script type="module" src="dist/sysd.js"></script>
+<!-- or -->
+<script type="module" src="dist/components/sysd-button.js"></script>
+<script type="module" src="dist/components/sysd-input.js"></script>
 ```
 
-sysd uses prefixed `sysd-` classes inside a single `sysd` cascade layer, so it works in plain HTML and in any framework. To override it, put your own CSS in a later layer.
+```html
+<sysd-page>
+  <main>
+    <sysd-section layout="aside" rule>
+      <sysd-aside><sysd-text step="2"><h2>Journal</h2></sysd-text></sysd-aside>
 
-**On a page shared with another design system**, use the scoped build instead. sysd then styles only what is inside a `.sysd` container:
+      <sysd-main>
+        <sysd-figure caption="aside">
+          <sysd-media ratio="wide">
+            <img src="lake.jpg" alt="A dark lake between steep green hills">
+          </sysd-media>
+          <figcaption>Nine columns, 16 : 9.</figcaption>
+        </sysd-figure>
+
+        <sysd-prose>
+          <p>Running text is plain HTML: paragraphs, headings, lists and links.</p>
+        </sysd-prose>
+      </sysd-main>
+    </sysd-section>
+
+    <sysd-section tone="night" bleed>
+      <form>
+        <sysd-input type="email" name="email" label="Email" hint="The newsletter, four times a year" required></sysd-input>
+        <sysd-button variant="accent" type="submit">Subscribe</sysd-button>
+      </form>
+    </sysd-section>
+  </main>
+</sysd-page>
+```
+
+**Two kinds of element, one way of using them.**
+
+- **Layout and content elements** (`<sysd-section>`, `<sysd-grid>`, `<sysd-media>`, `<sysd-card>`, `<sysd-prose>` and others) are CSS only. They need no JavaScript, so articles and images always render, even before any script has loaded.
+- **Interactive components** (`<sysd-button>`, `<sysd-input>`, `<sysd-select>`, `<sysd-dialog>`, `<sysd-tabs>` and others) are built with [Lit](https://lit.dev). They wrap real native elements, so the browser's keyboard, focus, form and screen-reader behaviour is kept. The hard ones (select, menu, tabs, tooltip) get their behaviour from [Zag.js](https://zagjs.com), a well-tested headless library.
+
+**Accessibility is built in.**
+- Form controls connect their label, hint and error themselves.
+- Dialogs, menus and tabs handle focus and the keyboard.
+- Tones always come with readable ink.
+- Load `dist/sysd-dev.js` while building a page, and it warns about missing labels, missing alt text and misused elements.
+
+**Grid placement** uses one attribute per property, with a value per screen size: `span="4 md:8 lg:6"` means 4 columns on a phone, 8 on a tablet, 6 on a desktop.
+
+**Overriding.** sysd lives in a single `sysd` cascade layer, so it works in plain HTML and in any framework. To override it, put your own CSS in a later layer, or style a component's parts with `::part()`.
+
+**On a page shared with another design system**, use the scoped build. sysd then styles only what is inside a `<sysd-scope>`:
 
 ```html
 <link rel="stylesheet" href="other-system.css">
 <link rel="stylesheet" href="dist/sysd-scoped.css">
 
-<div class="sysd">
+<sysd-scope>
   …sysd here…
-  <div class="sysd-exclude">…another system or a widget here…</div>
-</div>
+  <sysd-exclude>…another system or a widget here…</sysd-exclude>
+</sysd-scope>
 ```
 
-Any element with `sysd-scope` can also carry its own inputs (for example `style="--sysd-accent-hue: 250"`) and gets a fully recalculated system inside it. See "Coexistence" in [AGENTS.md](AGENTS.md).
+A `<sysd-scope>` can also carry its own inputs, for example `<sysd-scope style="--sysd-accent-hue: 250">`, and everything inside it is recalculated from them. See "Coexistence" in [AGENTS.md](AGENTS.md).
 
 ## Licence
 
