@@ -1,0 +1,744 @@
+/* =====================================================================
+   sysd — foundations
+   Built on the grid principles of Josef Müller-Brockmann, adapted for
+   a page that scrolls and a screen of any size.
+
+   Everything is measured in lines. One line (--sysd-u) is the body text
+   size multiplied by its leading. Margins, gutters, spacing, control
+   heights and the leading of every heading derive from it.
+
+   Only the values under "Inputs" are chosen by hand.
+   ===================================================================== */
+
+@layer reset, tokens, base, layout, components;
+
+/* --------------------------------------------------------------- reset */
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; }
+  * { margin: 0; }
+  img, svg, video { display: block; max-inline-size: 100%; }
+  input, button, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  fieldset { border: 0; padding: 0; min-inline-size: 0; }
+  legend { padding: 0; }
+}
+
+/* -------------------------------------------------------------- tokens */
+@layer tokens {
+  :root {
+    /* Inputs — the only values chosen by hand */
+    --sysd-size: clamp(0.9375rem, 0.875rem + 0.2vw, 1.0625rem); /* body text size */
+    --sysd-leading: 1.5;                                         /* body leading */
+    --sysd-ratio-max: 1.2;                                       /* type scale ratio on wide screens */
+    --sysd-accent-hue: 29;                                  /* OKLCH hue of the accent */
+    --sysd-radius: 0px;
+    --sysd-font: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --sysd-font-mono: "IBM Plex Mono", ui-monospace, monospace;
+    --sysd-paper-light: oklch(0.985 0.004 90);                   /* the page in the light theme */
+    --sysd-paper-dark: oklch(0.235 0.012 270);                   /* the page in the dark theme — dark, not black */
+
+    /* The line — the module everything is measured in. A whole number of
+       pixels, so it never accumulates rounding errors down a long page. */
+    --sysd-u: round(calc(var(--sysd-size) * var(--sysd-leading)), 1px);
+    --sysd-grain: calc(var(--sysd-u) / 4); /* finest step heading leading snaps to */
+
+    /* Space — whole lines, plus a half and a quarter for tight spots */
+    --sysd-space-q: var(--sysd-grain);
+    --sysd-space-h: calc(var(--sysd-u) / 2);
+    --sysd-space-1: var(--sysd-u);
+    --sysd-space-2: calc(var(--sysd-u) * 2);
+    --sysd-space-3: calc(var(--sysd-u) * 3);
+    --sysd-space-4: calc(var(--sysd-u) * 4);
+    --sysd-space-6: calc(var(--sysd-u) * 6);
+    --sysd-space-8: calc(var(--sysd-u) * 8);
+
+    /* Grid — columns and margins grow with the viewport; the gutter is always one line */
+    --sysd-columns: 4;
+    --sysd-gutter: var(--sysd-u);
+    --sysd-margin: var(--sysd-u);
+    --sysd-max-width: 100rem;
+
+    /* Type scale — small screens use a gentler share of the ratio */
+    --sysd-ratio-k: 0.75;
+    --sysd-ratio: calc(1 + (var(--sysd-ratio-max) - 1) * var(--sysd-ratio-k));
+    --sysd-fs--1: calc(var(--sysd-size) / var(--sysd-ratio));
+    --sysd-fs-0: var(--sysd-size);
+    --sysd-fs-1: calc(var(--sysd-size) * var(--sysd-ratio));
+    --sysd-fs-2: calc(var(--sysd-size) * pow(var(--sysd-ratio), 2));
+    --sysd-fs-3: calc(var(--sysd-size) * pow(var(--sysd-ratio), 3));
+    --sysd-fs-4: calc(var(--sysd-size) * pow(var(--sysd-ratio), 4));
+    --sysd-fs-5: calc(var(--sysd-size) * pow(var(--sysd-ratio), 5));
+    --sysd-fs-6: calc(var(--sysd-size) * pow(var(--sysd-ratio), 6));
+    --sysd-fs-7: calc(var(--sysd-size) * pow(var(--sysd-ratio), 7));
+
+    /* Leading — text sits on whole lines; headings tighten as they grow,
+       rounded up to the grain so they never fall off the rhythm */
+    --sysd-lh--1: var(--sysd-u);
+    --sysd-lh-0: var(--sysd-u);
+    --sysd-lh-1: round(up, calc(var(--sysd-fs-1) * 1.25), var(--sysd-grain));
+    --sysd-lh-2: round(up, calc(var(--sysd-fs-2) * 1.2), var(--sysd-grain));
+    --sysd-lh-3: round(up, calc(var(--sysd-fs-3) * 1.15), var(--sysd-grain));
+    --sysd-lh-4: round(up, calc(var(--sysd-fs-4) * 1.1), var(--sysd-grain));
+    --sysd-lh-5: round(up, calc(var(--sysd-fs-5) * 1.05), var(--sysd-grain));
+    --sysd-lh-6: round(up, calc(var(--sysd-fs-6) * 1), var(--sysd-grain));
+    --sysd-lh-7: round(up, calc(var(--sysd-fs-7) * 0.95), var(--sysd-grain));
+
+    /* Controls — two lines on touch screens, one and a half with a mouse */
+    --sysd-control: calc(var(--sysd-u) * 2);
+    --sysd-target: calc(var(--sysd-u) * 2);
+    --sysd-control-snap: calc(round(up, var(--sysd-control), var(--sysd-u)) - var(--sysd-control));
+    /* Rows of controls repeat at this whole-line pitch, with at least a quarter line between them */
+    --sysd-control-pitch: round(up, calc(var(--sysd-control) + var(--sysd-space-q)), var(--sysd-u));
+
+    /* Strokes and motion */
+    --sysd-stroke: 1px;
+    --sysd-stroke-strong: 2px;
+    --sysd-duration: 160ms;
+    --sysd-ease: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Colour — paper and ink, one accent. light-dark() follows color-scheme. */
+    color-scheme: light dark;
+    --sysd-ink: light-dark(oklch(0.18 0.01 270), oklch(0.95 0.005 90));
+    --sysd-ink-muted: light-dark(oklch(0.46 0.01 270), oklch(0.72 0.01 270));
+    --sysd-hairline: light-dark(oklch(0.18 0.01 270 / 0.14), oklch(0.95 0.005 90 / 0.16));
+    --sysd-hairline-strong: light-dark(oklch(0.18 0.01 270 / 0.42), oklch(0.95 0.005 90 / 0.42));
+    --sysd-accent: light-dark(oklch(0.56 0.21 var(--sysd-accent-hue)), oklch(0.68 0.19 var(--sysd-accent-hue)));
+    --sysd-on-accent: light-dark(oklch(0.99 0 0), oklch(0.15 0.01 270));
+    /* Process inks for overprinted forms. The accent is the first; the other
+       two are fixed so overlaps always mix into new colours. */
+    --sysd-print-yellow: light-dark(oklch(0.9 0.16 95), oklch(0.52 0.12 95));
+    --sysd-print-blue: light-dark(oklch(0.62 0.15 250), oklch(0.42 0.15 250));
+    --sysd-danger: light-dark(oklch(0.5 0.19 25), oklch(0.7 0.17 25));
+    --sysd-focus: var(--sysd-accent);
+  }
+
+  /* Paper and the surfaces made from it. Declared again wherever a section
+     changes its paper (.sysd-negative and its tones), because a custom
+     property is resolved once, where it is declared. */
+  :root,
+  .sysd-negative {
+    --sysd-paper: light-dark(var(--sysd-paper-light), var(--sysd-paper-dark));
+    --sysd-surface: light-dark(
+      color-mix(in oklch, var(--sysd-paper-light), black 3%),
+      color-mix(in oklch, var(--sysd-paper-dark), white 5%)
+    );
+    --sysd-field: light-dark(
+      color-mix(in oklch, var(--sysd-paper-light), white 85%),
+      color-mix(in oklch, var(--sysd-paper-dark), white 3%)
+    );
+  }
+
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+
+  @media (pointer: fine) {
+    :root {
+      --sysd-control: calc(var(--sysd-u) * 1.5);
+      --sysd-target: var(--sysd-u);
+    }
+  }
+
+  @media (min-width: 40rem) {
+    :root {
+      --sysd-columns: 8;
+      --sysd-margin: calc(var(--sysd-u) * 2);
+      --sysd-ratio-k: 0.875;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    :root {
+      --sysd-columns: 12;
+      --sysd-margin: calc(var(--sysd-u) * 3);
+      --sysd-ratio-k: 1;
+    }
+  }
+
+  /* Browsers without pow() / round(): a fixed scale, no snapping */
+  @supports not ((width: round(up, 1.5px, 1px)) and (width: calc(1px * pow(2, 2)))) {
+    :root {
+      --sysd-u: calc(var(--sysd-size) * var(--sysd-leading));
+      --sysd-fs--1: 0.833rem;
+      --sysd-fs-1: 1.2rem;
+      --sysd-fs-2: 1.44rem;
+      --sysd-fs-3: 1.728rem;
+      --sysd-fs-4: 2.074rem;
+      --sysd-fs-5: 2.488rem;
+      --sysd-fs-6: 2.986rem;
+      --sysd-fs-7: 3.583rem;
+      --sysd-lh-1: calc(var(--sysd-fs-1) * 1.25);
+      --sysd-lh-2: calc(var(--sysd-fs-2) * 1.2);
+      --sysd-lh-3: calc(var(--sysd-fs-3) * 1.15);
+      --sysd-lh-4: calc(var(--sysd-fs-4) * 1.1);
+      --sysd-lh-5: calc(var(--sysd-fs-5) * 1.05);
+      --sysd-lh-6: var(--sysd-fs-6);
+      --sysd-lh-7: calc(var(--sysd-fs-7) * 0.95);
+      --sysd-control-snap: 0px;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------- base */
+@layer base {
+  html {
+    background: var(--sysd-paper);
+    color: var(--sysd-ink);
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    overflow-x: clip; /* full-bleed images reach the viewport edge without a sideways scroll */
+    font-family: var(--sysd-font);
+    font-size: var(--sysd-fs-0);
+    line-height: var(--sysd-lh-0);
+    font-optical-sizing: auto;
+    font-kerning: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    hanging-punctuation: first allow-end last;
+  }
+
+  /* Type steps. Headings map onto the scale; classes let any element use it. */
+  h4, h5, h6, .sysd-step-0 { --_fs: var(--sysd-fs-0); --_lh: var(--sysd-lh-0); }
+  .sysd-step--1 { --_fs: var(--sysd-fs--1); --_lh: var(--sysd-lh--1); }
+  h3, .sysd-step-1 { --_fs: var(--sysd-fs-1); --_lh: var(--sysd-lh-1); --_track: -0.005em; }
+  .sysd-step-2 { --_fs: var(--sysd-fs-2); --_lh: var(--sysd-lh-2); --_track: -0.01em; }
+  h2, .sysd-step-3 { --_fs: var(--sysd-fs-3); --_lh: var(--sysd-lh-3); --_track: -0.015em; }
+  .sysd-step-4 { --_fs: var(--sysd-fs-4); --_lh: var(--sysd-lh-4); --_track: -0.02em; }
+  h1, .sysd-step-5 { --_fs: var(--sysd-fs-5); --_lh: var(--sysd-lh-5); --_track: -0.025em; }
+  .sysd-step-6 { --_fs: var(--sysd-fs-6); --_lh: var(--sysd-lh-6); --_track: -0.03em; }
+  .sysd-step-7 { --_fs: var(--sysd-fs-7); --_lh: var(--sysd-lh-7); --_track: -0.035em; }
+
+  :is(h1, h2, h3, h4, h5, h6, [class*="sysd-step-"]) {
+    font-size: var(--_fs);
+    line-height: var(--_lh);
+    letter-spacing: var(--_track, 0);
+  }
+
+  h1, h2, h3, h4, h5, h6 { font-weight: 600; text-wrap: balance; }
+  .sysd-step-6, .sysd-step-7 { font-weight: 700; }
+
+  /* Snap: headings and display type are rounded up to whole lines, so the
+     text after them lands back on the grid. This is the rule; .sysd-free
+     is how you break it on purpose. calc-size() snaps any number of lines;
+     without it, the fallback is only exact for one-line headings. */
+  :is(h1, h2, h3, h4, h5, h6, [class*="sysd-step-"]):not(.sysd-free) {
+    margin-block-end: calc(round(up, var(--_lh), var(--sysd-u)) - var(--_lh));
+  }
+  @supports (block-size: calc-size(auto, size)) {
+    :is(h1, h2, h3, h4, h5, h6, [class*="sysd-step-"]):not(.sysd-free),
+    .sysd-snap {
+      margin-block-end: 0;
+      block-size: calc-size(auto, round(up, size, var(--sysd-u)));
+    }
+  }
+
+  p, li, figcaption, blockquote { text-wrap: pretty; hyphens: auto; }
+  /* Display sizes are never hyphenated */
+  :is(.sysd-step-1, .sysd-step-2, .sysd-step-3, .sysd-step-4, .sysd-step-5, .sysd-step-6, .sysd-step-7),
+  :is(.sysd-step-1, .sysd-step-2, .sysd-step-3, .sysd-step-4, .sysd-step-5, .sysd-step-6, .sysd-step-7) * { hyphens: manual; }
+  strong, b { font-weight: 600; }
+
+  a {
+    color: inherit;
+    text-decoration-line: underline;
+    text-decoration-thickness: max(1px, 0.06em);
+    text-underline-offset: 0.2em;
+    text-decoration-color: color-mix(in oklch, currentColor 35%, transparent);
+    transition: text-decoration-color var(--sysd-duration) var(--sysd-ease);
+  }
+  a:hover { text-decoration-color: var(--sysd-accent); }
+
+  :focus-visible { outline: var(--sysd-stroke-strong) solid var(--sysd-focus); outline-offset: 2px; }
+  ::selection { background: var(--sysd-accent); color: var(--sysd-on-accent); }
+
+  /* line-height: 1 stops a second typeface from pushing the line box open */
+  code, kbd, samp { font-family: var(--sysd-font-mono); font-size: 0.875em; line-height: 1; }
+  kbd {
+    padding-inline: 0.35em;
+    border-radius: var(--sysd-radius);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong);
+  }
+
+  /* A rule takes one line and draws itself through the middle of it */
+  hr {
+    border: 0;
+    block-size: var(--sysd-u);
+    background: linear-gradient(var(--sysd-hairline), var(--sysd-hairline)) center / 100% 1px no-repeat;
+  }
+
+  /* Text helpers */
+  .sysd-label {
+    font-size: var(--sysd-fs--1);
+    line-height: var(--sysd-lh--1);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--sysd-ink-muted);
+  }
+  .sysd-muted { color: var(--sysd-ink-muted); }
+  .sysd-accent { color: var(--sysd-accent); }
+  .sysd-num { font-variant-numeric: tabular-nums; }
+  .sysd-flow > * + * { margin-block-start: var(--sysd-space-1); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { transition-duration: 0s !important; animation-duration: 0s !important; }
+  }
+}
+
+/* -------------------------------------------------------------- layout */
+@layer layout {
+  /* The page grid */
+  .sysd-page {
+    display: grid;
+    grid-template-columns: repeat(var(--sysd-columns), minmax(0, 1fr));
+    column-gap: var(--sysd-gutter);
+    align-content: start;
+    inline-size: 100%;
+    max-inline-size: var(--sysd-max-width);
+    margin-inline: auto;
+    padding-inline: var(--sysd-margin);
+  }
+  .sysd-page > * { grid-column: 1 / -1; }
+
+  /* A region spans its parent and passes the columns down */
+  .sysd-region,
+  .sysd-cols,
+  .sysd-asym {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-content: start;
+  }
+  .sysd-region > * { grid-column: 1 / -1; }
+
+  /* Free placement: --span / --start, with -md and -lg overrides.
+     Spans larger than the available columns are clamped inside a subgrid. */
+  .sysd-span { grid-column: var(--start, auto) / span var(--span, 4); }
+
+  /* Equal columns: children span --sm / --md / --lg columns */
+  .sysd-cols { row-gap: var(--sysd-space-2); }
+  .sysd-cols > * { grid-column: span var(--sm, 4); }
+
+  /* The asymmetric layout: a narrow column for labels, a wide one for content.
+     Below desktop width the two stack into a single reading column. */
+  .sysd-asym > * { grid-column: 1 / -1; }
+  .sysd-asym > .sysd-aside { margin-block-end: var(--sysd-space-2); }
+  .sysd-asym > .sysd-main {
+    display: grid;
+    grid-template-columns: subgrid;
+    align-content: start;
+  }
+  .sysd-main > * { grid-column: 1 / -1; }
+
+  /* A comfortable measure for running text, still ending on a column line.
+     (Media queries, not container queries: size containment would stop
+     the main column from being a subgrid.) */
+  @media (min-width: 64rem) { .sysd-main > .sysd-measure { grid-column: 1 / span 7; } }
+  @media (min-width: 80rem) { .sysd-main > .sysd-measure { grid-column: 1 / span 6; } }
+
+  @media (min-width: 40rem) {
+    .sysd-span {
+      grid-column: var(--start-md, var(--start, auto)) / span var(--span-md, var(--span, 8));
+    }
+    .sysd-cols > * { grid-column: span var(--md, 4); }
+  }
+
+  @media (min-width: 64rem) {
+    .sysd-span {
+      grid-column:
+        var(--start-lg, var(--start-md, var(--start, auto))) /
+        span var(--span-lg, var(--span-md, var(--span, 12)));
+    }
+    .sysd-cols > * { grid-column: span var(--lg, 4); }
+    .sysd-asym > .sysd-aside { grid-column: 1 / span 3; margin-block-end: 0; }
+    .sysd-asym > .sysd-main { grid-column: 4 / -1; }
+  }
+
+  /* Two text columns that sit exactly on the grid when they span an even number of columns */
+  @media (min-width: 40rem) {
+    .sysd-text-columns { columns: 2; column-gap: var(--sysd-gutter); }
+  }
+
+  /* However many rows it wraps to, a row of actions is a whole number of lines */
+  .sysd-actions {
+    --_air: calc(var(--sysd-control-pitch) - var(--sysd-control));
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: center;
+    gap: var(--_air) var(--sysd-space-h);
+    padding-block: calc(var(--_air) / 2);
+  }
+  @supports (block-size: calc-size(auto, size)) {
+    .sysd-actions { block-size: calc-size(auto, round(up, size, var(--sysd-u))); }
+  }
+}
+
+/* -------------------------------------------------------- fields, bleed */
+@layer layout {
+  /* Modular fields: the columns, cut into rows of --field lines. Blocks
+     span whole fields (--rows, -md, -lg) as well as whole columns, so
+     images and text in a gallery share both edges. */
+  .sysd-fields {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-auto-rows: calc(var(--sysd-u) * var(--field, 3));
+    row-gap: var(--sysd-gutter);
+  }
+  .sysd-fields > * { grid-row: span var(--rows, 2); }
+  @media (min-width: 40rem) {
+    .sysd-fields > * { grid-row: span var(--rows-md, var(--rows, 2)); }
+  }
+  @media (min-width: 64rem) {
+    .sysd-fields > * { grid-row: span var(--rows-lg, var(--rows-md, var(--rows, 2))); }
+  }
+
+  /* Out of the grid to both edges of the viewport */
+  .sysd-bleed {
+    inline-size: auto;
+    margin-inline: calc(50% - 50vw);
+  }
+}
+
+/* ---------------------------------------------------------- components */
+@layer components {
+  /* Button */
+  .sysd-button {
+    --_bg: var(--sysd-ink);
+    --_fg: var(--sysd-paper);
+    --_ring: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sysd-space-h);
+    block-size: var(--sysd-control);
+    padding-inline: var(--sysd-space-1);
+    border: 0;
+    border-radius: var(--sysd-radius);
+    background: var(--_bg);
+    color: var(--_fg);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--_ring);
+    font-size: var(--sysd-fs-0);
+    line-height: var(--sysd-u);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    touch-action: manipulation;
+    user-select: none;
+    transition:
+      background-color var(--sysd-duration) var(--sysd-ease),
+      color var(--sysd-duration) var(--sysd-ease),
+      box-shadow var(--sysd-duration) var(--sysd-ease);
+  }
+  .sysd-button:hover { --_bg: color-mix(in oklch, var(--sysd-ink) 82%, var(--sysd-paper)); }
+  .sysd-button:active { translate: 0 1px; }
+
+  .sysd-button--accent { --_bg: var(--sysd-accent); --_fg: var(--sysd-on-accent); }
+  .sysd-button--accent:hover { --_bg: color-mix(in oklch, var(--sysd-accent) 86%, var(--sysd-ink)); }
+
+  .sysd-button--outline { --_bg: transparent; --_fg: var(--sysd-ink); --_ring: var(--sysd-ink); }
+  .sysd-button--outline:hover { --_bg: var(--sysd-surface); }
+
+  .sysd-button--quiet { --_bg: transparent; --_fg: var(--sysd-ink); padding-inline: var(--sysd-space-h); }
+  .sysd-button--quiet:hover { --_bg: var(--sysd-surface); }
+
+  .sysd-button--compact {
+    block-size: max(var(--sysd-u), var(--sysd-target));
+    padding-inline: var(--sysd-space-h);
+    font-size: var(--sysd-fs--1);
+  }
+
+  .sysd-button:disabled,
+  .sysd-button[aria-disabled="true"] { opacity: 0.4; cursor: not-allowed; translate: none; }
+
+  /* Field: label, control, hint — the control's fraction of a line is
+     given back as margin so the field as a whole is a whole number of lines */
+  .sysd-field { display: grid; align-content: start; }
+  .sysd-field__label { font-size: var(--sysd-fs--1); line-height: var(--sysd-u); font-weight: 600; }
+  .sysd-field__hint { font-size: var(--sysd-fs--1); line-height: var(--sysd-u); color: var(--sysd-ink-muted); }
+  .sysd-field__hint--error { color: var(--sysd-danger); }
+  .sysd-field > :is(.sysd-input, .sysd-select) { margin-block-end: var(--sysd-control-snap); }
+
+  .sysd-input,
+  .sysd-select,
+  .sysd-textarea {
+    inline-size: 100%;
+    block-size: var(--sysd-control);
+    padding-inline: var(--sysd-space-h);
+    border: 0;
+    border-radius: var(--sysd-radius);
+    background-color: var(--sysd-field);
+    color: var(--sysd-ink);
+    box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-hairline-strong);
+    line-height: var(--sysd-u);
+    transition: box-shadow var(--sysd-duration) var(--sysd-ease);
+  }
+  .sysd-input:hover,
+  .sysd-select:hover,
+  .sysd-textarea:hover { box-shadow: inset 0 0 0 var(--sysd-stroke) var(--sysd-ink); }
+  .sysd-input::placeholder,
+  .sysd-textarea::placeholder { color: var(--sysd-ink-muted); opacity: 1; }
+  :is(.sysd-input, .sysd-select, .sysd-textarea)[aria-invalid="true"] {
+    box-shadow: inset 0 0 0 var(--sysd-stroke-strong) var(--sysd-danger);
+  }
+
+  .sysd-textarea {
+    block-size: auto;
+    min-block-size: calc(var(--sysd-u) * 4);
+    padding-block: var(--sysd-space-h);
+    resize: vertical;
+    field-sizing: content;
+  }
+
+  /* Select: a native select with a drawn chevron … */
+  .sysd-select {
+    appearance: none;
+    padding-inline-end: var(--sysd-space-2);
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - var(--sysd-space-1) + 1px) 52%,
+      calc(100% - var(--sysd-space-1) + 6px) 52%;
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  /* … and, where the browser supports it, a fully styled one */
+  @supports (appearance: base-select) {
+    .sysd-select,
+    .sysd-select::picker(select) { appearance: base-select; }
+    .sysd-select {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-inline-end: var(--sysd-space-h);
+      background-image: none;
+    }
+    .sysd-select::picker-icon {
+      color: var(--sysd-ink-muted);
+      transition: rotate var(--sysd-duration) var(--sysd-ease);
+    }
+    .sysd-select:open::picker-icon { rotate: 180deg; }
+    .sysd-select::picker(select) {
+      margin-block: var(--sysd-space-q);
+      padding-block: var(--sysd-space-q);
+      border: 0;
+      border-radius: var(--sysd-radius);
+      background: var(--sysd-paper);
+      color: var(--sysd-ink);
+      box-shadow:
+        inset 0 0 0 var(--sysd-stroke) var(--sysd-ink),
+        0 var(--sysd-space-q) var(--sysd-space-1) oklch(0 0 0 / 0.12);
+    }
+    .sysd-select option {
+      min-block-size: var(--sysd-control);
+      padding-inline: var(--sysd-space-h);
+      gap: var(--sysd-space-h);
+      line-height: var(--sysd-u);
+    }
+    .sysd-select option:is(:hover, :focus-visible) { background: var(--sysd-surface); outline: 0; }
+    .sysd-select option:checked { font-weight: 600; }
+    .sysd-select option::checkmark { color: var(--sysd-accent); }
+  }
+
+  /* Checkbox and radio: native controls, tinted and sized to the line */
+  .sysd-check {
+    display: flex;
+    align-items: center;
+    gap: var(--sysd-space-h);
+    min-block-size: var(--sysd-target);
+    line-height: var(--sysd-u);
+    cursor: pointer;
+  }
+  .sysd-check input {
+    flex: none;
+    inline-size: calc(var(--sysd-u) * 0.62);
+    block-size: calc(var(--sysd-u) * 0.62);
+    margin: 0;
+    accent-color: var(--sysd-accent);
+    cursor: pointer;
+  }
+  .sysd-fieldset > legend { font-size: var(--sysd-fs--1); line-height: var(--sysd-u); font-weight: 600; }
+
+  /* Card: Swiss-style — a strong rule above, no box */
+  .sysd-card {
+    display: grid;
+    align-content: start;
+    box-shadow: inset 0 var(--sysd-stroke-strong) 0 var(--sysd-ink);
+  }
+  /* Text runs on without gaps so every line stays on the grid; an action at the end gets a line of air */
+  .sysd-card > :last-child:is(a, .sysd-actions) { margin-block-start: var(--sysd-space-1); }
+  .sysd-card--filled {
+    padding: var(--sysd-space-1);
+    border-radius: var(--sysd-radius);
+    background: var(--sysd-surface);
+    box-shadow: none;
+  }
+}
+
+/* ---------------------------------------------------------------- rule */
+/* A strong rule across the top */
+@layer components {
+  .sysd-rule {
+    background: linear-gradient(var(--sysd-ink), var(--sysd-ink)) 0 0 / 100% var(--sysd-stroke-strong) no-repeat;
+  }
+}
+
+/* ----------------------------------------------------------- overprint */
+/* Large forms printed over a section like transparent inks. Each form is
+   placed on the section's own column lines (--start / --span, with -md and
+   -lg) and a whole number of lines from its top (--top, -md, -lg).
+   Multiply on paper; on a dark ground the same idea is screen — light adds. */
+@layer components {
+  .sysd-overprint {
+    position: relative;
+    isolation: isolate;
+    overflow-y: clip;
+  }
+  .sysd-shape {
+    --_ink: var(--shape-ink, var(--sysd-accent));
+    --_shape: inset(0);
+    position: absolute;
+    z-index: 1;
+    grid-column: var(--start, 1) / span var(--span, 2);
+    inset-inline: 0;
+    inset-block-start: calc(var(--top, 0) * var(--sysd-u));
+    aspect-ratio: var(--ratio, 1);
+    background: var(--_ink);
+    clip-path: var(--_shape);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+  }
+  @media (min-width: 40rem) {
+    .sysd-shape {
+      grid-column: var(--start-md, var(--start, 1)) / span var(--span-md, var(--span, 2));
+      inset-block-start: calc(var(--top-md, var(--top, 0)) * var(--sysd-u));
+      aspect-ratio: var(--ratio-md, var(--ratio, 1));
+    }
+  }
+  @media (min-width: 64rem) {
+    .sysd-shape {
+      grid-column:
+        var(--start-lg, var(--start-md, var(--start, 1))) /
+        span var(--span-lg, var(--span-md, var(--span, 2)));
+      inset-block-start: calc(var(--top-lg, var(--top-md, var(--top, 0))) * var(--sysd-u));
+      aspect-ratio: var(--ratio-lg, var(--ratio, 1));
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .sysd-shape { mix-blend-mode: screen; }
+  }
+  :root[data-theme="dark"] .sysd-shape { mix-blend-mode: screen; }
+
+  .sysd-shape--circle { --_shape: circle(50%); }
+  /* The apex sits a pixel above the box: at exactly 0, Chrome leaves a hairline along the top edge */
+  .sysd-shape--triangle { --_shape: polygon(50% -1px, 100% 100%, 0 100%); }
+  .sysd-shape.sysd-shape--bar { aspect-ratio: auto; block-size: calc(var(--sysd-u) / 2); }
+  /* Runs past the margin to the edge of the page */
+  .sysd-shape--bleed { inset-inline-start: calc(-1 * var(--sysd-margin)); }
+
+  .sysd-shape--yellow { --shape-ink: var(--sysd-print-yellow); }
+  .sysd-shape--blue { --shape-ink: var(--sysd-print-blue); }
+  .sysd-shape--ink { --shape-ink: var(--sysd-ink); }
+}
+
+/* --------------------------------------------------------------- media */
+/* Images sit in a box that holds its proportion before the image has
+   loaded and crops the image to it, so an image takes whole columns
+   whatever its own shape. */
+@layer components {
+  .sysd-media {
+    position: relative;
+    aspect-ratio: var(--ratio, 3 / 2);
+    overflow: hidden;
+    background: var(--sysd-surface);
+  }
+  .sysd-media > :is(img, video, svg) {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: cover;
+    object-position: var(--focus, 50% 50%);
+  }
+  .sysd-media--square { --ratio: 1; }
+  .sysd-media--portrait { --ratio: 4 / 5; }
+  .sysd-media--wide { --ratio: 16 / 9; }
+  .sysd-media--panorama { --ratio: 21 / 9; }
+  /* Take the height of the grid area instead (fields, or a row shared with text) */
+  .sysd-media--fill { aspect-ratio: auto; block-size: 100%; min-block-size: calc(var(--sysd-u) * 6); }
+
+  /* Treatments. Mono for a calm page; duotone prints the image in ink over the accent. */
+  .sysd-media--mono > img { filter: grayscale(1) contrast(1.08); }
+  .sysd-media--duotone { background: var(--sysd-accent); }
+  .sysd-media--duotone > img { filter: grayscale(1) contrast(1.15); mix-blend-mode: multiply; }
+
+  /* A figure is an image and its caption */
+  .sysd-figure { display: grid; align-content: start; gap: var(--sysd-space-h); }
+  .sysd-figure > figcaption {
+    font-size: var(--sysd-fs--1);
+    line-height: var(--sysd-lh--1);
+    color: var(--sysd-ink-muted);
+  }
+  .sysd-figure > figcaption b { font-weight: 600; color: var(--sysd-ink); }
+
+  /* ------------------------------------------------------------- cover */
+  /* An image as the section background. The image fills the section;
+     the content keeps to the grid on top of it. */
+  .sysd-cover {
+    position: relative;
+    isolation: isolate;
+    align-content: end;
+    min-block-size: calc(var(--sysd-u) * var(--cover-lines, 20));
+    padding-block: var(--sysd-space-2);
+  }
+  .sysd-cover > .sysd-cover__image {
+    position: absolute;
+    z-index: -1;
+    inset-block: 0;
+    inset-inline: calc(50% - 50vw);
+    aspect-ratio: auto;
+  }
+  /* Light text on a darkened image: the section switches to the dark palette */
+  .sysd-cover--dark { color-scheme: dark; color: var(--sysd-ink); }
+  .sysd-cover--dark > .sysd-cover__image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, oklch(0.12 0.01 270 / 0.75), oklch(0.12 0.01 270 / 0.15) 70%);
+  }
+  /* The dark palette lightens the accent, so a duotone needs a deeper scrim to keep light text at contrast */
+  .sysd-cover--dark > .sysd-cover__image.sysd-media--duotone::after { background: oklch(0.12 0.01 270 / 0.45); }
+
+  /* A block of paper laid on the image, on the columns */
+  .sysd-panel {
+    padding: var(--sysd-space-1);
+    background: var(--sysd-paper);
+    color: var(--sysd-ink);
+  }
+}
+
+/* ------------------------------------------------------------ negative */
+/* A section in the dark palette whatever the page's theme. Text, hairlines,
+   buttons and the accent follow from color-scheme; the tone is just a
+   different dark paper. Without a tone it takes the dark theme's paper. */
+@layer components {
+  .sysd-negative {
+    color-scheme: dark;
+    background: var(--sysd-paper);
+    color: var(--sysd-ink);
+  }
+  .sysd-negative--graphite { --sysd-paper-dark: oklch(0.29 0.008 260); }
+  .sysd-negative--night { --sysd-paper-dark: oklch(0.27 0.075 262); }
+  .sysd-negative--forest { --sysd-paper-dark: oklch(0.29 0.05 165); }
+  .sysd-negative--umber { --sysd-paper-dark: oklch(0.3 0.035 55); }
+  /* The accent's own hue, deepened — follows the accent when it changes */
+  .sysd-negative--deep { --sysd-paper-dark: oklch(0.27 0.075 var(--sysd-accent-hue)); }
+
+  /* The section's paper runs out to both edges of the viewport, past the
+     page margins, without the content leaving the grid */
+  .sysd-negative.sysd-bleed-paper {
+    border-image: conic-gradient(var(--sysd-paper) 0 0) fill 0 / / 0 100vw;
+  }
+}
