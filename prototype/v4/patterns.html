@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sysd — patterns v4</title>
+  <meta name="description" content="Common section wireframes for sysd, set on the grid.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="sysd.css">
+  <link rel="stylesheet" href="prototype.css">
+  <script src="prototype.js" defer></script>
+</head>
+<body>
+
+<header class="site-header sysd-page">
+  <a class="wordmark" href="#top" id="top">sysd</a>
+  <nav class="site-nav" aria-label="Patterns">
+    <a href="#split-hero">Heroes</a>
+    <a href="#article">Article</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#list">List</a>
+    <a href="#people">People</a>
+    <a href="#tones">Tones</a>
+    <a href="index.html">← Foundations</a>
+  </nav>
+  <div class="site-tools sysd-actions">
+    <button class="sysd-button sysd-button--quiet sysd-button--compact" type="button" data-grid-toggle aria-pressed="false">Grid <kbd>G</kbd></button>
+    <button class="sysd-button sysd-button--compact" type="button" popovertarget="controls">Adjust</button>
+  </div>
+</header>
+
+<main class="sysd-page patterns">
+
+  <section class="hero sysd-asym" aria-labelledby="patterns-title">
+    <div class="sysd-aside">
+      <p class="sysd-label">Patterns<br>Prototype 3<br>October 2026</p>
+    </div>
+    <div class="sysd-main">
+      <h1 class="sysd-step-6 hero__title" id="patterns-title">The common sections, set on the grid.</h1>
+      <p class="sysd-step-2 hero__lead sysd-measure">Heroes, features, media and text, articles, galleries, lists, people, calls to action and footers — the wireframes most sites are built from, each composed on the same twelve columns.</p>
+      <p class="sysd-measure sysd-muted">Press <kbd>G</kbd> to see each one as a wireframe.</p>
+    </div>
+  </section>
+
+  <!-- P01 Split hero -->
+  <section class="section sysd-asym sysd-rule" id="split-hero" aria-labelledby="split-hero-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P01</p>
+      <h2 id="split-hero-title">Split hero</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">Text on one side, a large image on the other. The image takes six columns and its own proportion; on a phone it follows the text at full width.</p>
+    </div>
+    <div class="pattern sysd-region split-hero">
+      <div class="sysd-span split-hero__text" style="--span-md: 4; --span-lg: 5">
+        <p class="sysd-label">Studio for typography and grids</p>
+        <h3 class="sysd-step-6">Form follows the line.</h3>
+        <p class="sysd-step-1">Identities, books and websites built from a single measurement, so that every part of them belongs together.</p>
+        <div class="sysd-actions">
+          <a class="sysd-button" href="#features">See the work</a>
+          <a class="sysd-button sysd-button--outline" href="#footer-pattern">Get in touch</a>
+        </div>
+      </div>
+      <figure class="sysd-figure sysd-span" style="--start-md: 5; --span-md: 4; --start-lg: 7; --span-lg: 6">
+        <div class="sysd-media sysd-media--monotone sysd-media--portrait">
+          <img src="img/facade-corner.jpg" width="1200" height="1500" alt="The corner of a brick tower seen from below against a pale sky">
+        </div>
+        <figcaption>Large image — 6 of 12 columns, 4 : 5</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- P02 Cover -->
+  <section class="section sysd-asym sysd-rule" id="cover" aria-labelledby="cover-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P02</p>
+      <h2 id="cover-title">Cover</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">An image as the section background, edge to edge. The text doesn’t float on the photograph: it is set on a block of paper that sits on the columns, so it stays readable whatever the image does.</p>
+    </div>
+    <div class="pattern sysd-region sysd-cover" style="--cover-lines: 26">
+      <div class="sysd-media sysd-media--mono sysd-cover__image">
+        <img src="img/facade-steps.jpg" width="2400" height="1500" alt="" style="--focus: 50% 40%">
+      </div>
+      <div class="sysd-panel sysd-span" style="--span-md: 5; --span-lg: 4">
+        <p class="sysd-label">Exhibition · 12 November</p>
+        <h3 class="sysd-step-4">Order and the city</h3>
+        <p>Photographs of modern facades, hung on a grid of twelve.</p>
+        <div class="sysd-actions"><a class="sysd-button sysd-button--accent" href="#cover">Book a visit</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P03 Figures -->
+  <section class="section sysd-asym sysd-negative sysd-negative--graphite sysd-bleed-paper" id="figures" aria-labelledby="figures-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P03</p>
+      <h2 id="figures-title">Figures</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">A strip of key numbers. Four across on a desktop, two on a phone; the numbers are tabular so they line up.</p>
+    </div>
+    <dl class="pattern sysd-cols figures" style="--sm: 2; --md: 2; --lg: 3">
+      <div><dt class="sysd-label">Years in practice</dt><dd class="sysd-step-6 sysd-num">14</dd></div>
+      <div><dt class="sysd-label">Books designed</dt><dd class="sysd-step-6 sysd-num">63</dd></div>
+      <div><dt class="sysd-label">Typefaces used</dt><dd class="sysd-step-6 sysd-num">2</dd></div>
+      <div><dt class="sysd-label">Columns</dt><dd class="sysd-step-6 sysd-num">12</dd></div>
+    </dl>
+  </section>
+
+  <!-- P04 Features -->
+  <section class="section sysd-asym sysd-rule" id="features" aria-labelledby="features-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P04</p>
+      <h2 id="features-title">Image grid</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">Features, services or projects: small images in rows of equal columns, each with a number, a title and a line of text. The grid starts on the text’s column, three columns in, and every image has the same proportion, so the titles line up.</p>
+    </div>
+    <div class="pattern sysd-cols feature-grid" style="--sm: 4; --md: 4; --lg: 3">
+      <article class="feature">
+        <div class="sysd-media sysd-media--mono"><img src="img/camera.jpg" width="1200" height="800" loading="lazy" alt="A silver rangefinder camera on a dark table"></div>
+        <p class="sysd-label">01</p>
+        <h3 class="sysd-step-2">Photography</h3>
+        <p>Pictures made for the grid they will be printed on.</p>
+        <a href="#features">Read more</a>
+      </article>
+      <article class="feature">
+        <div class="sysd-media sysd-media--mono"><img src="img/typewriter.jpg" width="1200" height="800" loading="lazy" alt="Close-up of the keys of an old typewriter"></div>
+        <p class="sysd-label">02</p>
+        <h3 class="sysd-step-2">Writing</h3>
+        <p>Text that is edited to fit the measure, not cut to fit the box.</p>
+        <a href="#features">Read more</a>
+      </article>
+      <article class="feature">
+        <div class="sysd-media sysd-media--mono"><img src="img/book.jpg" width="1200" height="800" loading="lazy" alt="An open book lying on a wooden table"></div>
+        <p class="sysd-label">03</p>
+        <h3 class="sysd-step-2">Books</h3>
+        <p>Editorial design, from the first grid to the printer’s proof.</p>
+        <a href="#features">Read more</a>
+      </article>
+      <article class="feature">
+        <div class="sysd-media sysd-media--mono"><img src="img/camera-parts.jpg" width="1200" height="800" loading="lazy" alt="A compact camera taken apart, its parts laid out in rows on white paper"></div>
+        <p class="sysd-label">04</p>
+        <h3 class="sysd-step-2">Objects</h3>
+        <p>Products shown the way they are built, part by part.</p>
+        <a href="#features">Read more</a>
+      </article>
+      <article class="feature">
+        <div class="sysd-media sysd-media--mono"><img src="img/steps.jpg" width="1200" height="800" loading="lazy" alt="Two people sitting on stone steps that climb a quay wall above a river"></div>
+        <p class="sysd-label">05</p>
+        <h3 class="sysd-step-2">Spaces</h3>
+        <p>Signs and wayfinding for buildings people have to find their way through.</p>
+        <a href="#features">Read more</a>
+      </article>
+      <article class="feature">
+        <div class="sysd-media sysd-media--mono"><img src="img/record.jpg" width="1200" height="800" loading="lazy" alt="The tone arm of a record player resting on a spinning record"></div>
+        <p class="sysd-label">06</p>
+        <h3 class="sysd-step-2">Sound</h3>
+        <p>Covers and posters for music, set in the same twelve columns.</p>
+        <a href="#features">Read more</a>
+      </article>
+    </div>
+  </section>
+
+  <!-- P05 Media and text -->
+  <section class="section sysd-asym sysd-negative sysd-negative--forest sysd-bleed-paper" id="media-text" aria-labelledby="media-text-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P05</p>
+      <h2 id="media-text-title">Media and text</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">Alternating rows of an image and a short text. The image keeps six columns, the text four; the side changes, the measurements don’t.</p>
+    </div>
+    <div class="pattern sysd-region media-text">
+      <div class="sysd-media sysd-media--mono sysd-span" style="--span-md: 4; --span-lg: 6"><img src="img/tower.jpg" width="1600" height="1200" loading="lazy" alt="A glass tower rising into a cloudless sky"></div>
+      <div class="sysd-span media-text__text" style="--start-md: 5; --span-md: 4; --start-lg: 8; --span-lg: 4">
+        <p class="sysd-label">Principle 1</p>
+        <h3 class="sysd-step-3">One measurement</h3>
+        <p>Every distance on the page is a multiple of the line. It is why nothing needs a border to show that it belongs.</p>
+      </div>
+      <div class="sysd-span media-text__text" style="--span-md: 4; --start-lg: 2; --span-lg: 4">
+        <p class="sysd-label">Principle 2</p>
+        <h3 class="sysd-step-3">One edge</h3>
+        <p>Text and images start on the same column lines. The eye finds the edge once and then reads down it.</p>
+      </div>
+      <div class="sysd-media sysd-media--mono sysd-span" style="--start-md: 5; --span-md: 4; --start-lg: 7; --span-lg: 6"><img src="img/towers.jpg" width="1600" height="1200" loading="lazy" alt="Looking straight up between four office towers"></div>
+    </div>
+  </section>
+
+  <!-- P06 Article -->
+  <section class="section sysd-asym sysd-rule" id="article" aria-labelledby="article-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P06</p>
+      <h2 id="article-title">Article</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">Long text with images at four sizes: small in the aside and in the margin, medium in the text column, large across the main column, and full bleed. Captions to large images move into the aside.</p>
+    </div>
+
+    <article class="pattern sysd-region article-demo" aria-label="Example article">
+      <div class="sysd-region article-demo__row">
+        <aside class="article-demo__aside">
+          <figure class="sysd-figure">
+            <div class="sysd-media sysd-media--square sysd-media--mono"><img src="img/person-portrait.jpg" width="1000" height="1250" loading="lazy" alt="Portrait of the author" style="--focus: 50% 30%"></div>
+            <figcaption><b>Ada Lindqvist</b><br>Six minutes · 29 October</figcaption>
+          </figure>
+        </aside>
+        <div class="article-demo__text sysd-flow">
+          <h3 class="sysd-step-4">Building with light and a straight edge</h3>
+          <p class="sysd-step-1">An image on a grid is not a picture in a frame. It is a block of the page, as measured as the text around it.</p>
+          <p>The first decision about an image is not what it shows but how many columns it takes. Three columns make it a note in the margin; six make it a partner to the text; nine or twelve make it the subject of the page. Once the width is chosen, the proportion follows, and the image is cropped to it — not the other way round.</p>
+          <p>This sounds like a restriction, and it is one. But it is the kind of restriction that saves time. A designer who has to decide the size of every image from scratch makes a hundred small decisions on every page, and each of them can go a little wrong. A designer who chooses from four widths makes one decision, and it is almost impossible to make badly.</p>
+        </div>
+      </div>
+
+      <p>That is the discipline that makes a page of mixed images look calm. If every picture arrives at its own size, the page becomes a collage. If every picture takes a whole number of columns, the images line up with the text, with each other and with the edges of the page, and the reader sees one composition.</p>
+
+      <p>None of this is new. The printed catalogues of the 1950s and 60s were built exactly like this: a grid of columns cut into fields, photographs cropped to whole fields, captions set in the same small size wherever they appeared. What looked like a freely composed page was a set of rules followed very carefully. The freedom was in the choice of pictures and in where to leave the page empty.</p>
+
+      <h4 class="sysd-step-2">Choosing the width</h4>
+
+      <p>The width of an image says how important it is. A reader takes in the size of a picture before they take in what it shows, so the size is the first thing the page tells them. A small picture is a detail, a footnote, a piece of evidence. A large one is a statement. Getting this wrong is the most common way an article goes out of balance: every image set at the same generous width, so that nothing stands out and the text becomes the gaps between pictures.</p>
+
+      <p>A useful test is to ask what the reader would lose if the image were half the size. If the answer is nothing — the detail is still visible, the point is still made — then it should be smaller. If the answer is the point of the picture, then it has earned its width. Most images in most articles turn out to be medium or small.</p>
+
+      <figure class="sysd-figure">
+        <div class="sysd-media sysd-media--mono"><img src="img/desk.jpg" width="1200" height="800" loading="lazy" alt="A white laptop and a book on a white desk"></div>
+        <figcaption><b>Medium.</b> Six columns, the width of the text, 3 : 2.</figcaption>
+      </figure>
+
+      <p>A medium image is the workhorse. It takes exactly the width of the text, so it sits in the reading line rather than beside it, and the eye moves from the paragraph above to the picture and on to the paragraph below without changing course. Its caption is set directly underneath, in the small size, and it should say something the picture doesn’t: where, when, who, or why it is here.</p>
+
+      <p>Because it is the same width as the text, a medium image also keeps the right edge of the column calm. A page of running text with a few medium images still reads as one column. That is worth protecting: the moment an image is a little wider or a little narrower than the text, the column loses its edge, and the page starts to look assembled rather than set.</p>
+
+      <div class="sysd-region article-demo__row">
+        <p class="article-demo__text">A small image can sit beside the paragraph it belongs to, in the margin column, the way a note would. It is close enough to be read with the text and small enough not to interrupt it. On a phone it simply follows the paragraph.</p>
+        <figure class="sysd-figure article-demo__margin">
+          <div class="sysd-media sysd-media--monotone sysd-media--square"><img src="img/clock.jpg" width="1200" height="800" loading="lazy" alt="An alarm clock against a pale blue wall"></div>
+          <figcaption><b>Small.</b> Three columns, in the margin.</figcaption>
+        </figure>
+      </div>
+
+      <p>Small images are where a grid shows its patience. They need room around them more than any other size, because there is so little of them; crowded by text on two sides they become decoration. In the margin they have the whole column to themselves, and the white space below them does as much work as the picture.</p>
+
+      <blockquote class="article-demo__quote">
+        <p>The grid is an aid, not a guarantee. It permits a number of possible uses and each designer can look for a solution appropriate to his personal style.</p>
+        <footer class="sysd-label">Josef Müller-Brockmann, <cite>Grid Systems in Graphic Design</cite></footer>
+      </blockquote>
+
+      <h4 class="sysd-step-2">Cropping is a decision</h4>
+
+      <p>Once an image has a width and a proportion, it has to be cropped to fit them. This is where the picture gets its second chance. A photograph taken at 3 : 2 and cropped to a square loses a third of its area, and choosing which third is an editorial act. Crop to the subject and the image becomes a statement; leave space around the subject and it becomes a place.</p>
+
+      <p>On the web the crop is made with <code>object-fit: cover</code> and a focal point, so the same photograph can be a tall portrait on a phone and a wide landscape on a desktop without being exported twice. The grid decides the frame; the focal point decides what stays in it. Without the focal point, the browser crops from the centre, which is right surprisingly often and wrong at exactly the moments it matters — a face cut off at the forehead, a horizon in the middle of the frame.</p>
+
+      <p>A large image spans the whole main column, from the edge of the text to the edge of the page. Its caption moves into the aside, where the labels live, and lines up with the bottom of the picture.</p>
+
+      <figure class="sysd-region article-demo__large">
+        <div class="sysd-media sysd-media--duotone sysd-media--wide"><img src="img/lake.jpg" width="2400" height="1200" loading="lazy" alt="A dark lake between steep green hills"></div>
+        <figcaption class="sysd-label"><b>Large.</b> Nine columns, 16 : 9. The caption sits in the aside.</figcaption>
+      </figure>
+
+      <p>A large image changes the pace of the page. The reader slows down, looks, and then has to find their way back to the text. That is why the text continues in exactly the column it left, and why the caption is in the aside rather than under the picture: the eye, coming back from the image, finds the left edge of the text where it expects it.</p>
+
+      <p>Large images also need their neighbours to be quiet. A large image followed directly by another large image is no longer a moment, it is a gallery, and a gallery has its own layout. In an article, a large image is best surrounded by at least a few paragraphs of text on each side.</p>
+
+      <p>And sometimes the picture is the page. A full-bleed image leaves the grid altogether and runs to both edges of the screen. It is the loudest thing a layout can do, so it is used once, and the text that follows returns to exactly the same column it left.</p>
+
+      <figure class="sysd-figure sysd-bleed article-demo__bleed">
+        <div class="sysd-media sysd-media--mono sysd-media--panorama"><img src="img/mountains.jpg" width="2400" height="1200" loading="lazy" alt="Snow-covered mountain ridges under a white sky"></div>
+      </figure>
+      <p class="sysd-label article-demo__caption"><b>Full bleed.</b> Edge to edge, 21 : 9.</p>
+
+      <h4 class="sysd-step-2">Four sizes, one page</h4>
+
+      <p>Four sizes are enough. Between them they cover the note, the illustration, the feature and the event — and because each of them is a whole number of columns, any combination of them still looks as if it was planned.</p>
+
+      <p>The rule is simple to write down and takes years to follow well: decide the width first, make it a whole number of columns, crop the picture to the frame and not the frame to the picture, and let the text come back to the same edge every time. Everything else is choosing good photographs, which no grid can do for you.</p>
+    </article>
+  </section>
+
+  <!-- P07 Gallery -->
+  <section class="section sysd-asym sysd-rule" id="gallery" aria-labelledby="gallery-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P07</p>
+      <h2 id="gallery-title">Gallery</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">A modular grid. The columns are cut into fields three lines high, and every image takes whole fields in both directions — the system of the printed catalogue. Captions are keyed by number, in a field of their own.</p>
+    </div>
+    <div class="pattern sysd-fields gallery">
+      <figure class="sysd-span" style="--span: 4; --rows: 5; --span-md: 5; --rows-md: 6; --span-lg: 6; --rows-lg: 7">
+        <div class="sysd-media sysd-media--mono sysd-media--fill"><img src="img/towers.jpg" width="1600" height="1200" loading="lazy" alt="Looking straight up between four office towers"></div>
+        <span class="gallery__num" aria-hidden="true">1</span>
+      </figure>
+      <figure class="sysd-span" style="--span: 2; --rows: 3; --span-md: 3; --rows-md: 3; --span-lg: 3; --rows-lg: 4">
+        <div class="sysd-media sysd-media--monotone sysd-media--fill"><img src="img/clock.jpg" width="1200" height="800" loading="lazy" alt="An alarm clock against a pale blue wall"></div>
+        <span class="gallery__num" aria-hidden="true">2</span>
+      </figure>
+      <figure class="sysd-span" style="--span: 2; --rows: 3; --span-md: 3; --rows-md: 3; --span-lg: 3; --rows-lg: 4">
+        <div class="sysd-media sysd-media--mono sysd-media--fill"><img src="img/keyboard.jpg" width="1200" height="800" loading="lazy" alt="A hand on a computer keyboard, in black and white"></div>
+        <span class="gallery__num" aria-hidden="true">3</span>
+      </figure>
+      <figure class="sysd-span" style="--span: 2; --rows: 3; --span-md: 3; --rows-md: 3; --span-lg: 3; --rows-lg: 3">
+        <div class="sysd-media sysd-media--fill sysd-media--mono"><img src="img/person-camera.jpg" width="1000" height="1250" loading="lazy" alt="A man holding a twin-lens camera at his chest"></div>
+        <span class="gallery__num" aria-hidden="true">4</span>
+      </figure>
+      <div class="sysd-span gallery__key" style="--span: 2; --rows: 3; --span-md: 3; --rows-md: 3; --span-lg: 3; --rows-lg: 3">
+        <p class="sysd-label">Plates</p>
+        <ol>
+          <li>Towers, looking up</li>
+          <li>Alarm clock</li>
+          <li>Keyboard</li>
+          <li>Twin-lens camera</li>
+          <li>Facade, Berlin</li>
+        </ol>
+      </div>
+      <figure class="sysd-span" style="--span: 4; --rows: 3; --span-md: 8; --rows-md: 4; --span-lg: 12; --rows-lg: 4">
+        <div class="sysd-media sysd-media--fill sysd-media--duotone"><img src="img/facade-steps.jpg" width="2400" height="1500" loading="lazy" alt="Stepped white concrete balconies against the sky"></div>
+        <span class="gallery__num" aria-hidden="true">5</span>
+      </figure>
+    </div>
+  </section>
+
+  <!-- P08 List -->
+  <section class="section sysd-asym sysd-rule" id="list" aria-labelledby="list-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P08</p>
+      <h2 id="list-title">List with images</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">The journal index: a thumbnail in the aside column, the title and summary in the text column, the details in the margin. One row per entry, a hairline between them.</p>
+    </div>
+    <ol class="pattern sysd-region entries" role="list">
+      <li class="sysd-region entry">
+        <div class="sysd-media sysd-media--mono entry__image"><img src="img/book.jpg" width="1200" height="800" loading="lazy" alt=""></div>
+        <div class="entry__text">
+          <h3 class="sysd-step-2"><a href="#article">On leaving space empty</a></h3>
+          <p>Why the most important part of a layout is the part with nothing in it.</p>
+        </div>
+        <p class="sysd-label entry__meta">Essay<br>29 Oct 2026</p>
+      </li>
+      <li class="sysd-region entry">
+        <div class="sysd-media sysd-media--mono entry__image"><img src="img/typewriter.jpg" width="1200" height="800" loading="lazy" alt=""></div>
+        <div class="entry__text">
+          <h3 class="sysd-step-2"><a href="#article">Twelve columns, four screens</a></h3>
+          <p>How a print grid survives the move to a page that has no fixed size.</p>
+        </div>
+        <p class="sysd-label entry__meta">Notes<br>14 Oct 2026</p>
+      </li>
+      <li class="sysd-region entry">
+        <div class="sysd-media sysd-media--mono entry__image"><img src="img/camera.jpg" width="1200" height="800" loading="lazy" alt=""></div>
+        <div class="entry__text">
+          <h3 class="sysd-step-2"><a href="#article">Cropping is a decision</a></h3>
+          <p>An image takes a number of columns first, and finds its picture second.</p>
+        </div>
+        <p class="sysd-label entry__meta">Essay<br>2 Oct 2026</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- P09 Quote -->
+  <section class="section sysd-asym sysd-negative sysd-negative--night sysd-bleed-paper" id="quote" aria-labelledby="quote-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P09</p>
+      <h2 id="quote-title">Quote</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">A testimonial or a pull quote with a small portrait. The portrait takes the aside; the quote is set large in the main column.</p>
+    </div>
+    <figure class="pattern sysd-region quote">
+      <div class="sysd-media sysd-media--square sysd-media--mono quote__portrait"><img src="img/person-coast.jpg" width="1000" height="1250" loading="lazy" alt="" style="--focus: 50% 25%"></div>
+      <blockquote class="quote__text">
+        <p class="sysd-step-4">“They gave us a system instead of a style. Two years later, we are still finding new things to do with it.”</p>
+      </blockquote>
+      <figcaption class="sysd-label quote__by"><b>Jonas Berg</b><br>Director, Kunsthalle Nord</figcaption>
+    </figure>
+  </section>
+
+  <!-- P10 People -->
+  <section class="section sysd-asym sysd-negative sysd-negative--umber sysd-bleed-paper" id="people" aria-labelledby="people-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P10</p>
+      <h2 id="people-title">People</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">A team or a list of contributors. Portraits in black and white so that different photographs read as one set.</p>
+    </div>
+    <ul class="pattern sysd-cols people" role="list" style="--sm: 2; --md: 2; --lg: 3">
+      <li class="sysd-figure">
+        <div class="sysd-media sysd-media--portrait sysd-media--mono"><img src="img/person-portrait.jpg" width="1000" height="1250" loading="lazy" alt="Portrait of Ada Lindqvist"></div>
+        <p><b>Ada Lindqvist</b><br><span class="sysd-muted">Typography</span></p>
+      </li>
+      <li class="sysd-figure">
+        <div class="sysd-media sysd-media--portrait sysd-media--mono"><img src="img/person-camera.jpg" width="1000" height="1250" loading="lazy" alt="Portrait of Paul Okafor holding a camera"></div>
+        <p><b>Paul Okafor</b><br><span class="sysd-muted">Photography</span></p>
+      </li>
+      <li class="sysd-figure">
+        <div class="sysd-media sysd-media--portrait sysd-media--mono"><img src="img/person-shore.jpg" width="1000" height="1250" loading="lazy" alt="Mira Sand, seen from behind, looking out to sea"></div>
+        <p><b>Mira Sand</b><br><span class="sysd-muted">Editing</span></p>
+      </li>
+      <li class="sysd-figure">
+        <div class="sysd-media sysd-media--portrait sysd-media--mono"><img src="img/person-coast.jpg" width="1000" height="1250" loading="lazy" alt="Portrait of Jonas Berg by the sea"></div>
+        <p><b>Jonas Berg</b><br><span class="sysd-muted">Code</span></p>
+      </li>
+    </ul>
+  </section>
+
+  <!-- P11 Call to action -->
+  <section class="section sysd-asym sysd-cover sysd-cover--dark" id="cta" aria-labelledby="cta-title" style="--cover-lines: 28">
+    <div class="sysd-media sysd-media--duotone sysd-cover__image"><img src="img/mountains.jpg" width="2400" height="1200" loading="lazy" alt=""></div>
+    <div class="sysd-aside section__head">
+      <p class="section__num">P11</p>
+      <h2 id="cta-title">Call to action</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">The whole section is the cover: the image runs behind the heading as well, printed as a duotone in ink over the accent. The section switches to the dark palette, so light text and buttons come for free.</p>
+    </div>
+    <div class="pattern sysd-region cta">
+      <h3 class="sysd-step-6 sysd-span" style="--span-md: 6; --span-lg: 7">Start a project.</h3>
+      <div class="sysd-span cta__body" style="--span-md: 6; --start-lg: 8; --span-lg: 4">
+        <p class="sysd-step-1">Two weeks for a grid, a type scale and a first page. Then we decide together what comes next.</p>
+        <div class="sysd-actions">
+          <a class="sysd-button" href="#footer-pattern">Write to us</a>
+          <a class="sysd-button sysd-button--outline" href="#features">See the work</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- P12 Tones -->
+  <section class="section sysd-asym sysd-negative sysd-bleed-paper" id="tones" aria-labelledby="tones-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P12</p>
+      <h2 id="tones-title">Tones</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">Negative sections change the atmosphere of a page without leaving it. None of them is black: each is a mid-dark grey with a trace of colour, like ink on uncoated paper, so a page can move from light to graphite to slate and still feel like one piece of print. Text, hairlines, buttons and the accent follow on their own.</p>
+    </div>
+    <div class="pattern sysd-cols tones" style="--sm: 2; --md: 4; --lg: 4">
+      <div class="sysd-negative tone">
+        <p class="sysd-label">Dark paper</p>
+        <p class="sysd-step-3">Aa</p>
+        <p>Follows the dark theme’s paper, chosen in Adjust.</p>
+        <code class="tone__value">var(--sysd-paper-dark)</code>
+        <a class="sysd-button sysd-button--compact" href="#tones">Button</a>
+      </div>
+      <div class="sysd-negative sysd-negative--graphite tone">
+        <p class="sysd-label">Graphite</p>
+        <p class="sysd-step-3">Aa</p>
+        <p>A neutral printer’s grey. The quietest change of atmosphere.</p>
+        <code class="tone__value" data-tone="graphite"></code>
+        <a class="sysd-button sysd-button--compact" href="#tones">Button</a>
+      </div>
+      <div class="sysd-negative sysd-negative--night tone">
+        <p class="sysd-label">Night</p>
+        <p class="sysd-step-3">Aa</p>
+        <p>Slate. A grey with blue in it, calm behind photographs.</p>
+        <code class="tone__value" data-tone="night"></code>
+        <a class="sysd-button sysd-button--compact" href="#tones">Button</a>
+      </div>
+      <div class="sysd-negative sysd-negative--forest tone">
+        <p class="sysd-label">Forest</p>
+        <p class="sysd-step-3">Aa</p>
+        <p>Grey-green. Earthier, for slower sections.</p>
+        <code class="tone__value" data-tone="forest"></code>
+        <a class="sysd-button sysd-button--compact" href="#tones">Button</a>
+      </div>
+      <div class="sysd-negative sysd-negative--umber tone">
+        <p class="sysd-label">Umber</p>
+        <p class="sysd-step-3">Aa</p>
+        <p>Warm grey, like an old print. Good with portraits.</p>
+        <code class="tone__value" data-tone="umber"></code>
+        <a class="sysd-button sysd-button--compact" href="#tones">Button</a>
+      </div>
+      <div class="sysd-negative sysd-negative--deep tone">
+        <p class="sysd-label">Deep accent</p>
+        <p class="sysd-step-3">Aa</p>
+        <p>The accent’s own hue, greyed. Follows the hue.</p>
+        <code class="tone__value" data-tone="deep"></code>
+        <a class="sysd-button sysd-button--compact" href="#tones">Button</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- P13 Footer -->
+  <section class="section sysd-asym sysd-negative sysd-negative--deep sysd-bleed-paper" id="footer-pattern" aria-labelledby="footer-pattern-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">P13</p>
+      <h2 id="footer-pattern-title">Footer</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-measure sysd-muted">A full footer: the address in the aside, columns of links on the grid, and a sign-up in the last three columns.</p>
+    </div>
+    <div class="pattern sysd-region big-footer">
+      <div class="sysd-span" style="--span: 4; --span-md: 8; --span-lg: 3">
+        <p class="wordmark">sysd</p>
+        <p class="sysd-muted">Studio for typography and grids<br>Storgata 12, 0184 Oslo</p>
+      </div>
+      <nav class="sysd-span" aria-label="Work" style="--span: 2; --span-md: 2; --span-lg: 2">
+        <p class="sysd-label">Work</p>
+        <ul role="list"><li><a href="#features">Identities</a></li><li><a href="#features">Books</a></li><li><a href="#features">Websites</a></li></ul>
+      </nav>
+      <nav class="sysd-span" aria-label="Studio" style="--span: 2; --span-md: 2; --span-lg: 2">
+        <p class="sysd-label">Studio</p>
+        <ul role="list"><li><a href="#people">People</a></li><li><a href="#list">Journal</a></li><li><a href="#cta">Contact</a></li></ul>
+      </nav>
+      <form class="sysd-span sysd-field big-footer__form" style="--span: 4; --start-md: 5; --span-md: 4; --start-lg: 10; --span-lg: 3" onsubmit="return false">
+        <label class="sysd-field__label" for="ft-email">The newsletter, four times a year</label>
+        <input class="sysd-input" id="ft-email" type="email" placeholder="you@example.com" autocomplete="email">
+        <button class="sysd-button sysd-button--accent" type="submit">Subscribe</button>
+      </form>
+      <p class="sysd-label sysd-span big-footer__end" style="--span: 4; --span-md: 8; --span-lg: 12">© 2026 sysd · Set on a grid of twelve columns</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer sysd-page">
+  <p class="sysd-label sysd-span" style="--span-md: 4; --span-lg: 6">sysd — patterns, prototype 4 · <a href="index.html">foundations</a> · <a href="../v3/patterns.html">v3</a> · <a href="../v2/index.html">v2</a> · <a href="../v1-strict/index.html">strict v1</a></p>
+  <p class="sysd-label sysd-span site-footer__end" style="--span-md: 4; --span-lg: 6">Photographs from Unsplash, via Lorem Picsum.</p>
+</footer>
+
+<!-- Grid overlay -->
+<div class="grid-overlay" aria-hidden="true">
+  <div class="sysd-page">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls" id="controls" popover="manual" aria-labelledby="controls-title">
+  <div class="controls__head">
+    <h2 class="sysd-step-0" id="controls-title">Inputs</h2>
+    <button class="sysd-button sysd-button--quiet sysd-button--compact" type="button" popovertarget="controls" popovertargetaction="hide">Close</button>
+  </div>
+  <p class="sysd-label">Everything on the page is derived from these values.</p>
+
+  <label class="control">
+    <span class="control__name">Body size <output class="sysd-num" for="in-size" id="out-size"></output></span>
+    <input type="range" id="in-size" min="14" max="22" step="0.5">
+  </label>
+  <label class="control">
+    <span class="control__name">Leading <output class="sysd-num" for="in-leading" id="out-leading"></output></span>
+    <input type="range" id="in-leading" min="1.3" max="1.8" step="0.05">
+  </label>
+  <label class="control">
+    <span class="control__name">Scale ratio</span>
+    <select class="sysd-select" id="in-ratio">
+      <option value="1.125">1.125 — major second</option>
+      <option value="1.2">1.2 — minor third</option>
+      <option value="1.25">1.25 — major third</option>
+      <option value="1.333">1.333 — perfect fourth</option>
+      <option value="1.414">1.414 — augmented fourth</option>
+      <option value="1.5">1.5 — perfect fifth</option>
+    </select>
+  </label>
+  <label class="control">
+    <span class="control__name">Typeface</span>
+    <select class="sysd-select" id="in-font">
+      <option>Inter</option>
+      <option>Schibsted Grotesk</option>
+      <option>Instrument Sans</option>
+      <option>Hanken Grotesk</option>
+      <option>IBM Plex Sans</option>
+    </select>
+  </label>
+  <label class="control">
+    <span class="control__name">Accent hue <output class="sysd-num" for="in-hue" id="out-hue"></output></span>
+    <input type="range" id="in-hue" min="0" max="360" step="1" class="control__hue">
+  </label>
+  <label class="control">
+    <span class="control__name">Corner radius <output class="sysd-num" for="in-radius" id="out-radius"></output></span>
+    <input type="range" id="in-radius" min="0" max="12" step="1">
+  </label>
+  <label class="control">
+    <span class="control__name">Theme</span>
+    <select class="sysd-select" id="in-theme">
+      <option value="">Follow system</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </label>
+
+  <div class="control control--colour">
+    <span class="control__name">Light paper <output class="sysd-num" for="in-paper-light" id="out-paper-light"></output></span>
+    <oklch-input id="in-paper-light" label="Light paper"></oklch-input>
+  </div>
+  <div class="control control--colour">
+    <span class="control__name">Dark paper <output class="sysd-num" for="in-paper-dark" id="out-paper-dark"></output></span>
+    <oklch-input id="in-paper-dark" label="Dark paper"></oklch-input>
+  </div>
+  <p class="sysd-label">Dark paper also colours negative sections without a tone of their own.</p>
+
+  <div class="controls__group">
+    <h3 class="sysd-step-0">Tones</h3>
+    <p class="sysd-label">The dark papers of negative sections. Each one changes everywhere it is used.</p>
+    <div class="control control--colour">
+      <span class="control__name">Graphite <output class="sysd-num" for="in-tone-graphite" id="out-tone-graphite"></output></span>
+      <oklch-input id="in-tone-graphite" label="Graphite tone"></oklch-input>
+    </div>
+    <div class="control control--colour">
+      <span class="control__name">Night <output class="sysd-num" for="in-tone-night" id="out-tone-night"></output></span>
+      <oklch-input id="in-tone-night" label="Night tone"></oklch-input>
+    </div>
+    <div class="control control--colour">
+      <span class="control__name">Forest <output class="sysd-num" for="in-tone-forest" id="out-tone-forest"></output></span>
+      <oklch-input id="in-tone-forest" label="Forest tone"></oklch-input>
+    </div>
+    <div class="control control--colour">
+      <span class="control__name">Umber <output class="sysd-num" for="in-tone-umber" id="out-tone-umber"></output></span>
+      <oklch-input id="in-tone-umber" label="Umber tone"></oklch-input>
+    </div>
+    <div class="control control--colour">
+      <span class="control__name">Deep <output class="sysd-num" for="in-tone-deep" id="out-tone-deep"></output></span>
+      <oklch-input id="in-tone-deep" label="Deep tone"></oklch-input>
+    </div>
+  </div>
+
+  <div class="controls__group" id="section-controls">
+    <h3 class="sysd-step-0">Section</h3>
+    <label class="control">
+      <span class="control__name">Follows the section in view</span>
+      <select class="sysd-select" id="in-section"></select>
+    </label>
+    <label class="control">
+      <span class="control__name">Palette</span>
+      <select class="sysd-select" id="in-section-scheme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </label>
+    <label class="control">
+      <span class="control__name">Paper</span>
+      <select class="sysd-select" id="in-section-paper">
+        <option value="page">Page paper</option>
+        <option value="graphite" data-dark>Graphite</option>
+        <option value="night" data-dark>Night</option>
+        <option value="forest" data-dark>Forest</option>
+        <option value="umber" data-dark>Umber</option>
+        <option value="deep" data-dark>Deep accent</option>
+        <option value="custom">Custom</option>
+      </select>
+    </label>
+    <div class="control control--colour">
+      <span class="control__name">Colour <output class="sysd-num" for="in-section-colour" id="out-section-colour"></output></span>
+      <oklch-input id="in-section-colour" label="Section paper"></oklch-input>
+    </div>
+    <div class="sysd-actions">
+      <button class="sysd-button sysd-button--outline sysd-button--compact" type="button" id="section-reset">Reset section</button>
+    </div>
+  </div>
+
+  <div class="sysd-actions">
+    <button class="sysd-button sysd-button--outline sysd-button--compact" type="button" id="reset">Reset</button>
+    <button class="sysd-button sysd-button--quiet sysd-button--compact" type="button" data-grid-toggle aria-pressed="false">Grid <kbd>G</kbd></button>
+  </div>
+</div>
+
+</body>
+</html>

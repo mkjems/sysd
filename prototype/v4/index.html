@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>sysd — foundations v4</title>
+  <meta name="description" content="Foundations prototype for sysd, a design system built on the grid.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Schibsted+Grotesk:ital,wght@0,400..900;1,400..900&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="sysd.css">
+  <link rel="stylesheet" href="prototype.css">
+  <script src="prototype.js" defer></script>
+</head>
+<body>
+
+<header class="site-header sysd-page">
+  <a class="wordmark" href="#top" id="top">sysd</a>
+  <nav class="site-nav" aria-label="Sections">
+    <a href="#grid">Grid</a>
+    <a href="#type">Type</a>
+    <a href="#space">Space</a>
+    <a href="#colour">Colour</a>
+    <a href="#components">Components</a>
+    <a href="#form">Form</a>
+    <a href="#composition">Composition</a>
+    <a href="patterns.html">Patterns →</a>
+  </nav>
+  <div class="site-tools sysd-actions">
+    <button class="sysd-button sysd-button--quiet sysd-button--compact" type="button" data-grid-toggle aria-pressed="false">Grid <kbd>G</kbd></button>
+    <button class="sysd-button sysd-button--compact" type="button" popovertarget="controls">Adjust</button>
+  </div>
+</header>
+
+<main class="sysd-page">
+
+  <!-- Hero -->
+  <section class="hero sysd-asym" aria-labelledby="hero-title">
+    <div class="sysd-aside">
+      <p class="sysd-label">Foundations<br>Prototype 3<br>October 2026</p>
+    </div>
+    <div class="sysd-main">
+      <h1 class="sysd-step-7 hero__title" id="hero-title"><span>Order,</span> <span>made visible.</span></h1>
+      <p class="sysd-step-2 hero__lead sysd-measure">A design system built on the grid. The principles of Josef Müller-Brockmann, rewritten for a page that scrolls and a screen of any size.</p>
+    </div>
+  </section>
+
+  <!-- 01 Grid -->
+  <section class="section sysd-asym sysd-rule" id="grid" aria-labelledby="grid-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">01</p>
+      <h2 id="grid-title">The grid</h2>
+    </div>
+    <div class="sysd-main sysd-flow">
+      <p class="sysd-step-1 sysd-measure">Everything is measured in lines. One line is the body text size multiplied by its leading. Margins, gutters, spacing, control heights and the leading of every heading are multiples of that line.</p>
+
+      <dl class="sysd-cols readout" style="--sm: 2; --md: 4; --lg: 3">
+        <div><dt class="sysd-label">One line</dt><dd class="sysd-step-3 sysd-num" data-readout="u"></dd></div>
+        <div><dt class="sysd-label">Body size</dt><dd class="sysd-step-3 sysd-num" data-readout="size"></dd></div>
+        <div><dt class="sysd-label">Scale ratio</dt><dd class="sysd-step-3 sysd-num" data-readout="ratio"></dd></div>
+        <div><dt class="sysd-label">Columns</dt><dd class="sysd-step-3 sysd-num" data-readout="columns"></dd></div>
+        <div><dt class="sysd-label">Gutter</dt><dd class="sysd-step-3 sysd-num" data-readout="gutter"></dd></div>
+        <div><dt class="sysd-label">Margin</dt><dd class="sysd-step-3 sysd-num" data-readout="margin"></dd></div>
+      </dl>
+
+      <p class="sysd-measure">Paper has one size; a screen has any. So instead of fixing positions, sysd fixes relationships. Twelve columns on a desktop become eight on a tablet and four on a phone, and every layout declares how many columns it takes at each width. On a phone, almost everything falls into a single reading column, but the measurements don’t change.</p>
+
+      <div class="sysd-cols diagrams" style="--sm: 4; --md: 4; --lg: 3" aria-hidden="true">
+        <figure class="diagram" style="--n: 4">
+          <div class="diagram__grid">
+            <span class="diagram__aside" style="grid-column: 1 / -1"></span>
+            <span class="diagram__main" style="grid-column: 1 / -1"></span>
+          </div>
+          <figcaption class="sysd-label">Phone — 4 columns</figcaption>
+        </figure>
+        <figure class="diagram" style="--n: 8">
+          <div class="diagram__grid">
+            <span class="diagram__aside" style="grid-column: 1 / span 2"></span>
+            <span class="diagram__main" style="grid-column: 3 / -1; grid-row: 1"></span>
+          </div>
+          <figcaption class="sysd-label">Tablet — 8 columns</figcaption>
+        </figure>
+        <figure class="diagram" style="--n: 12">
+          <div class="diagram__grid">
+            <span class="diagram__aside" style="grid-column: 1 / span 3"></span>
+            <span class="diagram__main" style="grid-column: 4 / -1; grid-row: 1"></span>
+          </div>
+          <figcaption class="sysd-label">Desktop — 12 columns</figcaption>
+        </figure>
+      </div>
+
+      <p class="sysd-measure sysd-muted">Press <kbd>G</kbd> to show the wireframe: the tinted bands are the columns, every block placed on them is outlined, and images become crossed boxes.</p>
+    </div>
+  </section>
+
+  <!-- 02 Type -->
+  <section class="section sysd-asym sysd-rule" id="type" aria-labelledby="type-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">02</p>
+      <h2 id="type-title">Type</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">Nine steps, one ratio. Sizes are computed from the body size and leading tightens as type grows. Every heading is then rounded up to whole lines, so the text after it lands back on the grid.</p>
+
+      <div class="specimen sysd-region">
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">7 · <span data-readout="fs-7"></span> / <span data-readout="lh-7"></span></p><p class="sysd-step-7">Grid</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">6 · <span data-readout="fs-6"></span> / <span data-readout="lh-6"></span></p><p class="sysd-step-6">Order</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">5 · <span data-readout="fs-5"></span> / <span data-readout="lh-5"></span></p><p class="sysd-step-5">Proportion</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">4 · <span data-readout="fs-4"></span> / <span data-readout="lh-4"></span></p><p class="sysd-step-4">Rhythm and tension</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">3 · <span data-readout="fs-3"></span> / <span data-readout="lh-3"></span></p><p class="sysd-step-3">Every space has a reason</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">2 · <span data-readout="fs-2"></span> / <span data-readout="lh-2"></span></p><p class="sysd-step-2">Headings are set from the same line as the text</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">1 · <span data-readout="fs-1"></span> / <span data-readout="lh-1"></span></p><p class="sysd-step-1">A standfirst introduces the text that follows it</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">0 · <span data-readout="fs-0"></span> / <span data-readout="lh-0"></span></p><p class="sysd-step-0">Body text is the measure of everything. It is set at a size that can be read for a long time without effort, with enough space between the lines for the eye to find its way back.</p></div>
+        <div class="specimen__row sysd-region sysd-snap"><p class="specimen__meta sysd-label sysd-num">−1 · <span data-readout="fs--1"></span> / <span data-readout="lh--1"></span></p><p class="sysd-step--1">Captions, labels and notes sit on the same line as the body text, so they align across columns.</p></div>
+      </div>
+
+      <div class="prose sysd-flow sysd-measure">
+        <h3>Text that is pleasant to read</h3>
+        <p>A grid is not a cage. It is an agreement between everything on the page about where things begin and how far apart they stand. Once that agreement exists, the reader stops noticing the layout and starts noticing the content — which is the whole point.</p>
+        <p>“Typography is a service,” as the saying goes. On the web we finally have the tools to perform it properly: lines that break where a typesetter would break them, hyphenation in narrow columns, numbers that line up in a table, and quotation marks that hang outside the edge of the text so it looks straight.</p>
+      </div>
+
+      <dl class="sysd-cols features" style="--sm: 4; --md: 4; --lg: 3">
+        <div><dt><code>text-wrap: pretty</code></dt><dd>No single word left alone on the last line of a paragraph.</dd></div>
+        <div><dt><code>text-wrap: balance</code></dt><dd>Headings break into lines of even length.</dd></div>
+        <div><dt><code>hyphens: auto</code></dt><dd>Keeps the ragged edge calm in narrow columns.</dd></div>
+        <div><dt><code>hanging-punctuation</code></dt><dd>Quotation marks hang in the margin. Safari only, for now.</dd></div>
+        <div><dt><code>pow()</code> and <code>round()</code></dt><dd>The scale and its leading are computed, not typed in.</dd></div>
+        <div><dt><code>subgrid</code></dt><dd>Nested layouts sit on the page grid, not their own.</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- 03 Space -->
+  <section class="section sysd-asym sysd-rule" id="space" aria-labelledby="space-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">03</p>
+      <h2 id="space-title">Space</h2>
+    </div>
+    <div class="sysd-main sysd-flow">
+      <p class="sysd-step-1 sysd-measure">Whole lines, with a half and a quarter for tight spots inside components. Space is the most important element on the page, so it gets the fewest options.</p>
+      <ul class="space-scale" role="list">
+        <li><code>space-q</code><span class="sysd-label sysd-num" data-readout="space-q"></span><i style="--w: var(--sysd-space-q)"></i></li>
+        <li><code>space-h</code><span class="sysd-label sysd-num" data-readout="space-h"></span><i style="--w: var(--sysd-space-h)"></i></li>
+        <li><code>space-1</code><span class="sysd-label sysd-num" data-readout="space-1"></span><i style="--w: var(--sysd-space-1)"></i></li>
+        <li><code>space-2</code><span class="sysd-label sysd-num" data-readout="space-2"></span><i style="--w: var(--sysd-space-2)"></i></li>
+        <li><code>space-3</code><span class="sysd-label sysd-num" data-readout="space-3"></span><i style="--w: var(--sysd-space-3)"></i></li>
+        <li><code>space-4</code><span class="sysd-label sysd-num" data-readout="space-4"></span><i style="--w: var(--sysd-space-4)"></i></li>
+        <li><code>space-6</code><span class="sysd-label sysd-num" data-readout="space-6"></span><i style="--w: var(--sysd-space-6)"></i></li>
+        <li><code>space-8</code><span class="sysd-label sysd-num" data-readout="space-8"></span><i style="--w: var(--sysd-space-8)"></i></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 04 Colour -->
+  <section class="section sysd-asym sysd-rule" id="colour" aria-labelledby="colour-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">04</p>
+      <h2 id="colour-title">Colour</h2>
+    </div>
+    <div class="sysd-main sysd-flow">
+      <p class="sysd-step-1 sysd-measure">Paper, ink and one accent. Colour is defined in OKLCH, so changing the accent’s hue keeps its lightness — and its contrast — the same. Dark mode is the same palette with paper and ink swapped.</p>
+      <ul class="sysd-cols swatches" role="list" style="--sm: 2; --md: 2; --lg: 3">
+        <li><i style="--c: var(--sysd-paper)"></i><b>Paper</b><code>--sysd-paper</code></li>
+        <li><i style="--c: var(--sysd-surface)"></i><b>Surface</b><code>--sysd-surface</code></li>
+        <li><i style="--c: var(--sysd-ink)"></i><b>Ink</b><code>--sysd-ink</code></li>
+        <li><i style="--c: var(--sysd-ink-muted)"></i><b>Muted ink</b><code>--sysd-ink-muted</code></li>
+        <li><i style="--c: var(--sysd-hairline-strong)"></i><b>Hairline</b><code>--sysd-hairline-strong</code></li>
+        <li><i style="--c: var(--sysd-accent)"></i><b>Accent</b><code>--sysd-accent</code></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 05 Components -->
+  <section class="section sysd-asym sysd-rule" id="components" aria-labelledby="components-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">05</p>
+      <h2 id="components-title">Components</h2>
+    </div>
+    <div class="sysd-main sysd-flow">
+      <p class="sysd-step-1 sysd-measure">Controls are two lines tall on touch screens and one and a half with a mouse. Wherever possible they are native elements, styled.</p>
+
+      <h3>Buttons</h3>
+      <div class="sysd-actions">
+        <button class="sysd-button" type="button">Primary</button>
+        <button class="sysd-button sysd-button--accent" type="button">Accent</button>
+        <button class="sysd-button sysd-button--outline" type="button">Outline</button>
+        <button class="sysd-button sysd-button--quiet" type="button">Quiet</button>
+        <button class="sysd-button" type="button" disabled>Disabled</button>
+      </div>
+      <div class="sysd-actions">
+        <button class="sysd-button sysd-button--compact" type="button">Compact</button>
+        <button class="sysd-button sysd-button--compact sysd-button--outline" type="button">Compact outline</button>
+      </div>
+
+      <h3>Form</h3>
+      <form class="sysd-cols form-demo" style="--sm: 4; --md: 4; --lg: 3" onsubmit="return false">
+        <div class="sysd-field">
+          <label class="sysd-field__label" for="f-name">Name</label>
+          <input class="sysd-input" id="f-name" type="text" placeholder="Josef" autocomplete="off">
+          <p class="sysd-field__hint">As it should appear on the invoice.</p>
+        </div>
+        <div class="sysd-field">
+          <label class="sysd-field__label" for="f-email">Email</label>
+          <input class="sysd-input" id="f-email" type="email" value="josef@" aria-invalid="true" aria-describedby="f-email-err">
+          <p class="sysd-field__hint sysd-field__hint--error" id="f-email-err">Enter a complete email address.</p>
+        </div>
+        <div class="sysd-field">
+          <label class="sysd-field__label" for="f-role">Role</label>
+          <select class="sysd-select" id="f-role">
+            <option>Designer</option>
+            <option>Developer</option>
+            <option>Typographer</option>
+            <option>Something else</option>
+          </select>
+          <p class="sysd-field__hint">Fully styled where the browser allows it.</p>
+        </div>
+        <div class="sysd-field" style="--md: 8; --lg: 6">
+          <label class="sysd-field__label" for="f-msg">Message</label>
+          <textarea class="sysd-textarea" id="f-msg" rows="3" placeholder="Grows with its content."></textarea>
+        </div>
+        <fieldset class="sysd-fieldset">
+          <legend>Interests</legend>
+          <label class="sysd-check"><input type="checkbox" checked> Typography</label>
+          <label class="sysd-check"><input type="checkbox"> Grids</label>
+          <label class="sysd-check"><input type="checkbox"> Colour</label>
+        </fieldset>
+        <fieldset class="sysd-fieldset">
+          <legend>Contact by</legend>
+          <label class="sysd-check"><input type="radio" name="contact" checked> Email</label>
+          <label class="sysd-check"><input type="radio" name="contact"> Phone</label>
+          <label class="sysd-check"><input type="radio" name="contact"> Letter</label>
+        </fieldset>
+      </form>
+
+      <h3>Cards</h3>
+      <div class="sysd-cols" style="--sm: 4; --md: 4; --lg: 3">
+        <article class="sysd-card">
+          <p class="sysd-label">Package</p>
+          <h4>Tokens</h4>
+          <p>The decisions, stored as data. Built into CSS, JavaScript and, later, native apps.</p>
+          <a href="#grid">Read more</a>
+        </article>
+        <article class="sysd-card">
+          <p class="sysd-label">Package</p>
+          <h4>CSS</h4>
+          <p>Base styles, the grid and the native components. Works without JavaScript.</p>
+          <a href="#type">Read more</a>
+        </article>
+        <article class="sysd-card sysd-card--filled">
+          <p class="sysd-label">Package</p>
+          <h4>Components</h4>
+          <p>Interactive pieces on top of a proven headless library. Filled variant.</p>
+          <a href="#components">Read more</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 Form -->
+  <section class="section sysd-asym sysd-rule sysd-overprint form" id="form" aria-labelledby="form-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">06</p>
+      <h2 id="form-title">Form</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">Three forms printed over the layout like transparent inks. They are placed on the same columns and lines as the text, so even at their loudest they agree with it. Where they cross, the colours multiply.</p>
+      <p class="sysd-step-7 form__display">Circle,<br>square,<br>triangle.</p>
+      <div class="sysd-text-columns sysd-span form__text" style="--span-md: 8; --span-lg: 6">
+        <p>Overprinting is the oldest trick in the print shop. Two inks laid on top of each other don’t cover — they mix, and a third colour appears for free. Red over yellow gives orange, blue over yellow a green, all three together something close to black.</p>
+        <p>On screen the same thing is a blend mode. Each form is an element with <code>mix-blend-mode: multiply</code>, positioned on the section’s column lines. Text underneath stays dark and readable, because multiplying black by any colour is still black.</p>
+        <p>The forms are the first rule that is meant to be broken. They ignore the reading column, cross the gutter and run off the edge of the page — but their edges still start and end on the grid, which is why the result looks composed rather than random.</p>
+        <p>In dark mode there is no paper to print on, so the forms add light instead: the blend becomes <code>screen</code> and overlaps grow brighter rather than darker.</p>
+      </div>
+      <dl class="sysd-cols form__inks" style="--sm: 2; --md: 4; --lg: 3">
+        <div><dt><i style="--c: var(--sysd-accent)"></i>Red</dt><dd><code>--sysd-accent</code></dd></div>
+        <div><dt><i style="--c: var(--sysd-print-yellow)"></i>Yellow</dt><dd><code>--sysd-print-yellow</code></dd></div>
+        <div><dt><i style="--c: var(--sysd-print-blue)"></i>Blue</dt><dd><code>--sysd-print-blue</code></dd></div>
+      </dl>
+    </div>
+
+    <i class="sysd-shape sysd-shape--circle" aria-hidden="true"
+       style="--start: 3; --span: 2; --start-md: 5; --span-md: 4; --start-lg: 7; --span-lg: 5; --top: 11; --top-md: 8; --top-lg: 2"></i>
+    <i class="sysd-shape sysd-shape--yellow" aria-hidden="true"
+       style="--start: 2; --span: 2; --start-md: 3; --span-md: 4; --start-lg: 3; --span-lg: 5; --top: 17; --top-md: 13; --top-lg: 13; --ratio: 2; --ratio-lg: 4 / 3"></i>
+    <i class="sysd-shape sysd-shape--triangle sysd-shape--blue" aria-hidden="true"
+       style="--start: 4; --span: 1; --start-md: 7; --span-md: 2; --start-lg: 9; --span-lg: 4; --top: 15; --top-md: 9; --top-lg: 17"></i>
+    <i class="sysd-shape sysd-shape--bar sysd-shape--ink sysd-shape--bleed" aria-hidden="true"
+       style="--start: 1; --span: 3; --start-md: 1; --span-md: 5; --start-lg: 1; --span-lg: 8; --top: 4.5; --top-md: 4.5; --top-lg: 6"></i>
+  </section>
+
+  <!-- 07 Composition -->
+  <section class="section sysd-asym sysd-rule" id="composition" aria-labelledby="composition-title">
+    <div class="sysd-aside section__head">
+      <p class="section__num">07</p>
+      <h2 id="composition-title">Composition</h2>
+    </div>
+    <div class="sysd-main">
+      <p class="sysd-step-1 sysd-measure">Everything together on the full twelve columns. Narrow the window to see it fall into a single column.</p>
+    </div>
+
+    <article class="composition sysd-region" aria-label="Example article">
+      <p class="sysd-label sysd-span" style="--span-md: 2; --span-lg: 3">Essay<br>Six minutes</p>
+      <h3 class="sysd-step-5 sysd-span composition__title" style="--start-md: 3; --span-md: 6; --start-lg: 4; --span-lg: 9">The quiet authority of the grid</h3>
+      <p class="sysd-step-2 sysd-span" style="--start-md: 3; --span-md: 6; --start-lg: 4; --span-lg: 7">Why a layout built from a single measurement feels calmer, reads faster and survives any screen.</p>
+
+      <figure class="composition__figure sysd-span" style="--span-md: 8; --start-lg: 1; --span-lg: 8">
+        <svg viewBox="0 0 800 480" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Abstract composition: a large accent circle crossed by black bars">
+          <rect class="poster-bg" width="800" height="480"/>
+          <circle class="poster-accent" cx="540" cy="210" r="190"/>
+          <rect class="poster-ink" x="0" y="360" width="620" height="22"/>
+          <rect class="poster-ink" x="96" y="40" width="22" height="440"/>
+          <rect class="poster-ink" x="96" y="96" width="210" height="8"/>
+          <rect class="poster-ink" x="96" y="120" width="140" height="8"/>
+          <circle class="poster-ink" cx="690" cy="400" r="26"/>
+        </svg>
+      </figure>
+      <p class="sysd-label sysd-span composition__caption" style="--span-md: 6; --start-lg: 9; --span-lg: 3">Fig. 1 — The figure spans eight columns and twelve lines. On a phone it takes the full width and eight lines.</p>
+
+      <blockquote class="sysd-step-3 sysd-span composition__quote" style="--span-md: 8; --start-lg: 1; --span-lg: 3">
+        <p>Order is not the opposite of expression. It is what makes expression legible.</p>
+      </blockquote>
+      <div class="sysd-text-columns sysd-span composition__body" style="--span-md: 8; --start-lg: 4; --span-lg: 8">
+        <p>Most pages on the web are assembled rather than composed. Each part arrives with its own idea of spacing, its own type sizes and its own notion of where the edge is. The result is not chaos exactly, but noise: a constant low-level effort the reader spends on working out what belongs together.</p>
+        <p>A grid removes that effort. When every element starts on a column line and every gap is a whole number of lines, relationships become visible without a single border or background. Things that are close belong together. Things that line up are related. The eye learns the system in seconds and then stops looking at it.</p>
+        <p>The print designers who developed these ideas worked on a fixed page. We don’t have one. But the principle survives the move to the screen intact, because it was never about the page — it was about proportion. Fix the proportions and the page can be any size it likes.</p>
+        <p>That is why this system has so few inputs. Choose a typeface and a reading size, and the rest follows: the line, the columns, the space, the scale. Change the inputs and everything moves together, as a single composition.</p>
+      </div>
+    </article>
+  </section>
+
+</main>
+
+<footer class="site-footer sysd-page">
+  <p class="sysd-label sysd-span" style="--span-md: 4; --span-lg: 6">sysd — foundations prototype 4 · <a href="patterns.html">patterns</a> · <a href="../v3/index.html">v3</a> · <a href="../v2/index.html">v2</a> · <a href="../v1-strict/index.html">strict v1</a> · <a href="../index.html">poetic v0.2</a></p>
+  <p class="sysd-label sysd-span site-footer__end" style="--span-md: 4; --span-lg: 6">Set on a grid of <span class="sysd-num" data-readout="columns"></span> columns and a line of <span class="sysd-num" data-readout="u"></span>.</p>
+</footer>
+
+<!-- Grid overlay -->
+<div class="grid-overlay" aria-hidden="true">
+  <div class="sysd-page">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+</div>
+
+<!-- Controls -->
+<div class="controls" id="controls" popover="manual" aria-labelledby="controls-title">
+  <div class="controls__head">
+    <h2 class="sysd-step-0" id="controls-title">Inputs</h2>
+    <button class="sysd-button sysd-button--quiet sysd-button--compact" type="button" popovertarget="controls" popovertargetaction="hide">Close</button>
+  </div>
+  <p class="sysd-label">Everything on the page is derived from these values.</p>
+
+  <label class="control">
+    <span class="control__name">Body size <output class="sysd-num" for="in-size" id="out-size"></output></span>
+    <input type="range" id="in-size" min="14" max="22" step="0.5">
+  </label>
+  <label class="control">
+    <span class="control__name">Leading <output class="sysd-num" for="in-leading" id="out-leading"></output></span>
+    <input type="range" id="in-leading" min="1.3" max="1.8" step="0.05">
+  </label>
+  <label class="control">
+    <span class="control__name">Scale ratio</span>
+    <select class="sysd-select" id="in-ratio">
+      <option value="1.125">1.125 — major second</option>
+      <option value="1.2">1.2 — minor third</option>
+      <option value="1.25">1.25 — major third</option>
+      <option value="1.333">1.333 — perfect fourth</option>
+      <option value="1.414">1.414 — augmented fourth</option>
+      <option value="1.5">1.5 — perfect fifth</option>
+    </select>
+  </label>
+  <label class="control">
+    <span class="control__name">Typeface</span>
+    <select class="sysd-select" id="in-font">
+      <option>Inter</option>
+      <option>Schibsted Grotesk</option>
+      <option>Instrument Sans</option>
+      <option>Hanken Grotesk</option>
+      <option>IBM Plex Sans</option>
+    </select>
+  </label>
+  <label class="control">
+    <span class="control__name">Accent hue <output class="sysd-num" for="in-hue" id="out-hue"></output></span>
+    <input type="range" id="in-hue" min="0" max="360" step="1" class="control__hue">
+  </label>
+  <label class="control">
+    <span class="control__name">Corner radius <output class="sysd-num" for="in-radius" id="out-radius"></output></span>
+    <input type="range" id="in-radius" min="0" max="12" step="1">
+  </label>
+  <label class="control">
+    <span class="control__name">Theme</span>
+    <select class="sysd-select" id="in-theme">
+      <option value="">Follow system</option>
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+  </label>
+
+  <div class="control control--colour">
+    <span class="control__name">Light paper <output class="sysd-num" for="in-paper-light" id="out-paper-light"></output></span>
+    <oklch-input id="in-paper-light" label="Light paper"></oklch-input>
+  </div>
+  <div class="control control--colour">
+    <span class="control__name">Dark paper <output class="sysd-num" for="in-paper-dark" id="out-paper-dark"></output></span>
+    <oklch-input id="in-paper-dark" label="Dark paper"></oklch-input>
+  </div>
+  <p class="sysd-label">Dark paper also colours negative sections without a tone of their own.</p>
+
+  <div class="sysd-actions">
+    <button class="sysd-button sysd-button--outline sysd-button--compact" type="button" id="reset">Reset</button>
+    <button class="sysd-button sysd-button--quiet sysd-button--compact" type="button" data-grid-toggle aria-pressed="false">Grid <kbd>G</kbd></button>
+  </div>
+</div>
+
+</body>
+</html>
